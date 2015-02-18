@@ -54,6 +54,7 @@ private:
 	void printMessage(string);
 	string addTask();
 	void splitString(string);
+	bool isSpecialDetail(string);
 	bool isPriority(string);
 	bool isTime(string);
 	bool isDate1(string);

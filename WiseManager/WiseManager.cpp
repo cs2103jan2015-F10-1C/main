@@ -1,7 +1,7 @@
 #include "WiseManager.h"
 
 
-const string MESSAGE_WELCOME = "Welcome to Wisemanager V0.1! \n";
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully";
 
 WiseManager::WiseManager() {
@@ -13,7 +13,6 @@ WiseManager::WiseManager() {
 	_size = 0;
 
 };
-
 
 WiseManager::~WiseManager(void) {	
 };
@@ -49,7 +48,7 @@ void WiseManager::executeCommand(string command) {
 	switch (identifiedCommand) {
 
 	case ADD:
-		return printMessage( addTask() );
+return printMessage(addTask());
 	case VIEW:
 	case DELETE:
 	case EDIT:
@@ -97,18 +96,18 @@ addTask notes:
 
 user should include quotations around details with conflicting
 terms such as days and am/pm
-e.g. meet at "taco tuesday" or meet at "cafe 3pm". 
+e.g. meet at "taco tuesday" or meet at "cafe 3pm" or "high tea"
 this is to avoid creating a task on tuesday or at 3pm.
 
 to add priority, indicate with "-"
 e.g. have dinner -high/mid/low
 
-to add time, indicate with ":", "am" or "pm". 
+to add time, indicate with ":", "am" or "pm".
 there should be no space between time and am/pm
-e.g. have dinner 5pm 
-	 NOT have dinner 5 pm
-or 
-	have dinner 5:00
+e.g. have dinner 5pm
+NOT have dinner 5 pm
+or
+have dinner 5:00
 
 =============================================================*/
 
@@ -116,7 +115,7 @@ string WiseManager::addTask() {
 
 	string userInput;
 
-	getline(cin, userInput); 
+	getline(cin, userInput);
 	userInput = userInput.substr(1); // remove blank space after add command
 	splitString(userInput);
 
@@ -139,15 +138,42 @@ void WiseManager::splitString(string userInput) {
 
 
 	while (iss) {
-		
+
 
 		iss >> extract;
 
-		if (!iss) { 
+		if (!iss) {
 			break;
 		}
 
-		if (isPriority(extract)) {
+		if (isSpecialDetail(extract)) { // used to find details enclosed with " "
+			if (!buffer.empty()) {
+				if (details.empty()) {
+				details = buffer;
+				}
+				else {
+					details = details + " " + buffer;
+				}
+			}
+			buffer.clear();
+
+			extract = extract.substr(1); // removes the " at start of word
+
+			do{
+				cout << "current extract: " << extract << endl;
+				if (details.empty()) {
+					details = extract;
+				}
+				else {
+					details = details + " " + extract;
+				}
+				iss >> extract;
+			} while (extract[extract.length()-1] != '"');
+			
+			extract = extract.substr(0, extract.length() - 1); // remove the final "
+			details = details + " " + extract;
+		}
+		else if (isPriority(extract)) {
 				priority = extract.substr(1); // to remove "-"
 		}
 		else if (isTime(extract)) {
@@ -172,10 +198,19 @@ void WiseManager::splitString(string userInput) {
 			}
 		} 
 		else if (isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
+			cout << "inside date 2, buffer: " << buffer << endl;
 			if (!buffer.empty()) {
-				buffer.clear();
+				if (buffer == "this" || buffer == "coming" || buffer == "this coming") {
+					date = "this " + extract;
+				}
+				else if (buffer == "next") {
+					date = "next " + extract;
+				}
 			}
-			date = extract;
+			else {
+				date = extract;
+			}
+			buffer.clear();
 		}
 		else if (isBuffer(extract)) {
 			
@@ -237,7 +272,6 @@ bool WiseManager::isTime(string str) {
 	return false;
 }
 
-
 bool WiseManager::isDate1(string str) {
 
 	string dateKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -252,7 +286,6 @@ bool WiseManager::isDate1(string str) {
 	}
 	return false;
 }
-
 
 bool WiseManager::isDate2(string str) {
 
@@ -271,14 +304,22 @@ bool WiseManager::isDate2(string str) {
 
 bool WiseManager::isBuffer(string str) {
 
-	string bufferKey[15] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to"};
+	string bufferKey[18] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to", "this", "coming", "next" };
 	int pos = -1;
 
-	for (size_t i = 0; i < 15; i++) {
+	for (size_t i = 0; i < 18; i++) {
 		pos = str.find(bufferKey[i]);
 		if (pos >= 0) {
 			return true;
 		}
+	}
+	return false;
+}
+
+bool WiseManager::isSpecialDetail(string str) {
+
+	if (str[0] == '"') {
+		return true;
 	}
 	return false;
 }
