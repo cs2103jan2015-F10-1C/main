@@ -160,7 +160,6 @@ void WiseManager::splitString(string userInput) {
 			extract = extract.substr(1); // removes the " at start of word
 
 			do{
-				cout << "current extract: " << extract << endl;
 				if (details.empty()) {
 					details = extract;
 				}
@@ -187,7 +186,7 @@ void WiseManager::splitString(string userInput) {
 			}
 			buffer.clear();
 		}
-		else if (isDate1(extract)) { // date1 means i have more things to extract adjacent to it, either before or after. 
+		else if (isDate1(extract)) { // date1 means there are more things to extract adjacent to it, either before or after. 
 			if (!buffer.empty()) {
 				date = buffer + " " + extract;
 			}
