@@ -1,304 +1,284 @@
 #include "WiseManager.h"
-#include <vector>
-#include <algorithm>
-#include <fstream> 
 
-const string ADD_IDENTIFIER = "ADD";
-const string DELETE_IDENTIFIER = "DELETE";
-const string VIEW_IDENTIFIER = "VIEW";
-const string DISPLAY_IDENTIFIER = "DISPLAY";
-const string EXIT_IDENTIFIER = "EXIT";
 
-const string TASK_DETAILS_IDENTIFIER = "-info";
-const string TASK_DATE_IDENTIFIER = "-date";
-const string TASK_TIME_IDENTIFIER = "-time";
-const string TASK_PRIORITY_IDENTIFIER = "-prior";
-
-const int POSITION_UNFOUND = -1;
-
-const string ERROR_UNRECOGNISED_COMMAND_TYPE_MESSAGE = "the command type is wrong, please re-enter";
-const string NO_ADD_INFO_MESSAGE = "there is no further information given after a command ADD, please re-enter";
+const string MESSAGE_WELCOME = "Welcome to Wisemanager V0.1! \n";
+const string MESSAGE_ADD = "New task has been added successfully";
 
 WiseManager::WiseManager() {
-	_tail = NULL;
-	_size=0;
+	
+	Task* dummy = new Task;
+	dummy->prev = NULL;
+	dummy->next = NULL;
+	_tail = dummy;
+	_size = 0;
+
 };
 
 
 WiseManager::~WiseManager(void) {	
 };
 
-void WiseManager::initialise(ifstream* detaBaseRead, ofstream* detaBaseWrite) {
-	string taskLine;
+void WiseManager::initialise() {
 
-	while(getline(*detaBaseRead, taskLine)){	
-		addTask(taskLine, detaBaseRead, detaBaseWrite);
-	}
+	// retreive data from database file 
 
-	return;
-};
-
-void WiseManager:: getStarted(ifstream* detaBaseRead, ofstream* detaBaseWrite){
-	bool exitFromSystem = false;
-	string userInput;
-	Command_Type commandType;
-
-
-	while(!cin.eof() && !exitFromSystem){ 
-		cout << "Command:";
-		getline(cin, userInput);
-		commandType = getCommandType(userInput);
-		if(commandType == EXIT){
-			exitFromSystem = true;
-		}
-		else{
-			processCommand(commandType, userInput, detaBaseRead, detaBaseWrite);
-		}
-	}
-	return;
 }
 
-WiseManager :: Command_Type WiseManager:: getCommandType(string &userInput){
-	int startOfCommand = 0, endOfCommand = 0, startOfInfo = 0;
-	string command;
-	startOfCommand = userInput.find_first_not_of(" ", 0);
-	endOfCommand = userInput.find_first_of(" ", startOfCommand);
-	command = userInput.substr(startOfCommand, endOfCommand-startOfCommand); 
+void WiseManager::getStarted() {
 
-	if(endOfCommand < 0){
-		userInput = "";
-	}
-	else{
-		startOfInfo = userInput.find_first_not_of(" ", endOfCommand+1); 
-		userInput = userInput.substr(startOfInfo);
-	}
+	cout << MESSAGE_WELCOME;
 	
-	int sizeOfCommand = command.size();
-	for(int i=0; i<sizeOfCommand; i++){
-		if(islower(command[i])){
-			command[i] = toupper(command[i]);
-		}
+	string command;
+
+	while (true) {
+		cout << "command: ";
+		cin >> command;
+		executeCommand(command);
 	}
 
-	if(command == ADD_IDENTIFIER){
+}
+
+void WiseManager::printMessage(string str) {
+	cout << str << endl;
+}
+
+void WiseManager::executeCommand(string command) {
+		
+	Command_Type identifiedCommand = identifyCommand(command);
+
+	switch (identifiedCommand) {
+
+	case ADD:
+		return printMessage( addTask() );
+	case VIEW:
+	case DELETE:
+	case EDIT:
+	case DISPLAY:
+	case EXIT:
+		return exit(0);
+	case ERROR:
+		cout << "Command not recognised, please re-input \n";
+		return;
+	}
+
+}
+
+WiseManager::Command_Type WiseManager::identifyCommand(string command) {
+
+	for (size_t index = 0; index < command.length(); index++) {
+		command[index] = tolower(command[index]);
+	}
+
+	if (command == "add") {
 		return ADD;
 	}
-	else if (command == DELETE_IDENTIFIER){
-		return DELETE;
-	}
-	else if (command == VIEW_IDENTIFIER){
+	else if (command == "view") {
 		return VIEW;
 	}
-	else if (command == DISPLAY_IDENTIFIER){ 
+	else if (command == "delete") {
+		return DELETE;
+	}
+	else if (command == "edit") {
+		return EDIT;
+	}
+	else if (command == "display") {
 		return DISPLAY;
 	}
-	else if (command == EXIT_IDENTIFIER){
+	else if (command == "exit") {
 		return EXIT;
 	}
-	else{
-		//Generates an error message and requests the user to re-enter the command line.
-		printErrorMessage(ERROR_UNRECOGNISED_COMMAND_TYPE_MESSAGE);
+	else
 		return ERROR;
-	}
+
 }
 
-void WiseManager::processCommand(Command_Type commandType, string userInput, ifstream* detaBaseRead, ofstream* detaBaseWrite){
-	switch(commandType){
-	case ADD:
-			if(userInput == ""){
-				printErrorMessage(NO_ADD_INFO_MESSAGE);
-				return;
-			}
-			else{
-			addTask(userInput, detaBaseRead, detaBaseWrite);
-			return;
-			}
-	case DELETE:
-			deleteTask(userInput, detaBaseRead, detaBaseWrite);
-			return;
-	case EDIT:
-			editTask(userInput, detaBaseRead, detaBaseWrite);
-			return;
-	case VIEW:
-			viewTask(userInput);
-			return;
-	case DISPLAY:
-			displayAllTask();
-			return;
-	case ERROR:
-			return;
-	}
+/*=============================================================
+addTask notes:
+
+user should include quotations around details with conflicting
+terms such as days and am/pm
+e.g. meet at "taco tuesday" or meet at "cafe 3pm". 
+this is to avoid creating a task on tuesday or at 3pm.
+
+to add priority, indicate with "-"
+e.g. have dinner -high/mid/low
+
+to add time, indicate with ":", "am" or "pm". 
+there should be no space between time and am/pm
+e.g. have dinner 5pm 
+	 NOT have dinner 5 pm
+or 
+	have dinner 5:00
+
+=============================================================*/
+
+string WiseManager::addTask() {
+
+	string userInput;
+
+	getline(cin, userInput); 
+	userInput = userInput.substr(1); // remove blank space after add command
+	splitString(userInput);
+
+	return MESSAGE_ADD;
+
 }
 
-void WiseManager::addTask(string userInput, ifstream* detaBaseRead, ofstream* detaBaseWrite) {
-	Task* task = new Task;
-	int startOfTaskName = 0, endOfTaskName; // Assume the userInput starts without "add" but the task name.
-	int startOfDetail, startOfDate, startOfTime, startOfPriority, endOfDetail, endOfDate, endOfTime, endOfPriority;
-	string taskToBeSaved;
+// splitString reads the user input word by word and attempts to
+// identify each word to correctly sort it out to it's
+// proper component in task struct.
+void WiseManager::splitString(string userInput) {
 
-	startOfDetail = findPosition(userInput, TASK_DETAILS_IDENTIFIER);
-	startOfDate = findPosition(userInput, TASK_DATE_IDENTIFIER);
-	startOfTime = findPosition(userInput, TASK_TIME_IDENTIFIER);
-	startOfPriority = findPosition(userInput, TASK_PRIORITY_IDENTIFIER);
-	
-	vector<int> positionToSort;
-	positionToSort.push_back(startOfTaskName);
+	istringstream iss(userInput);
+	string extract;
+	string buffer;
+	string details;
+	string date;
+	string time;
+	string priority;
 
-	if(startOfDetail == POSITION_UNFOUND){
-		task->taskDetails = "";
-	}
-	else{
-		positionToSort.push_back(startOfDetail);
-	}
 
-	if(startOfDate == POSITION_UNFOUND){
-		task->date = "";
-	}
-	else{
-		positionToSort.push_back(startOfDate);
-	}
+	while (iss) {
+		
 
-	if(startOfTime == POSITION_UNFOUND){
-		task->time = "";
-	}
-	else{
-		positionToSort.push_back(startOfTime);
-	}
+		iss >> extract;
 
-	if(startOfPriority == POSITION_UNFOUND){
-		task->priority = "";
-	}
-	else{
-		positionToSort.push_back(startOfPriority);
-	}
-
-	if(positionToSort.size()>1){
-	sort(positionToSort.begin(), positionToSort.end());
-	
-	vector<int>::iterator iter1, iter2;
-	for(iter1=positionToSort.begin(); iter1!=positionToSort.end()-1; iter1++){
-		iter2=iter1 + 1;
-		if(*iter1 == startOfTaskName){
-			endOfTaskName = *iter2;
+		if (!iss) { 
+			break;
 		}
-		else if(*iter1 == startOfDetail){
-			endOfDetail = *iter2;
-		}
-		else if(*iter1 == startOfDate){
-			endOfDate = *iter2;
-		}
-		else if(*iter1 == startOfTime){
-			endOfTime = *iter2;
-		}
-		else if(*iter1 == startOfPriority){
-			endOfPriority = *iter2;
-		}
-	}
 
-		task->taskName = userInput.substr(startOfTaskName, endOfTaskName-startOfTaskName);
-		task->taskName = removeExtraSpace(task->taskName);               
-		taskToBeSaved = task->taskName;
-		if(startOfDetail != POSITION_UNFOUND){
-			task->taskDetails = userInput.substr((startOfDetail+TASK_DETAILS_IDENTIFIER.length()), (endOfDetail-(startOfDetail+TASK_DETAILS_IDENTIFIER.length())));
-			task->taskDetails = removeExtraSpace(task->taskDetails);
-			taskToBeSaved = taskToBeSaved + " -info " + task->taskDetails;
+		if (isPriority(extract)) {
+				priority = extract.substr(1); // to remove "-"
 		}
-		if(startOfDate != POSITION_UNFOUND){
-			task->date = userInput.substr((startOfDate+TASK_DATE_IDENTIFIER.length()), (endOfDate-(startOfDate+TASK_DATE_IDENTIFIER.length())));
-			task->date = removeExtraSpace(task->date);
-			taskToBeSaved = taskToBeSaved + " -date " + task->date;
-		}
-		if(startOfTime != POSITION_UNFOUND){
-			task->time = userInput.substr((startOfTime+TASK_TIME_IDENTIFIER.length()), (endOfTime-(startOfTime+TASK_TIME_IDENTIFIER.length())));
-			task->time = removeExtraSpace(task->time);
-			taskToBeSaved = taskToBeSaved + " -time " + task->time;
-		}
-		if(startOfPriority != POSITION_UNFOUND){
-			task->priority = userInput.substr((startOfPriority+TASK_PRIORITY_IDENTIFIER.length()), (endOfPriority-(startOfPriority+TASK_PRIORITY_IDENTIFIER.length())));
-			task->priority = removeExtraSpace(task->priority);
-			taskToBeSaved = taskToBeSaved + " -prior " + task->priority;
-		}
-	}
-
-	else{
-	task->taskName = userInput;
-	task->taskName = removeExtraSpace(task->taskName);
-	taskToBeSaved = task->taskName;
-	}
-
-	(*detaBaseWrite) << taskToBeSaved << endl;
-
-	if(_size>0){
-		task->next = _tail;
-		task->prev = _tail->prev;
-		_tail->prev->next = task;
-		_tail->prev = task;
-		_tail = task;
-		_size++;
-	}
-	else if(_size==0){
-		task->next = task;
-		task->prev = task;
-		_tail = task;
-		_size++;
-	}
-
-	return;
-};
-
-int WiseManager::findPosition(string toBeChecked, const string identifier){
-	if(identifier.length()>toBeChecked.length()){
-		return POSITION_UNFOUND;
-	}
-	else{
-		size_t startingPointOfStringChecked, startingPointOfIdentifier, positionUnderChecking;
-		for(startingPointOfStringChecked=0; startingPointOfStringChecked<toBeChecked.length(); startingPointOfStringChecked++){
-			startingPointOfIdentifier=0;
-			positionUnderChecking=startingPointOfStringChecked;
-			while(positionUnderChecking<toBeChecked.length() && 
-									toBeChecked[positionUnderChecking] == identifier[startingPointOfIdentifier]){
-				positionUnderChecking++;
-				startingPointOfIdentifier++;			
+		else if (isTime(extract)) {
+			if (time.empty()) {
+				time = extract;
 			}
-			if(startingPointOfIdentifier==identifier.length()){
-				return startingPointOfStringChecked;
+			else {
+				if (buffer == "-" || buffer == "to") {
+					time = time + "-" + extract;
+				}
+			}
+			buffer.clear();
+		}
+		else if (isDate1(extract)) { // date1 means i have more things to extract adjacent to it, either before or after. 
+			if (!buffer.empty()) {
+				date = buffer + " " + extract;
+			}
+			else {
+				date = extract;
+				iss >> extract; // take in next item
+				date = date + " " + extract;
+			}
+		} 
+		else if (isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
+			if (!buffer.empty()) {
+				buffer.clear();
+			}
+			date = extract;
+		}
+		else if (isBuffer(extract)) {
+			
+			if (buffer == "on") {
+				buffer.clear();
+			}
+			
+			if (buffer.empty()) {
+				buffer = extract;
+			}
+			else {
+				buffer = buffer + " " + extract;
 			}
 		}
-		return POSITION_UNFOUND;
-	}
+		else {
+			if (!buffer.empty()) {
+				details = details + " " + buffer;
+				buffer.clear();
+			}
+			if (details.empty()) {
+				details = extract;
+			}
+			else {
+				details = details + " " + extract;
+			}
+		}
+	} // end while(iss)
+
+
+	cout << "details: " << details << endl;
+	cout << "date: " << date << endl;
+	cout << "time: " << time << endl;
+	cout << "priority: " << priority << endl;
+	cout << "buffer: " << buffer << endl;
 }
 
-string WiseManager::removeExtraSpace(string stringTobeModified){
-	int start = stringTobeModified.find_first_not_of(" ");
-	int end = stringTobeModified.find_last_not_of(" ");
-	return stringTobeModified.substr(start, end-start+1);
+bool WiseManager::isPriority(string str) {
+
+	if (str == "-high" || str == "-mid" || str == "-low") {
+		return true;
+	}
+	return false;
 }
 
-void WiseManager::deleteTask(string userInput, ifstream* detaBaseRead, ofstream* detaBaseWrite) {
+bool WiseManager::isTime(string str) {
 
+	string timeKey[3] = { ":", "am", "pm" };
+	int pos = -1;
 
-};
-
-void WiseManager::editTask(string userInput, ifstream* detaBaseRead, ofstream* detaBaseWrite) {
-
-
-};
-
-void WiseManager::viewTask(string userInput) {
-
-
-};
-
-void WiseManager::displayAllTask() {
-	Task* currentPosition = _tail->next;  
-	for(int i=1; i<=_size; i++){
-		cout << i << ". " << currentPosition->taskName << endl;
-		currentPosition = currentPosition->next;
+	for (size_t i = 0; i < 3; i++) {
+		pos = str.find(timeKey[i]);
+		if (pos > 0) {
+			if (str[pos - 1] >= '0' && str[pos - 1] <= '9') { // meaning that there should be an integer present before the delimiter.
+				return true;
+			}
+		}
+		
 	}
-	return;
-};
+	return false;
+}
 
-void WiseManager::printErrorMessage(string errorMessage){
-	cout << errorMessage << endl;
-	return;
+
+bool WiseManager::isDate1(string str) {
+
+	string dateKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+		"jan", "feb", "mar", "apr", "may", "jun", "july", "aug", "sep", "oct", "nov", "dec" };
+	int pos = -1;
+
+	for (size_t i = 0; i < 24; i++) {
+		pos = str.find(dateKey[i]);
+		if (pos >= 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool WiseManager::isDate2(string str) {
+
+	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "monday", "tuesday", "wednesday", "thursday",
+		"friday", "saturday", "sunday", "/", "today", "tomorrow" };
+	int pos = -1;
+
+	for (size_t i = 0; i < 17; i++) {
+		pos = str.find(dateKey[i]);
+		if (pos >= 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool WiseManager::isBuffer(string str) {
+
+	string bufferKey[15] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to"};
+	int pos = -1;
+
+	for (size_t i = 0; i < 15; i++) {
+		pos = str.find(bufferKey[i]);
+		if (pos >= 0) {
+			return true;
+		}
+	}
+	return false;
 }
