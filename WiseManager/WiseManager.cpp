@@ -460,6 +460,10 @@ string WiseManager::standardiseTime(string inputTime) {
 	string start;
 	string end;
 
+	if (inputTime.empty()) { // for no time input by user
+		return "";
+	}
+
 	// case 1-2pm
 	// case 1pm-2pm
 	// case 1:00 - 2:00
