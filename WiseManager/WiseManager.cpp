@@ -109,6 +109,14 @@ NOT have dinner 5 pm
 or
 have dinner 5:00
 
+acceptable dates: 
+3/5 (dd/mm) -> 3 / 3 not acceptable
+3 mar, 3 march
+mar 3, march 3
+today
+tomorrow
+days of week (mon - sun)
+
 =============================================================*/
 
 string WiseManager::addTask() {
@@ -197,8 +205,10 @@ void WiseManager::splitString(string userInput) {
 			}
 		} 
 		else if (isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
-			cout << "inside date 2, buffer: " << buffer << endl;
-			if (!buffer.empty()) {
+			if (buffer == "on") {
+				buffer.clear();
+			}
+			if (!buffer.empty()) {	
 				if (buffer == "this" || buffer == "coming" || buffer == "this coming") {
 					date = "this " + extract;
 				}
@@ -212,10 +222,6 @@ void WiseManager::splitString(string userInput) {
 			buffer.clear();
 		}
 		else if (isBuffer(extract)) {
-			
-			if (buffer == "on") {
-				buffer.clear();
-			}
 			
 			if (buffer.empty()) {
 				buffer = extract;
@@ -238,12 +244,25 @@ void WiseManager::splitString(string userInput) {
 		}
 	} // end while(iss)
 
+	date = standardiseDate(date);
+	//time = standardiseTime(time);
 
+	cout << endl;
 	cout << "details: " << details << endl;
 	cout << "date: " << date << endl;
 	cout << "time: " << time << endl;
 	cout << "priority: " << priority << endl;
 	cout << "buffer: " << buffer << endl;
+
+
+}
+
+bool WiseManager::isSpecialDetail(string str) {
+
+	if (str[0] == '"') {
+		return true;
+	}
+	return false;
 }
 
 bool WiseManager::isPriority(string str) {
@@ -279,7 +298,7 @@ bool WiseManager::isDate1(string str) {
 
 	for (size_t i = 0; i < 24; i++) {
 		pos = str.find(dateKey[i]);
-		if (pos >= 0) {
+		if (pos == 0) {
 			return true;
 		}
 	}
@@ -294,7 +313,7 @@ bool WiseManager::isDate2(string str) {
 
 	for (size_t i = 0; i < 17; i++) {
 		pos = str.find(dateKey[i]);
-		if (pos >= 0) {
+		if (pos == 0) {
 			return true;
 		}
 	}
@@ -308,17 +327,163 @@ bool WiseManager::isBuffer(string str) {
 
 	for (size_t i = 0; i < 18; i++) {
 		pos = str.find(bufferKey[i]);
-		if (pos >= 0) {
+		if (pos == 0) {
 			return true;
 		}
 	}
 	return false;
 }
 
-bool WiseManager::isSpecialDetail(string str) {
+string WiseManager::standardiseDate(string date) {
 
-	if (str[0] == '"') {
-		return true;
+
+	string standardisedDate;
+	string extract;
+	istringstream iss(date);
+	string day_extract = " ";
+	string month_extract = " ";
+
+	// get current date
+
+	time_t rawTime;
+	struct tm * timeInfo;
+
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+
+	int day = timeInfo->tm_mday;
+	int month = timeInfo->tm_mon + 1;
+	int year = timeInfo->tm_year + 1900;
+	int wDay = timeInfo->tm_wday;
+
+	// info arrays
+	int daysInMth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	string mthsInYr[12] = { "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
+	string dayInWeek[7] = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" };
+	string others[2] = { "today", "tomorrow" };
+	string controls[2] = { "next", "this" };
+
+	// start standardising
+
+	if (date.empty()) {
+		return "";
 	}
-	return false;
+
+	while (iss) {
+
+		iss >> extract;
+
+		if (!iss){
+			break;
+		}
+
+		// case already in standardised form
+	//	int found = -1;
+	//	found = extract.find('/');
+	//	if (found) {
+	//		return date;
+	//	}
+
+		// case today or tomorrow
+		for (int case1 = 0; case1 < 2; case1++) {
+			if (extract == others[case1]) {
+				day = day + case1;
+				standardisedDate = to_string(day) + "/" + to_string(month);
+				return standardisedDate;
+			}
+		}
+
+		// case next / this
+		for (int case2 = 0; case2 < 2; case2++) {
+			if (extract == controls[case2]) {
+				if (case2 == 0) { // if next
+					day = day + 7;
+				}
+				// if this, do nothing
+			}
+		}
+
+		// case day of week
+		for (int case3 = 0; case3 < 7; case3++) {
+			if (extract == dayInWeek[case3]) {
+				int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
+				int diff; // used to calculate the number of days difference between current day and input day.
+				if (inputDay <= wDay) {
+					inputDay = inputDay + 7;
+				}
+				diff = inputDay - wDay;
+				day = day + diff;
+			}
+		}
+
+		// case specific date e.g. 3rd march, this function extracts the numerical day.
+		for (int case4 = 0; case4 < extract.length(); case4++) {
+			if (extract[case4] >= '0' && extract[case4] <= '9') {
+				day_extract = day_extract + extract[case4];
+			}
+		}
+
+		// case month
+		extract[0] = tolower(extract[0]); // to change Month to month
+		for (int case5 = 0; case5 < 12; case5++) {
+			int found = -1; 
+			found = extract.find(mthsInYr[case5]);
+			if (found >= 0) {
+				month_extract = to_string(case5 + 1);
+				break;
+			}
+		}
+
+	}// end while (iss)
+
+	// check for day validity
+	if (day > daysInMth[month - 1]) {
+		day = day - daysInMth[month - 1];
+		month++;
+	}
+	
+	if (day_extract == " ") {
+		day_extract = to_string(day);
+	}
+	if (month_extract == " ") {
+		month_extract = to_string(month);
+	}
+
+	standardisedDate = day_extract + "/" + month_extract;
+
+	return standardisedDate;
+
+}
+
+string WiseManager::standardiseTime(string inputTime) {
+
+	string start;
+	string end;
+
+	// case 1-2pm
+	// case 1pm-2pm
+	// case 1:00 - 2:00
+
+	int pos = -1;
+	pos = inputTime.find('-');
+	if (pos > 0) { // meaning a range of time is found
+		start = inputTime.substr(0, pos);
+		end = inputTime.substr(pos + 1);
+	}
+	// case 1pm -> will create an hour long event if no end time specified
+	// case ':'
+	else if (pos < 0) { // no range of time found, can assume there is only start time specified
+		start = inputTime;
+	}
+
+	// extraction should be done,
+	// convert into 24hr clock input. i.e. 1pm -> 13:00, 12pm -> 12:00, 3:00-> 15:00
+
+	string numArr[12] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+	
+	
+	// solve for 2.15am / pm 
+	 
+
+	return "";
 }

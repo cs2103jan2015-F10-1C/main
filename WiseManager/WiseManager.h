@@ -16,6 +16,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -39,14 +40,14 @@ private:
 
 	};
 
-	int _size;
-	Task* _tail;
-
 	enum Command_Type{
 		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR
 	};
 
 	// include any global variables required here
+
+	int _size;
+	Task* _tail;
 
 	// include members here
 	void executeCommand(string);
@@ -60,6 +61,8 @@ private:
 	bool isDate1(string);
 	bool isDate2(string);
 	bool isBuffer(string);
+	string standardiseDate(string);
+	string standardiseTime(string);
 
 
 public:
