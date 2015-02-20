@@ -2,7 +2,8 @@
 
 
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
-const string MESSAGE_ADD = "New task has been added successfully";
+const string MESSAGE_ADD = "New task has been added successfully\n";
+const string MESSAGE_ERROR = "Invalid input \n";
 
 WiseManager::WiseManager() {
 	
@@ -124,9 +125,11 @@ string WiseManager::addTask() {
 	string userInput;
 
 	getline(cin, userInput);
+	if (userInput.empty()) {
+		return MESSAGE_ERROR;
+	}
 	userInput = userInput.substr(1); // remove blank space after add command
 	splitString(userInput);
-
 	return MESSAGE_ADD;
 
 }
@@ -134,6 +137,7 @@ string WiseManager::addTask() {
 // splitString reads the user input word by word and attempts to
 // identify each word to correctly sort it out to it's
 // proper component in task struct.
+
 void WiseManager::splitString(string userInput) {
 
 	istringstream iss(userInput);
@@ -244,15 +248,20 @@ void WiseManager::splitString(string userInput) {
 		}
 	} // end while(iss)
 
+
 	date = standardiseDate(date);
 	time = standardiseTime(time);
 
-	cout << endl;
-	cout << "details: " << details << endl;
-	cout << "date: " << date << endl;
-	cout << "time: " << time << endl;
-	cout << "priority: " << priority << endl;
-	cout << "buffer: " << buffer << endl;
+	Task* item = new Task;
+	item->details = details;
+	item->date = date;
+	item->time = time;
+	item->priority = priority;
+
+	_tail->next = item;
+	item->prev = _tail;
+	item->next = NULL;
+	_tail = item;
 
 
 }
