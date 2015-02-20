@@ -245,7 +245,7 @@ void WiseManager::splitString(string userInput) {
 	} // end while(iss)
 
 	date = standardiseDate(date);
-	//time = standardiseTime(time);
+	time = standardiseTime(time);
 
 	cout << endl;
 	cout << "details: " << details << endl;
@@ -457,37 +457,105 @@ string WiseManager::standardiseDate(string date) {
 
 string WiseManager::standardiseTime(string inputTime) {
 
-	string start;
-	string end;
-
 	if (inputTime.empty()) { // for no time input by user
 		return "";
 	}
 
-	// case 1-2pm
-	// case 1pm-2pm
-	// case 1:00 - 2:00
+	int hour_s;
+	int hour_e = 00;
+	int min_s = 00;
+	int min_e = 00;
+	string AmPm;
+	string changed;
+	string shour_s;
+	string shour_e;
+	string smin_s;
+	string smin_e;
 
-	int pos = -1;
-	pos = inputTime.find('-');
-	if (pos > 0) { // meaning a range of time is found
-		start = inputTime.substr(0, pos);
-		end = inputTime.substr(pos + 1);
+	std::string::size_type sz;
+
+	hour_s = stoi(inputTime, &sz);
+	inputTime = inputTime.substr(sz);
+	if (inputTime[0] == '.' || inputTime[0] == ':') { // there exists some minutes
+		inputTime = inputTime.substr(1);
+		min_s = stoi(inputTime, &sz);
+		inputTime = inputTime.substr(sz);
 	}
-	// case 1pm -> will create an hour long event if no end time specified
-	// case ':'
-	else if (pos < 0) { // no range of time found, can assume there is only start time specified
-		start = inputTime;
+
+	// check for any am / pm attached to start time
+	if (inputTime.find("am") == 0) {
+		inputTime = inputTime.substr(2); // remove am
+		if (hour_s == 12) {
+			hour_s = 0; // midnight = 00:00
+		}
+	}
+	else if (inputTime.find("pm") == 0) {
+		inputTime = inputTime.substr(2); // remove pm
+		if (hour_s < 12) {
+			hour_s = hour_s + 12;
+		}
 	}
 
-	// extraction should be done,
-	// convert into 24hr clock input. i.e. 1pm -> 13:00, 12pm -> 12:00, 3:00-> 15:00
+	if (inputTime[0] == '-') { // end time exists
+		inputTime = inputTime.substr(1);
+		hour_e = stoi(inputTime, &sz);
+		inputTime = inputTime.substr(sz);
+		if (inputTime[0] == '.' || inputTime[0] == ':') { // there exists some miniutes
+			inputTime = inputTime.substr(1);
+			min_e = stoi(inputTime, &sz);
+			inputTime = inputTime.substr(sz);
+		}
 
-	string numArr[12] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
-	
-	
-	// solve for 2.15am / pm 
-	 
+		// check for any am / pm attached to end time
+		if (inputTime.find("am") == 0) {
+			inputTime = inputTime.substr(2); // remove am
+			if (hour_e == 12) {
+				hour_e = 0; // midnight = 00:00
+			}
+		}
+		else if (inputTime.find("pm") == 0) {
+			inputTime = inputTime.substr(2); // remove pm
+			if (hour_e < 12) {
+				hour_e = hour_e + 12;
+			}
+		}
+	}
+	else { // no end time found
+		hour_e = hour_s++; // create an hour long event
+		min_e = min_s;
+	}
 
-	return "";
+
+	// below just makes the 0's appear nicer. in output e.g. 00:00 rather than 0:0
+	if (hour_s == 0) {
+		shour_s = "00";
+	}
+	else {
+		shour_s = to_string(hour_s);
+	}
+
+	if (hour_e == 0) {
+		shour_e = "00";
+	}
+	else {
+		shour_e = to_string(hour_e);
+	}
+
+	if (min_s == 0) {
+		smin_s = "00";
+	}
+	else {
+		smin_s = to_string(min_s);
+	}
+
+	if (min_e == 0) {
+		smin_e = "00";
+	}
+	else {
+		smin_e = to_string(min_e);
+	}
+
+	changed = shour_s + ":" + smin_s + "-" + shour_e + ":" + smin_e;
+	
+	return changed;
 }
