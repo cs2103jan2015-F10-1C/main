@@ -12,7 +12,11 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -26,14 +30,13 @@ private:
 
 	struct Task {
 
-		string taskName;
-		string taskDetails;
-		string date;
-		string time;
-		string priority;
+		string details = "";
+		string date = "";
+		string time = "";
+		string priority = "";
 
-		Task* prev;
-		Task* next;
+		Task* prev = NULL;
+		Task* next = NULL;
 
 	};
 
@@ -43,27 +46,31 @@ private:
 
 	// include any global variables required here
 
-	// include members here
-
-	Command_Type getCommandType(string&);
-	void processCommand(Command_Type, string, ifstream*, ofstream*);
-	void addTask(string, ifstream*, ofstream*);
-	void deleteTask(string, ifstream*, ofstream*);
-	void editTask(string, ifstream*, ofstream*);
-	void viewTask(string);
-	void displayAllTask();
-	int findPosition(string, const string);
-	string removeExtraSpace(string);
-	void printErrorMessage(string);
-	Task* _tail;
 	int _size;
+	Task* _tail;
+
+	// include members here
+	void executeCommand(string);
+	Command_Type identifyCommand(string);
+	void printMessage(string);
+	string addTask();
+	void splitString(string);
+	bool isSpecialDetail(string);
+	bool isPriority(string);
+	bool isTime(string);
+	bool isDate1(string);
+	bool isDate2(string);
+	bool isBuffer(string);
+	string standardiseDate(string);
+	string standardiseTime(string);
+
 
 public:
 	WiseManager();
 	~WiseManager();
 	
 	// include initialiser here
-	void initialise(ifstream*, ofstream*);
-	void getStarted(ifstream*, ofstream*);
+	void initialise();
+	void getStarted();
 };
 
