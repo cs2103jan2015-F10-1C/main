@@ -63,7 +63,7 @@ private:
 	bool isBuffer(string);
 	string standardiseDate(string);
 	string standardiseTime(string);
-
+	void displayTask();
 
 public:
 	WiseManager();

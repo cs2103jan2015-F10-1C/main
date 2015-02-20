@@ -7,10 +7,7 @@ const string MESSAGE_ERROR = "Invalid input \n";
 
 WiseManager::WiseManager() {
 	
-	Task* dummy = new Task;
-	dummy->prev = NULL;
-	dummy->next = NULL;
-	_tail = dummy;
+	_tail = NULL;
 	_size = 0;
 
 };
@@ -49,11 +46,12 @@ void WiseManager::executeCommand(string command) {
 	switch (identifiedCommand) {
 
 	case ADD:
-return printMessage(addTask());
+		return printMessage(addTask());
 	case VIEW:
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
+		return displayTask();
 	case EXIT:
 		return exit(0);
 	case ERROR:
@@ -258,11 +256,20 @@ void WiseManager::splitString(string userInput) {
 	item->time = time;
 	item->priority = priority;
 
-	_tail->next = item;
-	item->prev = _tail;
-	item->next = NULL;
-	_tail = item;
-
+	if (_size == 0) {
+		_tail = item;
+		_tail->next = item;
+		_tail->prev = item; // point back to itself to be used later for circular list
+		_size++;
+	}
+	else if (_size > 0) {
+		item->next = _tail->next;
+		_tail->next->prev = item;
+		_tail->next = item;
+		item->prev = _tail;
+		_tail = item;
+		_size++;
+	}
 
 }
 
@@ -375,7 +382,7 @@ string WiseManager::standardiseDate(string date) {
 	// start standardising
 
 	if (date.empty()) {
-		return "";
+		return "unbounded event";
 	}
 
 	while (iss) {
@@ -467,7 +474,7 @@ string WiseManager::standardiseDate(string date) {
 string WiseManager::standardiseTime(string inputTime) {
 
 	if (inputTime.empty()) { // for no time input by user
-		return "";
+		return "All day event";
 	}
 
 	int hour_s;
@@ -567,4 +574,37 @@ string WiseManager::standardiseTime(string inputTime) {
 	changed = shour_s + ":" + smin_s + "-" + shour_e + ":" + smin_e;
 	
 	return changed;
+}
+
+void WiseManager::displayTask() {
+
+	/*===================================================
+	Display Task used to, well obviously, display, task.
+	it can take in the following inputs, or none:
+	today - to display tasks only scheduled for today.
+	    e.g. display today
+	specific date - to display task on a specific date.
+	    e.g. display 3 march
+		     display 3/3
+	priority - display high / mid / low priority task.
+	    e.g. display high priority, display mid priority
+	===================================================*/
+
+	time_t rawTime;
+	struct tm * timeInfo;
+
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+
+	int day = timeInfo->tm_mday;
+	int month = timeInfo->tm_mon + 1;
+	int year = timeInfo->tm_year + 1900;
+	int wDay = timeInfo->tm_wday;
+
+	string displayType = ""; // to be used possibly for display priority/ display specific date
+
+	getline(cin, displayType);
+
+
+
 }
