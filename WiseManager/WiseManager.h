@@ -47,7 +47,7 @@ private:
 	// include any global variables required here
 
 	int _size;
-	Task* _tail;
+	Task* _tail; 
 
 public:
 	// include members here

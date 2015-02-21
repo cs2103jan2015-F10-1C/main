@@ -51,11 +51,12 @@ void WiseManager::executeCommand(string command) {
 		iss >> temp2;
 		remainingCommand = remainingCommand + " " + temp2;
 	}
+	command = temp;
 	Command_Type identifiedCommand = identifyCommand(command);
 
 	switch (identifiedCommand) {
 
-	case ADD:
+	case ADD: 
 		return printMessage(addTask(remainingCommand));
 	case VIEW:
 	case DELETE:
@@ -584,6 +585,9 @@ string WiseManager::standardiseTime(string inputTime) {
 }
 
 string WiseManager::displayAllTask(){
+	if (_size == 0){
+		return "";
+	}
 	ostringstream oss;
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){

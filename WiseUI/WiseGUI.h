@@ -5,6 +5,13 @@
 #include<iostream>
 #include<vector>
 #include <msclr\marshal_cppstd.h>
+using namespace System;
+
+static void ClrStringToStdString(std::string &outStr, System::String ^str) {
+	IntPtr ansiStr = System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(str); 
+	outStr = (const char*)ansiStr.ToPointer(); 
+	System::Runtime::InteropServices::Marshal::FreeHGlobal(ansiStr); 
+}
 
 namespace WiseUI {
 
@@ -80,12 +87,11 @@ namespace WiseUI {
 			// 
 			// CmdLineBox
 			// 
-			this->CmdLineBox->AcceptsReturn = true;
 			this->CmdLineBox->Location = System::Drawing::Point(12, 322);
+			this->CmdLineBox->Multiline = true;
 			this->CmdLineBox->Name = L"CmdLineBox";
 			this->CmdLineBox->Size = System::Drawing::Size(587, 21);
-			this->CmdLineBox->TabIndex = 0;
-			this->CmdLineBox->UseWaitCursor = true;
+			this->CmdLineBox->TabIndex = 1;
 			this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 			// 
 			// Enter
@@ -172,23 +178,21 @@ namespace WiseUI {
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
-					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 newManager->executeCommand(temp); 
+					 System::String^ text = CmdLineBox->Text;
+					 std::string temp; 
+					 ClrStringToStdString(temp, text);
 
-					/* ostringstream oss;
-					 oss << "size="<< newManager->getNoOfTasks()<<endl;
-					 string s = oss.str();
-					 String^ t = gcnew String(s.c_str()); MessageBox::Show(t);
-					 */
+					 newManager->executeCommand(temp);
 				 }
 				 return;
 	}
 	private: System::Void dropdownBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 				 Object^ selection = dropdownBox->SelectedItem; 
 				 if (selection == "Display All Tasks"){
+					
 					 string temp = newManager->displayAllTask();
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
+					 displayBox->Text = tasksToBeDisplayed; 
 					 }
 				 }
 	};
