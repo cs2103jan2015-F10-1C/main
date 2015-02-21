@@ -1,14 +1,13 @@
-#include "WiseGUI.h"
-
-using namespace System; 
+#include"WiseGUI.h"
+using namespace System;
 using namespace System::Windows::Forms;
 
-[STAThread] 
+[STAThread]
 
 int main(array<String^>^ args) {
-	Application::EnableVisualStyles(); 
+	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	
-	WiseUI::WiseGUI mainWindow; 
+
+	WiseUI::WiseGUI mainWindow;
 	Application::Run(%mainWindow);
 }

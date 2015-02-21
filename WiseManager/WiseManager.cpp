@@ -1,4 +1,5 @@
-#include "WiseManager.h"
+#include"WiseManager.h"
+using namespace std;
 
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully\n";

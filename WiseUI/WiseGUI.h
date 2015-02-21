@@ -1,5 +1,5 @@
 #pragma once
-#include "WiseManager.h"
+#include"WiseManager.h"
 #include<string>
 #include<sstream>
 #include<iostream>
@@ -168,16 +168,15 @@ namespace WiseUI {
 					 }
 				 }
 	}
-private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
-			 ostringstream oss;
-			 if (CmdLineBox->Text == "\r\n"){
-				 MessageBox::Show("Wrong Input, re-enter:");
-			 }
-			 else{
-				 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-				 newManager->executeCommand(temp);
-			 }
-			 return;
-}
-};
+	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
+				 if (CmdLineBox->Text == "\r\n"){
+					 MessageBox::Show("Wrong Input, re-enter:");
+				 }
+				 else{
+					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
+					 newManager->executeCommand(temp);
+				 }
+				 return;
+	}
+	};
 }
