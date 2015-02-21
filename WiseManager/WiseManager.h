@@ -65,7 +65,7 @@ public:
 	string standardiseDate(string);
 	string standardiseTime(string);
 	void displayTask();
-	void displayAllTask();
+	string displayAllTask();
 
 	WiseManager();
 	~WiseManager();
@@ -73,5 +73,9 @@ public:
 	// include initialiser here
 	void initialise();
 	void getStarted();
+
+
+	string displayCurrentTask();
+	int getNoOfTasks();
 };
 

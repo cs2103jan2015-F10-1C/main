@@ -24,7 +24,7 @@ namespace WiseUI {
 		WiseGUI(void)
 		{
 			newManager = new WiseManager;
-			newManager->initialise();
+			newManager->initialise(); 
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -52,13 +52,14 @@ namespace WiseUI {
 
 	private: System::Windows::Forms::ComboBox^  dropdownBox;
 	private: System::Windows::Forms::TextBox^  feedbackBox;
-	private: System::Windows::Forms::ListView^  displayBox;
+
 
 	private: System::Windows::Forms::Button^  Exit;
 
 
 	private:
 		WiseManager* newManager;
+	private: System::Windows::Forms::TextBox^  displayBox;
 
 		System::ComponentModel::Container ^components;
 
@@ -73,8 +74,8 @@ namespace WiseUI {
 			this->Enter = (gcnew System::Windows::Forms::Button());
 			this->dropdownBox = (gcnew System::Windows::Forms::ComboBox());
 			this->feedbackBox = (gcnew System::Windows::Forms::TextBox());
-			this->displayBox = (gcnew System::Windows::Forms::ListView());
 			this->Exit = (gcnew System::Windows::Forms::Button());
+			this->displayBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// CmdLineBox
@@ -100,14 +101,15 @@ namespace WiseUI {
 			// dropdownBox
 			// 
 			this->dropdownBox->FormattingEnabled = true;
-			this->dropdownBox->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
-				L"Items to be done today", L"Sort by Date", L"Sort by Priority",
-					L"Display Unbounded Tasks"
+			this->dropdownBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"Display All Tasks", L"Items to be done today",
+					L"Sort by Date", L"Sort by Priority", L"Display Unbounded Tasks"
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
 			this->dropdownBox->Name = L"dropdownBox";
 			this->dropdownBox->Size = System::Drawing::Size(142, 20);
 			this->dropdownBox->TabIndex = 3;
+			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
@@ -116,16 +118,6 @@ namespace WiseUI {
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->Size = System::Drawing::Size(453, 305);
 			this->feedbackBox->TabIndex = 4;
-			this->feedbackBox->Text = L"This feedback box will give information on the datas available so that the user w"
-				L"ill be able to make further commands in the CLI";
-			// 
-			// displayBox
-			// 
-			this->displayBox->Location = System::Drawing::Point(12, 36);
-			this->displayBox->Name = L"displayBox";
-			this->displayBox->Size = System::Drawing::Size(142, 281);
-			this->displayBox->TabIndex = 5;
-			this->displayBox->UseCompatibleStateImageBehavior = false;
 			// 
 			// Exit
 			// 
@@ -137,13 +129,21 @@ namespace WiseUI {
 			this->Exit->Text = L"E&xit";
 			this->Exit->UseVisualStyleBackColor = true;
 			// 
+			// displayBox
+			// 
+			this->displayBox->Location = System::Drawing::Point(12, 38);
+			this->displayBox->Multiline = true;
+			this->displayBox->Name = L"displayBox";
+			this->displayBox->Size = System::Drawing::Size(157, 278);
+			this->displayBox->TabIndex = 7;
+			// 
 			// WiseGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(721, 352);
-			this->Controls->Add(this->Exit);
 			this->Controls->Add(this->displayBox);
+			this->Controls->Add(this->Exit);
 			this->Controls->Add(this->feedbackBox);
 			this->Controls->Add(this->dropdownBox);
 			this->Controls->Add(this->Enter);
@@ -156,26 +156,41 @@ namespace WiseUI {
 		}
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
-				 int size = newCmd->Length;
+				 int size = newCmd->Length;				
 				 if (size == 0){
 				 }
 				 else{
-					 char lastElement = newCmd[size - 1];
+					 char lastElement = newCmd[size - 1]; 
 					 if (lastElement == '\n'){
 						 Enter_Click(sender, e);
 						 CmdLineBox->Clear();
 					 }
 				 }
 	}
-	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) { 
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 newManager->executeCommand(temp);
+					 cout << temp << endl;
+					 newManager->executeCommand(temp); 
+
+					 ostringstream oss;
+					 oss << "size="<< newManager->getNoOfTasks()<<endl;
+					 string s = oss.str();
+					 String^ t = gcnew String(s.c_str()); MessageBox::Show(t);
+
 				 }
 				 return;
 	}
+	private: System::Void dropdownBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+				 Object^ selection = dropdownBox->SelectedItem; 
+				 if (selection == "Display All Tasks"){
+					 string temp = newManager->displayAllTask();
+					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+					 displayBox->Text = tasksToBeDisplayed;
+					 }
+				 }
 	};
 }
