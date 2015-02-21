@@ -70,13 +70,6 @@ bool WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 		cout << displayAllTask()<<endl;
 		return false;;
 	case EXIT:
-		dataBaseRead->close();
-		dataBaseWrite->close();
-		dataBaseRead->open("temp.txt");
-		dataBaseWrite->open("dataBase.txt");
-		transferData(dataBaseWrite, dataBaseRead);
-		dataBaseRead->close();
-		dataBaseWrite->close();
 		return true;
 	case ERROR:
 		cout << "Command not recognised, please re-input \n";

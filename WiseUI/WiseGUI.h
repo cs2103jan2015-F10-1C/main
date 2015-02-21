@@ -196,6 +196,13 @@ namespace WiseUI {
 					 }
 				 }
 	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
+				 dataBaseRead->close();
+				 dataBaseWrite->close();
+				 dataBaseRead->open("temp.txt");
+				 dataBaseWrite->open("dataBase.txt");
+				 newManager->transferData(dataBaseWrite, dataBaseRead);
+				 dataBaseRead->close();
+				 dataBaseWrite->close();
 				 MessageBox::Show("Exit!");
 	}
 };
