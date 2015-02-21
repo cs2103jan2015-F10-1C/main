@@ -6,7 +6,7 @@ using namespace std;
 int main(void) {
 
 	WiseManager todo;
-	
+
 	todo.initialise();
 	todo.getStarted();
 

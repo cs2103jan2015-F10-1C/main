@@ -6,13 +6,13 @@ const string MESSAGE_ADD = "New task has been added successfully\n";
 const string MESSAGE_ERROR = "Invalid input \n";
 
 WiseManager::WiseManager() {
-	
+
 	_tail = NULL;
 	_size = 0;
 
 };
 
-WiseManager::~WiseManager(void) {	
+WiseManager::~WiseManager(void) {
 };
 
 void WiseManager::initialise() {
@@ -24,7 +24,7 @@ void WiseManager::initialise() {
 void WiseManager::getStarted() {
 
 	cout << MESSAGE_WELCOME;
-	
+
 	string command;
 
 	while (true) {
@@ -40,7 +40,7 @@ void WiseManager::printMessage(string str) {
 }
 
 void WiseManager::executeCommand(string command) {
-	
+
 	int startOfCommand = command.find_first_not_of(' ');
 	int endOfCommand = command.find_first_of(startOfCommand + 1, ' ');
 	command = command.substr(startOfCommand, endOfCommand - startOfCommand + 1);
@@ -112,7 +112,7 @@ NOT have dinner 5 pm
 or
 have dinner 5:00
 
-acceptable dates: 
+acceptable dates:
 3/5 (dd/mm) -> 3 / 3 not acceptable
 3 mar, 3 march
 mar 3, march 3
@@ -155,11 +155,11 @@ void WiseManager::splitString(string userInput) {
 		if (!iss) {
 			break;
 		}
-	
+
 		if (isSpecialDetail(extract)) { // used to find details enclosed with " "
 			if (!buffer.empty()) {
 				if (details.empty()) {
-				details = buffer;
+					details = buffer;
 				}
 				else {
 					details = details + " " + buffer;
@@ -177,13 +177,13 @@ void WiseManager::splitString(string userInput) {
 					details = details + " " + extract;
 				}
 				iss >> extract;
-			} while (extract[extract.length()-1] != '"');
-			
+			} while (extract[extract.length() - 1] != '"');
+
 			extract = extract.substr(0, extract.length() - 1); // remove the final "
 			details = details + " " + extract;
 		}
 		else if (isPriority(extract)) {
-				priority = extract.substr(1); // to remove "-"
+			priority = extract.substr(1); // to remove "-"
 		}
 		else if (isTime(extract)) {
 			if (time.empty()) {
@@ -205,12 +205,12 @@ void WiseManager::splitString(string userInput) {
 				iss >> extract; // take in next item
 				date = date + " " + extract;
 			}
-		} 
+		}
 		else if (isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
 			if (buffer == "on") {
 				buffer.clear();
 			}
-			if (!buffer.empty()) {	
+			if (!buffer.empty()) {
 				if (buffer == "this" || buffer == "coming" || buffer == "this coming") {
 					date = "this " + extract;
 				}
@@ -224,7 +224,7 @@ void WiseManager::splitString(string userInput) {
 			buffer.clear();
 		}
 		else if (isBuffer(extract)) {
-			
+
 			if (buffer.empty()) {
 				buffer = extract;
 			}
@@ -301,7 +301,7 @@ bool WiseManager::isTime(string str) {
 				return true;
 			}
 		}
-		
+
 	}
 	return false;
 }
@@ -362,10 +362,10 @@ string WiseManager::standardiseDate(string date) {
 	// get current date
 
 	time_t rawTime;
-	struct tm * timeInfo;
+	struct tm * timeInfo = new struct tm;
 
 	time(&rawTime);
-	timeInfo = localtime(&rawTime);
+	localtime_s(timeInfo, &rawTime);
 
 	int day = timeInfo->tm_mday;
 	int month = timeInfo->tm_mon + 1;
@@ -394,11 +394,11 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case already in standardised form
-	//	int found = -1;
-	//	found = extract.find('/');
-	//	if (found) {
-	//		return date;
-	//	}
+		//	int found = -1;
+		//	found = extract.find('/');
+		//	if (found) {
+		//		return date;
+		//	}
 
 		// case today or tomorrow
 		for (int case1 = 0; case1 < 2; case1++) {
@@ -409,16 +409,16 @@ string WiseManager::standardiseDate(string date) {
 			}
 		}
 
-/*		// case next / this
+		/*		// case next / this
 		for (int case2 = 0; case2 < 2; case2++) {
-			if (extract == controls[case2]) {
-				if (case2 == 0) { // if next
-					day = day + 7;
-				}
-				// if this, do nothing
-			}
+		if (extract == controls[case2]) {
+		if (case2 == 0) { // if next
+		day = day + 7;
 		}
-*/
+		// if this, do nothing
+		}
+		}
+		*/
 		// case day of week
 		for (int case3 = 0; case3 < 7; case3++) {
 			if (extract == dayInWeek[case3]) {
@@ -442,7 +442,7 @@ string WiseManager::standardiseDate(string date) {
 		// case month
 		extract[0] = tolower(extract[0]); // to change Month to month
 		for (int case5 = 0; case5 < 12; case5++) {
-			int found = -1; 
+			int found = -1;
 			found = extract.find(mthsInYr[case5]);
 			if (found >= 0) {
 				month_extract = to_string(case5 + 1);
@@ -457,7 +457,7 @@ string WiseManager::standardiseDate(string date) {
 		day = day - daysInMth[month - 1];
 		month++;
 	}
-	
+
 	if (day_extract == " ") {
 		day_extract = to_string(day);
 	}
@@ -572,7 +572,7 @@ string WiseManager::standardiseTime(string inputTime) {
 	}
 
 	changed = shour_s + ":" + smin_s + "-" + shour_e + ":" + smin_e;
-	
+
 	return changed;
 }
 
@@ -593,19 +593,19 @@ void WiseManager::displayTask() {
 	Display Task used to, well obviously, display, task.
 	it can take in the following inputs, or none:
 	today - to display tasks only scheduled for today.
-	    e.g. display today
+	e.g. display today
 	specific date - to display task on a specific date.
-	    e.g. display 3 march
-		     display 3/3
+	e.g. display 3 march
+	display 3/3
 	priority - display high / mid / low priority task.
-	    e.g. display high priority, display mid priority
+	e.g. display high priority, display mid priority
 	===================================================*/
 
 	time_t rawTime;
-	struct tm * timeInfo;
+	struct tm * timeInfo = new struct tm;
 
 	time(&rawTime);
-	timeInfo = localtime(&rawTime);
+	localtime_s(timeInfo, &rawTime);
 
 	int day = timeInfo->tm_mday;
 	int month = timeInfo->tm_mon + 1;

@@ -84,7 +84,6 @@ namespace WiseUI {
 			this->CmdLineBox->Name = L"CmdLineBox";
 			this->CmdLineBox->Size = System::Drawing::Size(587, 21);
 			this->CmdLineBox->TabIndex = 0;
-			this->CmdLineBox->Text = L"Command : //";
 			this->CmdLineBox->UseWaitCursor = true;
 			this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 			// 

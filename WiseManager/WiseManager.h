@@ -69,7 +69,7 @@ public:
 
 	WiseManager();
 	~WiseManager();
-	
+
 	// include initialiser here
 	void initialise();
 	void getStarted();
