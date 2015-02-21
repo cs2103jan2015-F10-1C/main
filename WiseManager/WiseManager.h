@@ -39,11 +39,10 @@ private:
 		Task* next = NULL;
 
 	};
-	
-	enum Command_Type{ 
-		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR 
-	};
 
+	enum Command_Type{
+		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR
+	};
 
 	// include any global variables required here
 
@@ -52,11 +51,11 @@ private:
 
 public:
 	// include members here
-	void executeCommand(string);
+	bool executeCommand(string, ifstream*, ofstream*);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
-	string addTask(string);
-	void splitString(string);
+	string addTask(string, ifstream*, ofstream*);
+	void splitString(string, ifstream*, ofstream*);
 	bool isSpecialDetail(string);
 	bool isPriority(string);
 	bool isTime(string);
@@ -66,13 +65,14 @@ public:
 	string standardiseDate(string);
 	string standardiseTime(string);
 	void displayTask();
-	void displayAllTask();
+	string displayAllTask();
+	void transferData(ofstream*, ifstream*);
 
 	WiseManager();
 	~WiseManager();
 
 	// include initialiser here
-	void initialise();
-	void getStarted();
+	void initialise(ifstream*, ofstream*);
+	void getStarted(ifstream*, ofstream*);
 };
 

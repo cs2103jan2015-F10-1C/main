@@ -15,13 +15,17 @@ WiseManager::WiseManager() {
 WiseManager::~WiseManager(void) {
 };
 
-void WiseManager::initialise() {
+void WiseManager::initialise(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+	string taskLine;
 
-	// retreive data from database file 
+	while (getline(*dataBaseRead, taskLine)){
+		addTask(taskLine, dataBaseRead, dataBaseWrite);
+	}
 
+	return;
 }
 
-void WiseManager::getStarted() {
+void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 
 	cout << MESSAGE_WELCOME;
 
@@ -30,7 +34,7 @@ void WiseManager::getStarted() {
 	while (true) {
 		cout << "command: ";
 		getline(cin, command);
-		executeCommand(command);
+		executeCommand(command, dataBaseRead, dataBaseWrite);
 	}
 
 }
@@ -39,28 +43,44 @@ void WiseManager::printMessage(string str) {
 	cout << str << endl;
 }
 
-void WiseManager::executeCommand(string command) {
-
-	int startOfCommand = command.find_first_not_of(' ');
-	int endOfCommand = command.find_first_of(startOfCommand + 1, ' ');
-	command = command.substr(startOfCommand, endOfCommand - startOfCommand + 1);
-	string remainingCommand = command.substr(endOfCommand + 1);
+bool WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+	
+	istringstream iss(command);
+	string temp="", temp2="", remainingCommand="";
+	iss >> temp;
+	if (!iss.eof()){
+		iss >> remainingCommand;
+	}
+	while (!iss.eof()){
+		iss >> temp2;
+		remainingCommand = remainingCommand + " " + temp2;
+	}
+	command = temp;
 	Command_Type identifiedCommand = identifyCommand(command);
-
+	
 	switch (identifiedCommand) {
 
 	case ADD:
-		return printMessage(addTask(remainingCommand));
+		printMessage(addTask(remainingCommand, dataBaseRead, dataBaseWrite));
+		return false;
 	case VIEW:
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
-		return displayAllTask();
+		cout << displayAllTask()<<endl;
+		return false;;
 	case EXIT:
-		return exit(0);
+		dataBaseRead->close();
+		dataBaseWrite->close();
+		dataBaseRead->open("temp.txt");
+		dataBaseWrite->open("dataBase.txt");
+		transferData(dataBaseWrite, dataBaseRead);
+		dataBaseRead->close();
+		dataBaseWrite->close();
+		return true;
 	case ERROR:
 		cout << "Command not recognised, please re-input \n";
-		return;
+		return false;
 	}
 
 }
@@ -122,12 +142,12 @@ days of week (mon - sun)
 
 =============================================================*/
 
-string WiseManager::addTask(string taskInformation) {
+string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofstream* dataBaseWrit) {
 
 	if (taskInformation.empty()) {
 		return MESSAGE_ERROR;
 	}
-	splitString(taskInformation);
+	splitString(taskInformation, dataBaseRead, dataBaseWrit);
 	return MESSAGE_ADD;
 
 }
@@ -136,7 +156,7 @@ string WiseManager::addTask(string taskInformation) {
 // identify each word to correctly sort it out to it's
 // proper component in task struct.
 
-void WiseManager::splitString(string userInput) {
+void WiseManager::splitString(string userInput, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 
 	istringstream iss(userInput);
 	string extract;
@@ -255,6 +275,8 @@ void WiseManager::splitString(string userInput) {
 	item->date = date;
 	item->time = time;
 	item->priority = priority;
+	string taskToBeSaved = item->details + " " + item->date + " " + item->time + " " + item->priority;
+	(*dataBaseWrite) << taskToBeSaved << endl;
 
 	if (_size == 0) {
 		_tail = item;
@@ -433,7 +455,7 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case specific date e.g. 3rd march, this function extracts the numerical day.
-		for (size_t case4 = 0; case4 < extract.length(); case4++) {
+		for (int case4 = 0; case4 < extract.length(); case4++) {
 			if (extract[case4] >= '0' && extract[case4] <= '9') {
 				day_extract = day_extract + extract[case4];
 			}
@@ -576,13 +598,15 @@ string WiseManager::standardiseTime(string inputTime) {
 	return changed;
 }
 
-void WiseManager::displayAllTask(){
+string WiseManager::displayAllTask(){
+	ostringstream oss;
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
-		cout << i << ". " << currentPosition->details << " " << currentPosition->date << " " <<
-			currentPosition->time << " " << currentPosition->priority << endl;
+		oss << i << ". Details: " << currentPosition->details << endl << "Date: " << currentPosition->date << endl <<
+			"Time: "<<currentPosition->time << endl<<"Priority: " << currentPosition->priority << endl;
 		currentPosition = currentPosition->next;
 	}
+	return oss.str();
 }
 
 
@@ -615,6 +639,13 @@ void WiseManager::displayTask() {
 
 	getline(cin, displayType);
 
+}
 
+void WiseManager::transferData(ofstream* dataDestination, ifstream* dataSource){
+	string temp;
+	while (getline(*dataSource, temp)){
+		*dataDestination << temp << endl;
+	}
 
+	return;
 }
