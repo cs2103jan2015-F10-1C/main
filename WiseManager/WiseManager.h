@@ -49,6 +49,7 @@ private:
 	int _size;
 	Task* _tail;
 
+public:
 	// include members here
 	void executeCommand(string);
 	Command_Type identifyCommand(string);
@@ -66,7 +67,6 @@ private:
 	void displayTask();
 	void displayAllTask();
 
-public:
 	WiseManager();
 	~WiseManager();
 	

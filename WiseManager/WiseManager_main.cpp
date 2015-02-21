@@ -1,6 +1,5 @@
 #include "WiseManager.h"
 
-
 int main(void) {
 
 	WiseManager todo;
