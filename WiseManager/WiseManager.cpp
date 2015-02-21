@@ -51,7 +51,7 @@ void WiseManager::executeCommand(string command) {
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
-		return displayTask();
+		return displayAllTask();
 	case EXIT:
 		return exit(0);
 	case ERROR:
@@ -155,7 +155,7 @@ void WiseManager::splitString(string userInput) {
 		if (!iss) {
 			break;
 		}
-
+	
 		if (isSpecialDetail(extract)) { // used to find details enclosed with " "
 			if (!buffer.empty()) {
 				if (details.empty()) {
@@ -409,7 +409,7 @@ string WiseManager::standardiseDate(string date) {
 			}
 		}
 
-		// case next / this
+/*		// case next / this
 		for (int case2 = 0; case2 < 2; case2++) {
 			if (extract == controls[case2]) {
 				if (case2 == 0) { // if next
@@ -418,7 +418,7 @@ string WiseManager::standardiseDate(string date) {
 				// if this, do nothing
 			}
 		}
-
+*/
 		// case day of week
 		for (int case3 = 0; case3 < 7; case3++) {
 			if (extract == dayInWeek[case3]) {
@@ -575,6 +575,17 @@ string WiseManager::standardiseTime(string inputTime) {
 	
 	return changed;
 }
+
+void WiseManager::displayAllTask(){
+	Task* currentPosition = _tail->next;
+	for (int i = 1; i <= _size; i++){
+		cout << i << ". " << currentPosition->details << " " << currentPosition->date << " " <<
+			currentPosition->time << " " << currentPosition->priority << endl;
+		currentPosition = currentPosition->next;
+	}
+	return;
+}
+
 
 void WiseManager::displayTask() {
 

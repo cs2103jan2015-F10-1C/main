@@ -64,6 +64,7 @@ private:
 	string standardiseDate(string);
 	string standardiseTime(string);
 	void displayTask();
+	void displayAllTask();
 
 public:
 	WiseManager();
