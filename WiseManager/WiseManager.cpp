@@ -583,7 +583,6 @@ void WiseManager::displayAllTask(){
 			currentPosition->time << " " << currentPosition->priority << endl;
 		currentPosition = currentPosition->next;
 	}
-	return;
 }
 
 

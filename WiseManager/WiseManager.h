@@ -40,9 +40,11 @@ private:
 
 	};
 	
-	enum Command_Type {
-		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR
+	enum Command_Type{ 
+		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR 
 	};
+
+
 	// include any global variables required here
 
 	int _size;
