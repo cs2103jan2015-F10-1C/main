@@ -1,10 +1,11 @@
 #pragma once
-#include"WiseManager.h"
+
 #include<string>
 #include<sstream>
 #include<iostream>
 #include<vector>
 #include <msclr\marshal_cppstd.h>
+#include "WiseManager.h"
 
 namespace WiseUI {
 
@@ -160,7 +161,7 @@ namespace WiseUI {
 				 if (size == 0){
 				 }
 				 else{
-					 char lastElement = newCmd[size - 1];
+					 wchar_t lastElement = newCmd[size - 1];
 					 if (lastElement == '\n'){
 						 Enter_Click(sender, e);
 						 CmdLineBox->Clear();

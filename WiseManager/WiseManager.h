@@ -39,11 +39,10 @@ private:
 		Task* next = NULL;
 
 	};
-
-	enum Command_Type{
+	
+	enum Command_Type {
 		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR
 	};
-
 	// include any global variables required here
 
 	int _size;

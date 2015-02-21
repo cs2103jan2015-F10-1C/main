@@ -433,7 +433,7 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case specific date e.g. 3rd march, this function extracts the numerical day.
-		for (int case4 = 0; case4 < extract.length(); case4++) {
+		for (size_t case4 = 0; case4 < extract.length(); case4++) {
 			if (extract[case4] >= '0' && extract[case4] <= '9') {
 				day_extract = day_extract + extract[case4];
 			}
