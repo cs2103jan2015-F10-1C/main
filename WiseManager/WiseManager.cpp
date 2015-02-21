@@ -29,7 +29,7 @@ void WiseManager::getStarted() {
 
 	while (true) {
 		cout << "command: ";
-		cin >> command;
+		getline(cin, command);
 		executeCommand(command);
 	}
 
@@ -40,13 +40,17 @@ void WiseManager::printMessage(string str) {
 }
 
 void WiseManager::executeCommand(string command) {
-		
+	
+	int startOfCommand = command.find_first_not_of(' ');
+	int endOfCommand = command.find_first_of(startOfCommand + 1, ' ');
+	command = command.substr(startOfCommand, endOfCommand - startOfCommand + 1);
+	string remainingCommand = command.substr(endOfCommand + 1);
 	Command_Type identifiedCommand = identifyCommand(command);
 
 	switch (identifiedCommand) {
 
 	case ADD:
-		return printMessage(addTask());
+		return printMessage(addTask(remainingCommand));
 	case VIEW:
 	case DELETE:
 	case EDIT:
@@ -118,16 +122,12 @@ days of week (mon - sun)
 
 =============================================================*/
 
-string WiseManager::addTask() {
+string WiseManager::addTask(string taskInformation) {
 
-	string userInput;
-
-	getline(cin, userInput);
-	if (userInput.empty()) {
+	if (taskInformation.empty()) {
 		return MESSAGE_ERROR;
 	}
-	userInput = userInput.substr(1); // remove blank space after add command
-	splitString(userInput);
+	splitString(taskInformation);
 	return MESSAGE_ADD;
 
 }

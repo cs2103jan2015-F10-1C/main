@@ -53,7 +53,7 @@ private:
 	void executeCommand(string);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
-	string addTask();
+	string addTask(string);
 	void splitString(string);
 	bool isSpecialDetail(string);
 	bool isPriority(string);
