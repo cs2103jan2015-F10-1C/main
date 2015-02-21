@@ -173,14 +173,13 @@ namespace WiseUI {
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 cout << temp << endl;
 					 newManager->executeCommand(temp); 
 
-					 ostringstream oss;
+					/* ostringstream oss;
 					 oss << "size="<< newManager->getNoOfTasks()<<endl;
 					 string s = oss.str();
 					 String^ t = gcnew String(s.c_str()); MessageBox::Show(t);
-
+					 */
 				 }
 				 return;
 	}
