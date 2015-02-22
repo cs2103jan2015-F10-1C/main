@@ -41,15 +41,29 @@ void WiseManager::printMessage(string str) {
 
 void WiseManager::executeCommand(string command) {
 
+
 	int startOfCommand = command.find_first_not_of(' ');
 	int endOfCommand = command.find_first_of(startOfCommand + 1, ' ');
 	command = command.substr(startOfCommand, endOfCommand - startOfCommand + 1);
 	string remainingCommand = command.substr(endOfCommand + 1);
+
+	istringstream iss(command);
+	string temp = "", temp2 = "";
+	iss >> temp;
+	if (!iss.eof()){
+		iss >> remainingCommand;
+	}
+	while (!iss.eof()){
+		iss >> temp2;
+		remainingCommand = remainingCommand + " " + temp2;
+	}
+	command = temp;
+
 	Command_Type identifiedCommand = identifyCommand(command);
 
 	switch (identifiedCommand) {
 
-	case ADD:
+	case ADD: 
 		return printMessage(addTask(remainingCommand));
 	case VIEW:
 	case DELETE:
@@ -576,7 +590,15 @@ string WiseManager::standardiseTime(string inputTime) {
 	return changed;
 }
 
+
+
+
 void WiseManager::displayAllTask(){
+	if (_size == 0){
+		return;
+	}
+	ostringstream oss;
+
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
 		cout << i << ". " << currentPosition->details << " " << currentPosition->date << " " <<
