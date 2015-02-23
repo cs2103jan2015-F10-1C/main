@@ -41,7 +41,7 @@ private:
 	};
 
 	enum Command_Type{
-		ADD, VIEW, DELETE, EDIT, DISPLAY, EXIT, ERROR
+		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR
 	};
 
 	// include any global variables required here
@@ -51,7 +51,7 @@ private:
 
 public:
 	// include members here
-	bool executeCommand(string, ifstream*, ofstream*);
+	void executeCommand(string, ifstream*, ofstream*, int*, string*);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
 	string addTask(string, ifstream*, ofstream*);
@@ -66,6 +66,10 @@ public:
 	string standardiseTime(string);
 	void displayTask();
 	string displayAllTask();
+	string searchTask(string);
+	string getAllInfoOfOneTask(Task*);
+	bool haveThisInfo(string, Task*);
+	bool compareStrings(string, string);
 	void transferData(ofstream*, ifstream*);
 
 	WiseManager();

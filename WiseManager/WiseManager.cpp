@@ -4,6 +4,17 @@ using namespace std;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully\n";
 const string MESSAGE_ERROR = "Invalid input \n";
+const string MESSAGE_INFO_UNFOUND = "This keyword is not found \n";
+const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched \n";
+const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised, please re-input \n";
+const int ADD_TYPE = 1;
+const int DELETE_TYPE = 2;
+const int VIEW_TYPE = 3;
+const int EDIT_TYPE = 4;
+const int SEARCH_TYPE = 5;
+const int DISPLAY_TYPE = 6;
+const int EXIT_TYPE = 7;
+const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
 
@@ -30,11 +41,13 @@ void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 	cout << MESSAGE_WELCOME;
 
 	string command;
+	int* commandType = new int;
+	string* outputMessage = new string("");
 
 	while (true) {
 		cout << "command: ";
 		getline(cin, command);
-		executeCommand(command, dataBaseRead, dataBaseWrite);
+		executeCommand(command, dataBaseRead, dataBaseWrite, commandType, outputMessage);
 	}
 
 }
@@ -43,7 +56,7 @@ void WiseManager::printMessage(string str) {
 	cout << str << endl;
 }
 
-bool WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite, int* commandType, string* outputMessage) {  // Still use return void instead of bool.
 	
 	istringstream iss(command);
 	string temp="", temp2="", remainingCommand="";
@@ -61,19 +74,26 @@ bool WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 	switch (identifiedCommand) {
 
 	case ADD:
-		printMessage(addTask(remainingCommand, dataBaseRead, dataBaseWrite));
-		return false;
+		*outputMessage = addTask(remainingCommand, dataBaseRead, dataBaseWrite);
+		*commandType = ADD_TYPE;
+		return;
 	case VIEW:
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
-		cout << displayAllTask()<<endl;
-		return false;;
+		*outputMessage = displayAllTask();
+		*commandType = DISPLAY_TYPE;
+		return;
+	case SEARCH:		
+		*outputMessage = searchTask(remainingCommand);
+		*commandType = SEARCH_TYPE;
+		return;
 	case EXIT:
-		return true;
+		return;
 	case ERROR:
-		cout << "Command not recognised, please re-input \n";
-		return false;
+		*outputMessage = MESSAGE_UNRECOGNISED_COMMAND_TYPE;
+		*commandType = ERROR_TYPE;
+		return;
 	}
 
 }
@@ -98,6 +118,9 @@ WiseManager::Command_Type WiseManager::identifyCommand(string command) {
 	}
 	else if (command == "display") {
 		return DISPLAY;
+	}
+	else if (command == "search") {
+		return SEARCH;
 	}
 	else if (command == "exit") {
 		return EXIT;
@@ -641,4 +664,97 @@ void WiseManager::transferData(ofstream* dataDestination, ifstream* dataSource){
 	}
 
 	return;
+}
+
+bool WiseManager::compareStrings(string infoToBeSearched, string infoToBeChecked){
+	if (infoToBeSearched.length()>infoToBeChecked.length()){
+		return false;
+	}
+	else{
+		size_t startingPosOfTask, startingPosOfInfo, posUnderChecking;
+		for (startingPosOfTask = 0; startingPosOfTask<infoToBeChecked.length(); startingPosOfTask++){
+			startingPosOfInfo = 0;
+			posUnderChecking = startingPosOfTask;
+			while (posUnderChecking<infoToBeChecked.length() &&
+				infoToBeChecked[posUnderChecking] == infoToBeSearched[startingPosOfInfo]){
+				posUnderChecking++;
+				startingPosOfInfo++;
+			}
+			if (startingPosOfInfo == infoToBeSearched.length()){
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
+
+bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
+	string details, date, time, priority;
+	if (currentTask->details == ""){
+		details = "";
+	}
+	else{
+		details = currentTask->details;
+	}
+
+	if (currentTask->date == "unbounded event"){
+		date = "";
+	}
+	else{
+		date = currentTask->date;
+	}
+
+	if (currentTask->time == "All day event"){
+		time = "";
+	}
+	else{
+		time = currentTask->time;
+	}
+
+	if (currentTask->priority == ""){
+		priority = "";
+	}
+	else{
+		priority = currentTask->priority;
+	}
+
+	return(compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
+		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
+}
+
+string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
+	ostringstream oss;
+	oss << "Details: " << thisTask->details << endl << "Date: " << thisTask->date << endl <<
+		"Time: " << thisTask->time << endl << "Priority: " << thisTask->priority << endl;
+	return oss.str();
+}
+
+string WiseManager::searchTask(string infoToBeSearched){
+	if (infoToBeSearched == ""){
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+
+	bool infoIsFound = false;
+	Task* currentTask = _tail->next;
+	vector<Task*> tasksHaveThisInfo;
+	for (int i = 0; i < _size; i++){
+		if (haveThisInfo(infoToBeSearched, currentTask)){
+			infoIsFound = true;
+			tasksHaveThisInfo.push_back(currentTask);
+		}
+		currentTask = currentTask->next;
+	}
+
+	if (infoIsFound){
+		ostringstream oss;
+		for (int j = 0; j < tasksHaveThisInfo.size(); j++){
+			oss << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
+		}
+		return oss.str();
+	}
+	else{
+		return MESSAGE_INFO_UNFOUND;
+	}
+
 }

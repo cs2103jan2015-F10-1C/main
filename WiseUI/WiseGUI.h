@@ -6,6 +6,15 @@
 #include<vector>
 #include <msclr\marshal_cppstd.h>
 
+const int ADD_TYPE = 1;
+const int DELETE_TYPE = 2;
+const int VIEW_TYPE = 3;
+const int EDIT_TYPE = 4;
+const int SEARCH_TYPE = 5;
+const int DISPLAY_TYPE = 6;
+const int EXIT_TYPE = 7;
+const int ERROR_TYPE = -1;
+
 namespace WiseUI {
 
 	using namespace System;
@@ -175,14 +184,20 @@ namespace WiseUI {
 				 }
 	}
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) { 
+				 int* commandType = new int;
+				 string* outputMessage= new string("");
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 bool exitFromProgram = newManager->executeCommand(temp, dataBaseRead, dataBaseWrite);
-					 if (exitFromProgram){
+					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage);
+					 if (*commandType == EXIT_TYPE){
 						 Exit_Click(sender, e);
+					 }
+					 if (*commandType == SEARCH_TYPE){
+						 String^ feedback = gcnew String(outputMessage->c_str());
+						 feedbackBox->Text = feedback;
 					 }
 				 }
 				 return;
