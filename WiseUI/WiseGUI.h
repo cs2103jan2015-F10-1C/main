@@ -133,6 +133,7 @@ namespace WiseUI {
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->Size = System::Drawing::Size(453, 330);
 			this->feedbackBox->TabIndex = 4;
+			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
 			// Exit
 			// 
@@ -152,6 +153,7 @@ namespace WiseUI {
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->Size = System::Drawing::Size(157, 301);
 			this->displayBox->TabIndex = 7;
+			this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
 			// 
 			// WiseGUI
 			// 
@@ -225,6 +227,11 @@ namespace WiseUI {
 				 dataBaseRead->close();
 				 dataBaseWrite->close();
 				 MessageBox::Show("Exit!");
+				 Application::Exit();
 	}
+private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void displayBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
