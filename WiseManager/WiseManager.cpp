@@ -844,6 +844,8 @@ string WiseManager::searchTask(string infoToBeSearched){
 }
 
 string WiseManager::deleteTask(string infoToBeDeleted){
+	string rubbish;
+
 	if (infoToBeDeleted == ""){
 		return MESSAGE_NOT_DELETED;
 	}
@@ -867,6 +869,7 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 		int lineToBeDeleted;
 		cin >> lineToBeDeleted;
 		cout << lineToBeDeleted;
+		getline(cin, rubbish);
 		Task* taskToDelete = _tail->next;
 		while (tasksWithInformation[lineToBeDeleted - 1]->details != taskToDelete->details){
 			taskToDelete = taskToDelete->next;
@@ -876,6 +879,7 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 		taskToDelete->next->prev = taskToDelete->prev;
 		delete taskToDelete;
 		taskToDelete = NULL;
+		_size--;
 		return MESSAGE_DELETED;
 	}
 	else{
