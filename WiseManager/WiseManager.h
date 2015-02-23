@@ -64,7 +64,7 @@ public:
 	bool isBuffer(string);
 	string standardiseDate(string);
 	string standardiseTime(string);
-	void displayTask();
+	string displayTask(string);
 	string displayAllTask();
 	string searchTask(string);
 	string getAllInfoOfOneTask(Task*);
