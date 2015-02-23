@@ -8,6 +8,11 @@ const string MESSAGE_ERROR = "Invalid input \n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised, please re-input \n";
+
+const string MESSAGE_DELETED = "The Task have been deleted successfully.";
+const string MESSAGE_NOT_DELETED = "The Task have been not been deleted successfully.";
+
+
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
 const int VIEW_TYPE = 3;
@@ -680,8 +685,10 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == currentDate) {
-				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				cout << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
 				counter++;
 			}
 			cur = cur->next;
@@ -697,8 +704,10 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->priority == extract) {
-				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				cout << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
 				counter++;
 			}
 			cur = cur->next;
@@ -712,8 +721,10 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == inputDate) {
-				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				cout << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details 
+					<< "[" << cur->time << "]" << endl;
 				counter++;
 			}
 			cur = cur->next;
@@ -746,7 +757,7 @@ bool WiseManager::compareStrings(string infoToBeSearched, string infoToBeChecked
 				posUnderChecking++;
 				startingPosOfInfo++;
 			}
-			if (startingPosOfInfo == infoToBeSearched.length()){
+			if (startingPosOfInfo == infoToBeSearched.length() -2){
 				return true;
 			}
 		}
@@ -791,8 +802,10 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 
 string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
 	ostringstream oss;
-	oss << "Details: " << thisTask->details << endl << "Date: " << thisTask->date << endl <<
-		"Time: " << thisTask->time << endl << "Priority: " << thisTask->priority << endl;
+	oss << "Details: " << thisTask->details << endl 
+		<< "Date: " << thisTask->date << endl 
+		<< "Time: " << thisTask->time << endl 
+		<< "Priority: " << thisTask->priority << endl;
 	return oss.str();
 }
 
@@ -823,4 +836,8 @@ string WiseManager::searchTask(string infoToBeSearched){
 		return MESSAGE_INFO_UNFOUND;
 	}
 
+}
+
+string WiseManager::deleteTask(string infoToBeDeleted){
+	return MESSAGE_INFO_UNFOUND;
 }

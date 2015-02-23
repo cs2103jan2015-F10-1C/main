@@ -67,10 +67,12 @@ public:
 	string displayTask(string);
 	string displayAllTask();
 	string searchTask(string);
+	string deleteTask(string);
 	string getAllInfoOfOneTask(Task*);
 	bool haveThisInfo(string, Task*);
 	bool compareStrings(string, string);
 	void transferData(ofstream*, ifstream*);
+
 
 	WiseManager();
 	~WiseManager();
