@@ -4,6 +4,7 @@ using namespace std;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully\n";
 const string MESSAGE_ERROR = "Invalid input \n";
+const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
 
 WiseManager::WiseManager() {
 
@@ -67,8 +68,9 @@ bool WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
-		cout << displayAllTask()<<endl;
-		return false;;
+		displayTask(remainingCommand);
+		//cout << displayAllTask()<<endl;
+		return false;
 	case EXIT:
 		return true;
 	case ERROR:
@@ -603,19 +605,22 @@ string WiseManager::displayAllTask(){
 }
 
 
-void WiseManager::displayTask() {
+void WiseManager::displayTask(string displayType) {
 
-	/*===================================================
+	/*==================================================================
 	Display Task used to, well obviously, display, task.
 	it can take in the following inputs, or none:
-	today - to display tasks only scheduled for today.
+	
+	today or empty string - to display tasks only scheduled for today.
 	e.g. display today
+	
 	specific date - to display task on a specific date.
 	e.g. display 3 march
 	display 3/3
+	
 	priority - display high / mid / low priority task.
 	e.g. display high priority, display mid priority
-	===================================================*/
+	=================================================================*/
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -628,9 +633,53 @@ void WiseManager::displayTask() {
 	int year = timeInfo->tm_year + 1900;
 	int wDay = timeInfo->tm_wday;
 
-	string displayType = ""; // to be used possibly for display priority/ display specific date
+	Task* cur = _tail->next;
+	int counter = 1;
+	char buffer[100];
 
-	getline(cin, displayType);
+	// just in case, change everything to lower case
+	for (int i = 0; i < displayType.size(); i++) {
+		displayType[i] = tolower(displayType[i]);
+	}
+
+	if (displayType == "today" || displayType == "") {
+		string currentDate = to_string(day) + "/" + to_string(month);
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == currentDate) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+		}
+	}
+
+	else if (displayType == "high priority" || displayType == "mid priority" || displayType == "low priority") {
+		string extract;
+		istringstream iss(displayType);
+		iss >> extract;
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->priority == extract) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+		}
+	}
+
+	else if (isDate1(displayType) || isDate2(displayType)) {
+		string inputDate = standardiseDate(displayType);
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == inputDate) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+		}
+	}
+
 
 }
 

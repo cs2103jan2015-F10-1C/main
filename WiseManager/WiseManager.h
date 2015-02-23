@@ -64,7 +64,7 @@ public:
 	bool isBuffer(string);
 	string standardiseDate(string);
 	string standardiseTime(string);
-	void displayTask();
+	void displayTask(string);
 	string displayAllTask();
 	void transferData(ofstream*, ifstream*);
 
