@@ -4,6 +4,7 @@ using namespace std;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully\n";
 const string MESSAGE_ERROR = "Invalid input \n";
+
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised, please re-input \n";
@@ -15,6 +16,9 @@ const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
 const int ERROR_TYPE = -1;
+
+const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
+
 
 WiseManager::WiseManager() {
 
@@ -58,18 +62,24 @@ void WiseManager::printMessage(string str) {
 
 void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite, int* commandType, string* outputMessage) {  // Still use return void instead of bool.
 	
-	istringstream iss(command);
-	string temp="", temp2="", remainingCommand="";
-	iss >> temp;
-	if (!iss.eof()){
-		iss >> remainingCommand;
+	string temp="", remainingCommand="";
+	int startOfCommand = command.find_first_not_of(" ", 0);
+	int endOfCommand = command.find_first_of(" ", startOfCommand);
+	if (endOfCommand < 0){
+		command = command.substr(startOfCommand);
+		remainingCommand = "";
 	}
-	while (!iss.eof()){
-		iss >> temp2;
-		remainingCommand = remainingCommand + " " + temp2;
+	else{
+		temp = command.substr(startOfCommand, endOfCommand - startOfCommand);
+		int startOfRemaining = command.find_first_not_of(" ", endOfCommand);
+		if (startOfRemaining < 0){
+			remainingCommand = "";
+		}
+		remainingCommand = command.substr(startOfRemaining);
+		command = temp;
 	}
-	command = temp;
-	Command_Type identifiedCommand = identifyCommand(command);
+
+	Command_Type identifiedCommand = identifyCommand(command); 
 	
 	switch (identifiedCommand) {
 
@@ -81,11 +91,11 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 	case DELETE:
 	case EDIT:
 	case DISPLAY:
-		*outputMessage = displayAllTask();
+		*outputMessage = displayTask(remainingCommand);
 		*commandType = DISPLAY_TYPE;
 		return;
 	case SEARCH:		
-		*outputMessage = searchTask(remainingCommand);
+		*outputMessage = searchTask(remainingCommand); cout << *outputMessage << endl;
 		*commandType = SEARCH_TYPE;
 		return;
 	case EXIT:
@@ -174,6 +184,8 @@ string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofst
 
 void WiseManager::splitString(string userInput, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 
+	(*dataBaseWrite) << userInput << endl;
+
 	istringstream iss(userInput);
 	string extract;
 	string buffer;
@@ -181,7 +193,6 @@ void WiseManager::splitString(string userInput, ifstream* dataBaseRead, ofstream
 	string date;
 	string time;
 	string priority;
-
 
 	while (iss) {
 
@@ -291,8 +302,6 @@ void WiseManager::splitString(string userInput, ifstream* dataBaseRead, ofstream
 	item->date = date;
 	item->time = time;
 	item->priority = priority;
-	string taskToBeSaved = item->details + " " + item->date + " " + item->time + " " + item->priority;
-	(*dataBaseWrite) << taskToBeSaved << endl;
 
 	if (_size == 0) {
 		_tail = item;
@@ -432,11 +441,11 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case already in standardised form
-		//	int found = -1;
-		//	found = extract.find('/');
-		//	if (found) {
-		//		return date;
-		//	}
+			int found = -1;
+			found = extract.find('/');
+			if (found > 0) {
+			return date;
+		}
 
 		// case today or tomorrow
 		for (int case1 = 0; case1 < 2; case1++) {
@@ -447,16 +456,16 @@ string WiseManager::standardiseDate(string date) {
 			}
 		}
 
-		/*		// case next / this
+		// case next / this
 		for (int case2 = 0; case2 < 2; case2++) {
-		if (extract == controls[case2]) {
-		if (case2 == 0) { // if next
-		day = day + 7;
+			if (extract == controls[case2]) {
+				if (case2 == 0) { // if next
+					day = day + 7;
+				}
+			// if this, do nothing
+			}
 		}
-		// if this, do nothing
-		}
-		}
-		*/
+
 		// case day of week
 		for (int case3 = 0; case3 < 7; case3++) {
 			if (extract == dayInWeek[case3]) {
@@ -575,7 +584,7 @@ string WiseManager::standardiseTime(string inputTime) {
 		}
 	}
 	else { // no end time found
-		hour_e = hour_s++; // create an hour long event
+		hour_e = hour_s + 1; // create an hour long event
 		min_e = min_s;
 	}
 
@@ -626,22 +635,26 @@ string WiseManager::displayAllTask(){
 }
 
 
-void WiseManager::displayTask() {
+string WiseManager::displayTask(string displayType) {
 
-	/*===================================================
+	/*==================================================================
 	Display Task used to, well obviously, display, task.
 	it can take in the following inputs, or none:
-	today - to display tasks only scheduled for today.
+	
+	today or empty string - to display tasks only scheduled for today.
 	e.g. display today
+	
 	specific date - to display task on a specific date.
 	e.g. display 3 march
 	display 3/3
+	
 	priority - display high / mid / low priority task.
 	e.g. display high priority, display mid priority
-	===================================================*/
+	=================================================================*/
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
+	ostringstream oss;
 
 	time(&rawTime);
 	localtime_s(timeInfo, &rawTime);
@@ -651,10 +664,63 @@ void WiseManager::displayTask() {
 	int year = timeInfo->tm_year + 1900;
 	int wDay = timeInfo->tm_wday;
 
-	string displayType = ""; // to be used possibly for display priority/ display specific date
+	Task* cur = _tail->next;
+	int counter = 1;
+	char buffer[100];
 
-	getline(cin, displayType);
+	// just in case, change everything to lower case
+	for (int i = 0; i < displayType.size(); i++) {
+		displayType[i] = tolower(displayType[i]);
+	}
+	
+	if (displayType == "today" || displayType == "") {
+		string currentDate = to_string(day) + "/" + to_string(month);
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
+		oss << buffer;
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == currentDate) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+			cur = cur->next;
+		}
+	}
 
+	else if (displayType == "high priority" || displayType == "mid priority" || displayType == "low priority") {
+		string extract;
+		istringstream iss(displayType);
+		iss >> extract;
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
+		oss << buffer;
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->priority == extract) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+			cur = cur->next;
+		}
+	}
+
+	else if (isDate1(displayType) || isDate2(displayType)) {
+		string inputDate = standardiseDate(displayType);
+		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
+		oss << buffer;
+		printMessage(buffer);
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == inputDate) {
+				cout << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				oss << counter << ". " << cur->details << "[" << cur->time << "]" << endl;
+				counter++;
+			}
+			cur = cur->next;
+		}
+	}
+
+	return oss.str();
 }
 
 void WiseManager::transferData(ofstream* dataDestination, ifstream* dataSource){
