@@ -409,11 +409,11 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case already in standardised form
-		//	int found = -1;
-		//	found = extract.find('/');
-		//	if (found) {
-		//		return date;
-		//	}
+			int found = -1;
+			found = extract.find('/');
+			if (found > 0) {
+			return date;
+		}
 
 		// case today or tomorrow
 		for (int case1 = 0; case1 < 2; case1++) {
@@ -424,16 +424,16 @@ string WiseManager::standardiseDate(string date) {
 			}
 		}
 
-		/*		// case next / this
+		// case next / this
 		for (int case2 = 0; case2 < 2; case2++) {
-		if (extract == controls[case2]) {
-		if (case2 == 0) { // if next
-		day = day + 7;
+			if (extract == controls[case2]) {
+				if (case2 == 0) { // if next
+					day = day + 7;
+				}
+			// if this, do nothing
+			}
 		}
-		// if this, do nothing
-		}
-		}
-		*/
+
 		// case day of week
 		for (int case3 = 0; case3 < 7; case3++) {
 			if (extract == dayInWeek[case3]) {
@@ -552,7 +552,7 @@ string WiseManager::standardiseTime(string inputTime) {
 		}
 	}
 	else { // no end time found
-		hour_e = hour_s++; // create an hour long event
+		hour_e = hour_s + 1; // create an hour long event
 		min_e = min_s;
 	}
 
