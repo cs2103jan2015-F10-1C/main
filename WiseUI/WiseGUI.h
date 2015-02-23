@@ -226,7 +226,6 @@ namespace WiseUI {
 				 newManager->transferData(dataBaseWrite, dataBaseRead);
 				 dataBaseRead->close();
 				 dataBaseWrite->close();
-				 MessageBox::Show("Exit!");
 				 Application::Exit();
 	}
 private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
