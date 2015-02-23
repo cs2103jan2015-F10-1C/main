@@ -847,7 +847,6 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 	if (infoToBeDeleted == ""){
 		return MESSAGE_NOT_DELETED;
 	}
-
 	bool canBeDeleted = false;
 	Task* currentTask = _tail->next;
 	vector<Task*> tasksWithInformation;
@@ -860,7 +859,6 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 	}
 
 	if (canBeDeleted){
-
 		vector<Task*>::iterator Iter = tasksWithInformation.begin();
 		cout << MESSAGE_TO_DELETE << endl;
 		for (int lineNumber = 1; Iter != tasksWithInformation.end(); Iter++, lineNumber++){
@@ -874,10 +872,8 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 			taskToDelete = taskToDelete->next;
 			cout << taskToDelete->details << endl;
 		}
-
-		taskToDelete->prev->next = taskToDelete->next;
+		taskToDelete->prev->next = taskToDelete->next; 
 		taskToDelete->next->prev = taskToDelete->prev;
-		//Error in this section of code
 		delete taskToDelete;
 		taskToDelete = NULL;
 		return MESSAGE_DELETED;
