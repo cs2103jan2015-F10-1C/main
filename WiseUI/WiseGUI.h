@@ -184,7 +184,7 @@ namespace WiseUI {
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
 
 					 System::String^ text = CmdLineBox->Text;
-					 string temp; 
+					 std::string temp; 
 					 ClrStringToStdString(temp, text);
 
 
