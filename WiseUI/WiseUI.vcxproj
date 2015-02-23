@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\NUS Undergraduate Studies\CS2103\Project\V0.1\WiseManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>::\WiseManager;D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\WiseManager\WiseManager;D:\NUS Undergraduate Studies\CS2103\Project\V0.1\WiseManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
