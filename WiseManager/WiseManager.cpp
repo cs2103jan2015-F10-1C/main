@@ -8,11 +8,12 @@ const string MESSAGE_ERROR = "Invalid input \n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised, please re-input \n";
-
+const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully.";
 const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your inputs.";
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
-
+const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
+const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
 
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
@@ -22,9 +23,6 @@ const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
 const int ERROR_TYPE = -1;
-
-const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
-
 
 WiseManager::WiseManager() {
 
@@ -99,12 +97,17 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 		*commandType = DELETE_TYPE;
 		return;
 	case EDIT:
+		*outputMessage = editTask(remainingCommand);
+		cout << *outputMessage << endl;
+		*commandType = EDIT_TYPE;
+		return;
 	case DISPLAY:
 		*outputMessage = displayTask(remainingCommand);
 		*commandType = DISPLAY_TYPE;
 		return;
 	case SEARCH:		
-		*outputMessage = searchTask(remainingCommand); cout << *outputMessage << endl;
+		*outputMessage = searchTask(remainingCommand); 
+		cout << *outputMessage << endl;
 		*commandType = SEARCH_TYPE;
 		return;
 	case EXIT:
@@ -177,12 +180,12 @@ days of week (mon - sun)
 
 =============================================================*/
 
-string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofstream* dataBaseWrit) {
+string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 
 	if (taskInformation.empty()) {
 		return MESSAGE_ERROR;
 	}
-	splitString(taskInformation, dataBaseRead, dataBaseWrit);
+	splitString(taskInformation, dataBaseRead, dataBaseWrite);
 	return MESSAGE_ADD;
 
 }
@@ -833,7 +836,7 @@ string WiseManager::searchTask(string infoToBeSearched){
 	if (infoIsFound){
 		ostringstream oss;
 		for (int j = 0; j < tasksHaveThisInfo.size(); j++){
-			oss << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
+			oss << j+1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
 		}
 		return oss.str();
 	}
@@ -886,4 +889,92 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 		return MESSAGE_NOT_DELETED;
 	}
 
+}
+
+string WiseManager::editTask(string keyword) {
+	vector<Task*> matchingTasks;
+	cout << showMatchingTasks(&matchingTasks, keyword) << endl;
+
+	cout << MESSAGE_TO_EDIT << endl;
+	int taskNum;
+	cin >> taskNum;
+
+	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
+	Task* currentTask = matchingTasks[taskNum - 1]; 
+	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
+	string change;
+	getline(cin, change); getline(cin, change); //get rid of the 'enter'
+
+	string category;
+	identifyChange(&category, &change);
+
+	if (category == "des"){
+		currentTask->details = change;
+	}
+	else if (category == "date"){
+		change = standardiseDate(change);
+		currentTask->date = change;
+	}
+	else if (category == "time"){
+		change = standardiseTime(change);
+		currentTask->time = change;
+	}
+	else if (category == "prior"){
+		currentTask->priority = change;
+	}
+	else {
+		return MESSAGE_ERROR;
+	}
+	
+	cout << "Updated specified task:" << endl;
+	return getAllInfoOfOneTask(currentTask);
+}
+
+void WiseManager::identifyChange(string* category, string* change)
+{
+	int start = (*change).find_first_not_of(" ", 0); 
+	int end = (*change).find_first_of(" ", start);	
+	if (end < 0){
+		*category = (*change).substr(start);
+		*change = "";
+	}
+	else{
+		string temp = *change; cout << temp << endl; 
+		*category = temp.substr(start, end - start);
+		int startOfChange = temp.find_first_not_of(" ", end);
+		if (startOfChange < 0){
+			*change = "";
+		}
+		*change = temp.substr(startOfChange);
+	}
+
+}
+string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoToBeSearched){
+	if (infoToBeSearched == ""){
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+
+	bool infoIsFound = false;
+	Task* currentTask = _tail->next;
+	
+	for (int i = 0; i < _size; i++){
+		if (haveThisInfo(infoToBeSearched, currentTask)){
+			infoIsFound = true;
+			(*matchingTasks).push_back(currentTask);
+		}
+		currentTask = currentTask->next;
+	}
+
+	if (infoIsFound){
+		ostringstream oss;
+		vector<Task*>::iterator browse = (*matchingTasks).begin();
+		for (int j = 0; j < matchingTasks->size(); j++){
+			 oss << j + 1 << "." << getAllInfoOfOneTask(*browse) << endl;
+			 browse++;
+		}
+		return oss.str();
+	}
+	else{
+		return MESSAGE_INFO_UNFOUND;
+	}
 }

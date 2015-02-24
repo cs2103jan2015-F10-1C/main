@@ -68,6 +68,9 @@ public:
 	string displayAllTask();
 	string searchTask(string);
 	string deleteTask(string);
+	string editTask(string);
+	string showMatchingTasks(vector<Task*>*, string);
+	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);
 	bool haveThisInfo(string, Task*);
 	bool compareStrings(string, string);
