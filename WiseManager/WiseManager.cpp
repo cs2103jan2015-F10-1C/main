@@ -107,7 +107,6 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 		return;
 	case SEARCH:		
 		*outputMessage = searchTask(remainingCommand); 
-		cout << *outputMessage << endl;
 		*commandType = SEARCH_TYPE;
 		return;
 	case EXIT:
@@ -900,34 +899,52 @@ string WiseManager::editTask(string keyword) {
 	cin >> taskNum;
 
 	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
-	Task* currentTask = matchingTasks[taskNum - 1]; 
+	Task* currentTask = matchingTasks[taskNum - 1];
+	Task* taskPositionInList = _tail->next;
+	bool changeIsDone = false;
+
 	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
-	string change;
-	getline(cin, change); getline(cin, change); //get rid of the 'enter'
+	string rubbish, change;
+	getline(cin, rubbish);  //get rid of the 'enter'
+	getline(cin, change);
 
 	string category;
 	identifyChange(&category, &change);
 
-	if (category == "des"){
-		currentTask->details = change;
+	for (int i = 0; i < _size && !changeIsDone; i++){
+		if (isSameTask(currentTask, taskPositionInList)){
+			if (category == "des"){
+				taskPositionInList->details = change;
+				changeIsDone = true;
+			}
+			else if (category == "date"){
+				change = standardiseDate(change);
+				taskPositionInList->date = change;
+				changeIsDone = true;
+			}
+			else if (category == "time"){
+				change = standardiseTime(change);
+				taskPositionInList->time = change;
+				changeIsDone = true;
+			}
+			else if (category == "prior"){
+				taskPositionInList->priority = change;
+				changeIsDone = true;
+			}
+			else {
+				return MESSAGE_ERROR;
+			}
+		}
+		else{
+			taskPositionInList = taskPositionInList->next;
+		}
 	}
-	else if (category == "date"){
-		change = standardiseDate(change);
-		currentTask->date = change;
-	}
-	else if (category == "time"){
-		change = standardiseTime(change);
-		currentTask->time = change;
-	}
-	else if (category == "prior"){
-		currentTask->priority = change;
-	}
-	else {
-		return MESSAGE_ERROR;
-	}
-	
 	cout << "Updated specified task:" << endl;
-	return getAllInfoOfOneTask(currentTask);
+	return getAllInfoOfOneTask(taskPositionInList);
+}
+
+bool WiseManager::isSameTask(Task* A, Task* B){
+	return A->date == B->date && A->details == B->details && A->priority == B->priority && A->time == B->time;
 }
 
 void WiseManager::identifyChange(string* category, string* change)
@@ -939,13 +956,15 @@ void WiseManager::identifyChange(string* category, string* change)
 		*change = "";
 	}
 	else{
-		string temp = *change; cout << temp << endl; 
+		string temp = *change;
 		*category = temp.substr(start, end - start);
 		int startOfChange = temp.find_first_not_of(" ", end);
 		if (startOfChange < 0){
 			*change = "";
 		}
-		*change = temp.substr(startOfChange);
+		else{
+			*change = temp.substr(startOfChange);
+		}
 	}
 
 }

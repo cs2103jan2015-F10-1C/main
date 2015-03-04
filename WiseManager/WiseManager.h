@@ -70,6 +70,7 @@ public:
 	string deleteTask(string);
 	string editTask(string);
 	string showMatchingTasks(vector<Task*>*, string);
+	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);
 	bool haveThisInfo(string, Task*);
