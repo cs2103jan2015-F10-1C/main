@@ -68,6 +68,9 @@ void WiseManager::autoSave(ofstream* dataBaseWrite, string fileName){
 	dataBaseWrite->close();
 	dataBaseWrite->clear(); 
 	dataBaseWrite->open(fileName);
+	if (_size == 0){
+		return;
+	}
 	Task* currentTask = _tail->next;
 	for (int i = 0; i < _size; i++){
 		*dataBaseWrite << getAllInfoOfOneTask2(currentTask);
@@ -851,7 +854,7 @@ bool WiseManager::compareStrings(string infoToBeSearched, string infoToBeChecked
 				startingPosOfInfo++;
 			}
 
-			if (startingPosOfInfo == infoToBeSearched.length()){ //take note need to include the -2 of the string length to run in UI
+			if (startingPosOfInfo == infoToBeSearched.length()-2){ //take note need to include the -2 of the string length to run in UI
 				return true;
 			}
 		}

@@ -37,7 +37,7 @@ namespace WiseUI {
 			dataBaseWrite = new ofstream;
 			dataBaseRead->open("dataBase.txt");
 			dataBaseWrite->open("temp.txt");
-			newManager->initialise(dataBaseRead, dataBaseWrite);
+			newManager->initialise(dataBaseRead, dataBaseWrite, "temp.txt");
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -195,15 +195,13 @@ namespace WiseUI {
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage);
+					 newManager->executeCommand(temp, dataBaseWrite, commandType, outputMessage, "temp.txt");
 					 if (*commandType == EXIT_TYPE){
 						 Exit_Click(sender, e);
 					 }
-					 if (*commandType == SEARCH_TYPE){
-						 String^ feedback = gcnew String(outputMessage->c_str());
-						 feedbackBox->Text = feedback;
-					 }
-					 if (*commandType == DISPLAY_TYPE){
+					 else if (*commandType == SEARCH_TYPE || *commandType == ADD_TYPE || *commandType == DELETE_TYPE
+						 || *commandType == DISPLAY_TYPE || *commandType == EDIT_TYPE || *commandType == ERROR_TYPE
+						 || *commandType == VIEW_TYPE){
 						 String^ feedback = gcnew String(outputMessage->c_str());
 						 feedbackBox->Text = feedback;
 					 }
