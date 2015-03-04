@@ -51,11 +51,15 @@ private:
 
 public:
 	// include members here
-	void executeCommand(string, ifstream*, ofstream*, int*, string*);
+	void autoSave(ofstream*, string);
+	void transferDataToList(string);
+	int findPosition(string, string);
+	string removeSpace(string);
+	void executeCommand(string, ofstream*, int*, string*, string);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
-	string addTask(string, ifstream*, ofstream*);
-	void splitString(string, ifstream*, ofstream*);
+	string addTask(string);
+	void splitString(string);
 	bool isSpecialDetail(string);
 	bool isPriority(string);
 	bool isTime(string);
@@ -73,6 +77,7 @@ public:
 	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);
+	string getAllInfoOfOneTask2(Task*);
 	bool haveThisInfo(string, Task*);
 	bool compareStrings(string, string);
 	void transferData(ofstream*, ifstream*);
@@ -82,7 +87,7 @@ public:
 	~WiseManager();
 
 	// include initialiser here
-	void initialise(ifstream*, ofstream*);
-	void getStarted(ifstream*, ofstream*);
+	void initialise(ifstream*, ofstream*, string);
+	void getStarted(ifstream*, ofstream*, string);
 };
 

@@ -34,17 +34,17 @@ WiseManager::WiseManager() {
 WiseManager::~WiseManager(void) {
 };
 
-void WiseManager::initialise(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+void WiseManager::initialise(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName) {
 	string taskLine;
 
 	while (getline(*dataBaseRead, taskLine)){
-		addTask(taskLine, dataBaseRead, dataBaseWrite);
+		transferDataToList(taskLine);
 	}
-
+	autoSave(dataBaseWrite, fileName);
 	return;
 }
 
-void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName) {
 
 	cout << MESSAGE_WELCOME;
 
@@ -52,19 +52,103 @@ void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite) {
 	int* commandType = new int;
 	string* outputMessage = new string("");
 
-	while (true) {
+	while (*commandType != EXIT_TYPE) {
 		cout << "command: ";
 		getline(cin, command);
-		executeCommand(command, dataBaseRead, dataBaseWrite, commandType, outputMessage);
+		executeCommand(command, dataBaseWrite, commandType, outputMessage, fileName);
 	}
-
+	return;
 }
 
 void WiseManager::printMessage(string str) {
 	cout << str << endl;
 }
 
-void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite, int* commandType, string* outputMessage) {  // Still use return void instead of bool.
+void WiseManager::autoSave(ofstream* dataBaseWrite, string fileName){
+	dataBaseWrite->close();
+	dataBaseWrite->clear(); 
+	dataBaseWrite->open(fileName);
+	Task* currentTask = _tail->next;
+	for (int i = 0; i < _size; i++){
+		*dataBaseWrite << getAllInfoOfOneTask2(currentTask);
+		currentTask = currentTask->next;
+	}
+	return;
+}
+
+void WiseManager::transferDataToList(string taskLine){
+	string detail = "Details: ";
+	string date = "Date: ";
+	string time = "Time: ";
+	string priority = "Priority: ";
+	int detailPosition = findPosition(detail, taskLine) + detail.size();
+	int datePosition = findPosition(date, taskLine) + date.size();
+	int timePosition = findPosition(time, taskLine) + time.size();
+	int priorityPosition = findPosition(priority, taskLine) + priority.size();
+
+	Task* item = new Task;
+	item->details = taskLine.substr(detailPosition, findPosition(date, taskLine) - detailPosition);
+	item->date = taskLine.substr(datePosition, findPosition(time, taskLine) - datePosition);
+	item->time = taskLine.substr(timePosition, findPosition(priority, taskLine) - timePosition);
+	item->priority = taskLine.substr(priorityPosition);
+
+	item->details = removeSpace(item->details);
+	item->date = removeSpace(item->date);
+	item->time = removeSpace(item->time);
+	item->priority = removeSpace(item->priority);
+
+	if (_size == 0) {
+		_tail = item;
+		_tail->next = item;
+		_tail->prev = item; 
+		_size++;
+	}
+	else if (_size > 0) {
+		item->next = _tail->next;
+		_tail->next->prev = item;
+		_tail->next = item;
+		item->prev = _tail;
+		_tail = item;
+		_size++;
+	} 
+	return;
+}
+
+string WiseManager::removeSpace(string A){
+	if (A == ""){
+		return "";
+	}
+	else{
+		A.erase(0, A.find_first_not_of(" "));
+		A.erase(A.find_last_not_of(" ") + 1);
+		return A;
+	}
+}
+
+int WiseManager::findPosition(string target, string container){
+	if (target.length()>container.length()){
+		return -1;
+	}
+	else{
+		size_t startingPosOfTarget, startingPosOfContainer, posUnderChecking;
+		for (startingPosOfContainer = 0; startingPosOfContainer<container.length(); startingPosOfContainer++){
+			startingPosOfTarget = 0;
+			posUnderChecking = startingPosOfContainer;
+			while (posUnderChecking<container.length() &&
+				container[posUnderChecking] == target[startingPosOfTarget]){
+				posUnderChecking++;
+				startingPosOfTarget++;
+			}
+
+			if (startingPosOfTarget == target.length()){ //take note need to include the -2 of the string length to run in UI
+				return startingPosOfContainer;
+			}
+		}
+		return -1;
+	}
+}
+
+void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* commandType, string* outputMessage, string fileName) {  // Still use return void instead of bool.
 	
 	string temp="", remainingCommand="";
 	int startOfCommand = command.find_first_not_of(" ", 0);
@@ -88,28 +172,33 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 	switch (identifiedCommand) {
 
 	case ADD:
-		*outputMessage = addTask(remainingCommand, dataBaseRead, dataBaseWrite);
+		*outputMessage = addTask(remainingCommand);
 		*commandType = ADD_TYPE;
+		autoSave(dataBaseWrite, fileName);
 		return;
 	case VIEW:
 	case DELETE:
 		*outputMessage = deleteTask(remainingCommand);
 		*commandType = DELETE_TYPE;
+		autoSave(dataBaseWrite, fileName);
 		return;
 	case EDIT:
 		*outputMessage = editTask(remainingCommand);
 		cout << *outputMessage << endl;
 		*commandType = EDIT_TYPE;
+		autoSave(dataBaseWrite, fileName);
 		return;
 	case DISPLAY:
 		*outputMessage = displayTask(remainingCommand);
 		*commandType = DISPLAY_TYPE;
 		return;
 	case SEARCH:		
-		*outputMessage = searchTask(remainingCommand); 
+		*outputMessage = searchTask(remainingCommand);
+		cout << *outputMessage << endl;
 		*commandType = SEARCH_TYPE;
 		return;
 	case EXIT:
+		*commandType = EXIT_TYPE;
 		return;
 	case ERROR:
 		*outputMessage = MESSAGE_UNRECOGNISED_COMMAND_TYPE;
@@ -179,12 +268,12 @@ days of week (mon - sun)
 
 =============================================================*/
 
-string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
+string WiseManager::addTask(string taskInformation) {
 
 	if (taskInformation.empty()) {
 		return MESSAGE_ERROR;
 	}
-	splitString(taskInformation, dataBaseRead, dataBaseWrite);
+	splitString(taskInformation);
 	return MESSAGE_ADD;
 
 }
@@ -193,9 +282,7 @@ string WiseManager::addTask(string taskInformation, ifstream* dataBaseRead, ofst
 // identify each word to correctly sort it out to it's
 // proper component in task struct.
 
-void WiseManager::splitString(string userInput, ifstream* dataBaseRead, ofstream* dataBaseWrite) {
-
-	(*dataBaseWrite) << userInput << endl;
+void WiseManager::splitString(string userInput) {
 
 	istringstream iss(userInput);
 	string extract;
@@ -816,6 +903,15 @@ string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function return
 	return oss.str();
 }
 
+string WiseManager::getAllInfoOfOneTask2(Task* thisTask){
+	ostringstream oss;
+	oss << "Details: " << thisTask->details 
+		<< " Date: " << thisTask->date 
+		<< " Time: " << thisTask->time 
+		<< " Priority: " << thisTask->priority << endl;
+	return oss.str();
+}
+
 string WiseManager::searchTask(string infoToBeSearched){
 	if (infoToBeSearched == ""){
 		return MESSAGE_NO_INFO_GIVEN;
@@ -881,7 +977,7 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 		taskToDelete->next->prev = taskToDelete->prev;
 		delete taskToDelete;
 		taskToDelete = NULL;
-		_size--;
+		_size--; 
 		return MESSAGE_DELETED;
 	}
 	else{

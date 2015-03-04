@@ -22,8 +22,8 @@ int main(void) {
 		getline(cin, dataBaseFileName);
 		detaBaseRead->open(dataBaseFileName);
 		detaBaseWrite->open("temp.txt"); 
-		toDo.initialise(detaBaseRead, detaBaseWrite);
-		toDo.getStarted(detaBaseRead, detaBaseWrite);
+		toDo.initialise(detaBaseRead, detaBaseWrite, "temp.txt");
+		toDo.getStarted(detaBaseRead, detaBaseWrite, "temp.txt");
 		detaBaseRead->close();
 		detaBaseWrite->close();
 
@@ -37,7 +37,7 @@ int main(void) {
 		cout << "Please enter a database filename for creation: ";
 		getline(cin, dataBaseFileName);
 		detaBaseWrite->open(dataBaseFileName);
-		toDo.getStarted(detaBaseRead, detaBaseWrite);
+		toDo.getStarted(detaBaseRead, detaBaseWrite, dataBaseFileName);
 		detaBaseWrite->close();
 	}
 
