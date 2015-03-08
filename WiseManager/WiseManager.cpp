@@ -728,8 +728,8 @@ string WiseManager::displayAllTask(){
 	ostringstream oss;
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
-		oss << i << ". Details: " << currentPosition->details << endl << "Date: " << currentPosition->date << endl <<
-			"Time: "<<currentPosition->time << endl<<"Priority: " << currentPosition->priority << endl;
+		oss << i << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
+			"Time: " << currentPosition->time << "\r\n" << "Priority: " << currentPosition->priority << "\r\n";
 		currentPosition = currentPosition->next;
 	}
 	return oss.str();
@@ -784,7 +784,7 @@ string WiseManager::displayTask(string displayType) {
 				cout << counter << ". " << cur->details 
 					<< "[" << cur->time << "]" << endl;
 				oss << counter << ". " << cur->details 
-					<< "[" << cur->time << "]" << endl;
+					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
 			cur = cur->next;
@@ -803,7 +803,7 @@ string WiseManager::displayTask(string displayType) {
 				cout << counter << ". " << cur->details 
 					<< "[" << cur->time << "]" << endl;
 				oss << counter << ". " << cur->details 
-					<< "[" << cur->time << "]" << endl;
+					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
 			cur = cur->next;
@@ -820,7 +820,7 @@ string WiseManager::displayTask(string displayType) {
 				cout << counter << ". " << cur->details 
 					<< "[" << cur->time << "]" << endl;
 				oss << counter << ". " << cur->details 
-					<< "[" << cur->time << "]" << endl;
+					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
 			cur = cur->next;
@@ -899,10 +899,10 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 
 string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
 	ostringstream oss;
-	oss << "Details: " << thisTask->details << endl 
-		<< "Date: " << thisTask->date << endl 
-		<< "Time: " << thisTask->time << endl 
-		<< "Priority: " << thisTask->priority << endl;
+	oss << "Details: " << thisTask->details << "\r\n" 
+		<< "Date: " << thisTask->date << "\r\n" 
+		<< "Time: " << thisTask->time << "\r\n" 
+		<< "Priority: " << thisTask->priority << "\r\n";
 	return oss.str();
 }
 
@@ -911,7 +911,7 @@ string WiseManager::getAllInfoOfOneTask2(Task* thisTask){
 	oss << "Details: " << thisTask->details 
 		<< " Date: " << thisTask->date 
 		<< " Time: " << thisTask->time 
-		<< " Priority: " << thisTask->priority << endl;
+		<< " Priority: " << thisTask->priority << "\r\n";
 	return oss.str();
 }
 
@@ -1087,7 +1087,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 		ostringstream oss;
 		vector<Task*>::iterator browse = (*matchingTasks).begin();
 		for (int j = 0; j < matchingTasks->size(); j++){
-			 oss << j + 1 << "." << getAllInfoOfOneTask(*browse) << endl;
+			oss << j + 1 << "." << getAllInfoOfOneTask(*browse) << "\r\n";
 			 browse++;
 		}
 		return oss.str();
