@@ -95,6 +95,7 @@ public:
 	string getTodayDate();
 	string sortTasksByDate();
 	string sortTasksPriority();
+	string getUnboundedTasks();
 
 
 	WiseManager();

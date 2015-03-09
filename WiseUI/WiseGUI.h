@@ -249,6 +249,11 @@ namespace WiseUI {
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
+				 else if (selection == "Display Unbounded Tasks"){
+					 string temp = newManager->getUnboundedTasks();
+					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+					 displayBox->Text = tasksToBeDisplayed;
+				 }
 				 
 				 }
 	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {

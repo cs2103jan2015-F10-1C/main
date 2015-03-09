@@ -1342,3 +1342,20 @@ string WiseManager::sortTasksPriority(){
 
 	return oss.str();
 }
+
+
+string WiseManager::getUnboundedTasks(){
+	Task* cur = _tail->next;
+	ostringstream oss;
+	int j = 1;
+
+	for (int i = 0; i < _size; i++){
+		if (cur->date == "unbounded event"){
+			oss << j << "." << getAllInfoOfOneTask(cur) << "\r\n";
+			j++;
+		}
+		cur = cur->next;
+	}
+
+	return oss.str();
+}
