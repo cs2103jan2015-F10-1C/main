@@ -738,7 +738,7 @@ string WiseManager::displayAllTask(){
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
 		oss << i << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
-			"Time: " << currentPosition->time << "\r\n" << "Priority: " << currentPosition->priority << "\r\n";
+			"Time: " << currentPosition->time << "\r\n" << "Priority: " << currentPosition->priority << "\r\n" << "\r\n";
 		currentPosition = currentPosition->next;
 	}
 	return oss.str();

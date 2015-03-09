@@ -126,17 +126,17 @@ namespace WiseUI {
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
 			this->dropdownBox->Name = L"dropdownBox";
-			this->dropdownBox->Size = System::Drawing::Size(157, 20);
+			this->dropdownBox->Size = System::Drawing::Size(232, 20);
 			this->dropdownBox->TabIndex = 3;
 			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
-			this->feedbackBox->Location = System::Drawing::Point(175, 38);
+			this->feedbackBox->Location = System::Drawing::Point(250, 38);
 			this->feedbackBox->Multiline = true;
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->feedbackBox->Size = System::Drawing::Size(453, 279);
+			this->feedbackBox->Size = System::Drawing::Size(378, 279);
 			this->feedbackBox->TabIndex = 4;
 			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
@@ -157,7 +157,7 @@ namespace WiseUI {
 			this->displayBox->Multiline = true;
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->displayBox->Size = System::Drawing::Size(157, 278);
+			this->displayBox->Size = System::Drawing::Size(232, 278);
 			this->displayBox->TabIndex = 7;
 			this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
 			// 
@@ -167,7 +167,7 @@ namespace WiseUI {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(175, 12);
+			this->textBox1->Location = System::Drawing::Point(250, 12);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(80, 21);
 			this->textBox1->TabIndex = 8;
