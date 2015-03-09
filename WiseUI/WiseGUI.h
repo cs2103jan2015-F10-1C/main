@@ -6,6 +6,7 @@
 #include<vector>
 #include <msclr\marshal_cppstd.h>
 
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
 const int VIEW_TYPE = 3;
@@ -39,6 +40,8 @@ namespace WiseUI {
 			dataBaseWrite->open("temp.txt");
 			newManager->initialise(dataBaseRead, dataBaseWrite, "temp.txt");
 			InitializeComponent();
+			String^ feedback = gcnew String(MESSAGE_WELCOME.c_str());
+			feedbackBox->Text = feedback;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -142,7 +145,6 @@ namespace WiseUI {
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->feedbackBox->Size = System::Drawing::Size(250, 279);
 			this->feedbackBox->TabIndex = 4;
-			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
 			// Exit
 			// 
@@ -163,7 +165,6 @@ namespace WiseUI {
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
 			this->displayBox->Size = System::Drawing::Size(360, 278);
 			this->displayBox->TabIndex = 7;
-			this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
 			// 
 			// Feedback
 			// 
@@ -201,6 +202,8 @@ namespace WiseUI {
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
+
+			
 		}
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
@@ -282,10 +285,6 @@ namespace WiseUI {
 				 dataBaseWrite->close();
 				 Application::Exit();
 	}
-private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void displayBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-}
 
 };
 }
