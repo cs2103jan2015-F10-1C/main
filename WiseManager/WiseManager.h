@@ -50,23 +50,27 @@ private:
 	};
 
 	enum Command_Type{
-		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR
+		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR, DIRECTORY
 	};
 
 	// include any global variables required here
 
 	int _size;
 	Task* _tail;
+	string _savingDirectory;
 
 public:
 	// include members here
+	string getFileDirectory(string);
+	void setFileDirectory(string, string);
 	void autoSave(ofstream*, string);
 	void transferDataToList(string);
 	int findPosition(string, string);
 	string removeSpace(string);
-	void executeCommand(string, ofstream*, int*, string*, string);
+	void executeCommand(string, ifstream*, ofstream*, int*, string*, string, string&);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
+	string changeFileDirectory(string&, bool&);
 	string addTask(string);
 	void splitString(string);
 	bool isSpecialDetail(string);
@@ -103,6 +107,6 @@ public:
 
 	// include initialiser here
 	void initialise(ifstream*, ofstream*, string);
-	void getStarted(ifstream*, ofstream*, string);
+	void getStarted(ifstream*, ofstream*, string, string);
 };
 

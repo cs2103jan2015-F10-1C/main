@@ -20,10 +20,11 @@ int main(void) {
 	if(determinator == "Y"){
 		cout << "Please enter your database filename: ";
 		getline(cin, dataBaseFileName);
+		toDo.setFileDirectory(dataBaseFileName, "fileNameStorage.txt");
 		detaBaseRead->open(dataBaseFileName);
 		detaBaseWrite->open("temp.txt"); 
 		toDo.initialise(detaBaseRead, detaBaseWrite, "temp.txt");
-		toDo.getStarted(detaBaseRead, detaBaseWrite, "temp.txt");
+		toDo.getStarted(detaBaseRead, detaBaseWrite, "temp.txt", "fileNameStorage.txt");
 		detaBaseRead->close();
 		detaBaseWrite->close();
 
@@ -36,8 +37,9 @@ int main(void) {
 	else if(determinator == "N"){
 		cout << "Please enter a database filename for creation: ";
 		getline(cin, dataBaseFileName);
+		toDo.setFileDirectory(dataBaseFileName, "fileNameStorage.txt");
 		detaBaseWrite->open(dataBaseFileName);
-		toDo.getStarted(detaBaseRead, detaBaseWrite, dataBaseFileName);
+		toDo.getStarted(detaBaseRead, detaBaseWrite, dataBaseFileName, "fileNameStorage.txt");
 		detaBaseWrite->close();
 	}
 

@@ -15,6 +15,8 @@ const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please 
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
 const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
 const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
+const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
+const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
 
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
@@ -23,6 +25,7 @@ const int EDIT_TYPE = 4;
 const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
+const int CHANGE_DIRECTORY_TYPE = 8;
 const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
@@ -45,7 +48,25 @@ void WiseManager::initialise(ifstream* dataBaseRead, ofstream* dataBaseWrite, st
 	return;
 }
 
-void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName) {
+void WiseManager::setFileDirectory(string fileLocation, string fileNameStorage){
+	_savingDirectory = fileLocation;
+	ofstream storage(fileNameStorage);
+	storage << _savingDirectory;
+	storage.close();
+
+	return;
+}
+
+string WiseManager::getFileDirectory(string fileNameStorage){
+	ifstream storage(fileNameStorage);
+	string fileDirectory;
+	getline(storage, fileDirectory);
+	storage.close();
+
+	return fileDirectory;
+}
+
+void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName, string fileNameStorage) {
 
 	cout << MESSAGE_WELCOME;
 
@@ -56,7 +77,7 @@ void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, st
 	while (*commandType != EXIT_TYPE) {
 		cout << "command: ";
 		getline(cin, command);
-		executeCommand(command, dataBaseWrite, commandType, outputMessage, fileName);
+		executeCommand(command, dataBaseRead, dataBaseWrite, commandType, outputMessage, fileName, getFileDirectory(fileNameStorage));
 	}
 	return;
 }
@@ -152,8 +173,9 @@ int WiseManager::findPosition(string target, string container){
 	}
 }
 
-void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* commandType, string* outputMessage, string fileName) {  // Still use return void instead of bool.
+void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite, int* commandType, string* outputMessage, string fileName, string &newDirectory) {  // Still use return void instead of bool.
 	
+	bool changeDirectory = false;
 	string temp="", remainingCommand="";
 	int startOfCommand = command.find_first_not_of(" ", 0);
 	int endOfCommand = command.find_first_of(" ", startOfCommand);
@@ -204,6 +226,13 @@ void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* c
 	case EXIT:
 		*commandType = EXIT_TYPE;
 		return;
+	case DIRECTORY:
+		*outputMessage = changeFileDirectory(remainingCommand, changeDirectory);
+		*commandType = CHANGE_DIRECTORY_TYPE;
+		if (changeDirectory){
+			newDirectory = remainingCommand;
+		}
+		return;
 	case ERROR:
 		*outputMessage = MESSAGE_UNRECOGNISED_COMMAND_TYPE;
 		*commandType = ERROR_TYPE;
@@ -247,6 +276,9 @@ WiseManager::Command_Type WiseManager::identifyCommand(string command) {
 	}
 	else if (command == "exit") {
 		return EXIT;
+	}
+	else if (command == "directory") {
+		return DIRECTORY;
 	}
 	else
 		return ERROR;
@@ -1097,6 +1129,17 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	else{
 		return MESSAGE_INFO_UNFOUND;
 	}
+}
+
+string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirectory){
+	if (newDirectory == ""){
+		return  MESSAGE_DIRECTORY_NOT_GIVEN;
+	}
+	newDirectory = newDirectory.substr(0, newDirectory.size() - 2);
+	setFileDirectory(newDirectory, "fileNameStorage.txt");
+	changeDirectory = true;
+
+	return MESSAGE_DIRECTORY_CHANGED;
 }
 
 void WiseManager::getFutureTasks(vector<Task*> &futureTasks){
