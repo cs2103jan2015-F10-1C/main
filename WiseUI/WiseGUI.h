@@ -6,6 +6,7 @@
 #include<vector>
 #include <msclr\marshal_cppstd.h>
 
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
 const int VIEW_TYPE = 3;
@@ -39,6 +40,8 @@ namespace WiseUI {
 			dataBaseWrite->open("temp.txt");
 			newManager->initialise(dataBaseRead, dataBaseWrite, "temp.txt");
 			InitializeComponent();
+			String^ feedback = gcnew String(MESSAGE_WELCOME.c_str());
+			feedbackBox->Text = feedback;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -76,8 +79,12 @@ namespace WiseUI {
 		ofstream* dataBaseWrite;
 
 	private: System::Windows::Forms::TextBox^  displayBox;
-	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
-	private: System::Windows::Forms::TextBox^  textBox1;
+	private: System::Windows::Forms::TextBox^  Feedback;
+	private: System::Windows::Forms::TextBox^  Command;
+
+
+
+
 
 		System::ComponentModel::Container ^components;
 
@@ -94,16 +101,16 @@ namespace WiseUI {
 			this->feedbackBox = (gcnew System::Windows::Forms::TextBox());
 			this->Exit = (gcnew System::Windows::Forms::Button());
 			this->displayBox = (gcnew System::Windows::Forms::TextBox());
-			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->Feedback = (gcnew System::Windows::Forms::TextBox());
+			this->Command = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// CmdLineBox
 			// 
-			this->CmdLineBox->Location = System::Drawing::Point(12, 322);
+			this->CmdLineBox->Location = System::Drawing::Point(83, 322);
 			this->CmdLineBox->Multiline = true;
 			this->CmdLineBox->Name = L"CmdLineBox";
-			this->CmdLineBox->Size = System::Drawing::Size(587, 21);
+			this->CmdLineBox->Size = System::Drawing::Size(516, 21);
 			this->CmdLineBox->TabIndex = 0;
 			this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 			// 
@@ -126,19 +133,18 @@ namespace WiseUI {
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
 			this->dropdownBox->Name = L"dropdownBox";
-			this->dropdownBox->Size = System::Drawing::Size(232, 20);
+			this->dropdownBox->Size = System::Drawing::Size(360, 20);
 			this->dropdownBox->TabIndex = 3;
 			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
-			this->feedbackBox->Location = System::Drawing::Point(250, 38);
+			this->feedbackBox->Location = System::Drawing::Point(378, 38);
 			this->feedbackBox->Multiline = true;
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->feedbackBox->Size = System::Drawing::Size(378, 279);
+			this->feedbackBox->Size = System::Drawing::Size(250, 279);
 			this->feedbackBox->TabIndex = 4;
-			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
 			// Exit
 			// 
@@ -157,28 +163,32 @@ namespace WiseUI {
 			this->displayBox->Multiline = true;
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->displayBox->Size = System::Drawing::Size(232, 278);
+			this->displayBox->Size = System::Drawing::Size(360, 278);
 			this->displayBox->TabIndex = 7;
-			this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
 			// 
-			// saveFileDialog1
+			// Feedback
 			// 
-			this->saveFileDialog1->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &WiseGUI::saveFileDialog1_FileOk);
+			this->Feedback->Location = System::Drawing::Point(378, 12);
+			this->Feedback->Name = L"Feedback";
+			this->Feedback->Size = System::Drawing::Size(80, 21);
+			this->Feedback->TabIndex = 8;
+			this->Feedback->Text = L"Feedback Box";
 			// 
-			// textBox1
+			// Command
 			// 
-			this->textBox1->Location = System::Drawing::Point(250, 12);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(80, 21);
-			this->textBox1->TabIndex = 8;
-			this->textBox1->Text = L"Feedback Box";
+			this->Command->Location = System::Drawing::Point(12, 322);
+			this->Command->Name = L"Command";
+			this->Command->Size = System::Drawing::Size(72, 21);
+			this->Command->TabIndex = 9;
+			this->Command->Text = L"Command: //";
 			// 
 			// WiseGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(721, 352);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->Command);
+			this->Controls->Add(this->Feedback);
 			this->Controls->Add(this->displayBox);
 			this->Controls->Add(this->Exit);
 			this->Controls->Add(this->feedbackBox);
@@ -192,6 +202,8 @@ namespace WiseUI {
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
+
+			
 		}
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
@@ -223,6 +235,13 @@ namespace WiseUI {
 						 || *commandType == VIEW_TYPE){
 						 String^ feedback = gcnew String(outputMessage->c_str());
 						 feedbackBox->Text = feedback;
+					 }
+
+					 if (*commandType == ADD_TYPE || *commandType == DELETE_TYPE || *commandType == EDIT_TYPE){
+						 string temp = newManager->displayAllTask();
+						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+						 dropdownBox->SelectedItem = "Display All Tasks";
+						 displayBox->Text = tasksToBeDisplayed;
 					 }
 				 }
 				 return;
@@ -266,11 +285,6 @@ namespace WiseUI {
 				 dataBaseWrite->close();
 				 Application::Exit();
 	}
-private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void displayBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void saveFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-}
+
 };
 }

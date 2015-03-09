@@ -2,13 +2,14 @@
 using namespace std;
 
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
-const string MESSAGE_ADD = "New task has been added successfully\n";
-const string MESSAGE_ERROR = "Invalid input \n";
+const string MESSAGE_ADD = "New task has been added successfully.\n";
+const string MESSAGE_ERROR = "Invalid input. \n";
 
-const string MESSAGE_INFO_UNFOUND = "This keyword is not found \n";
-const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched \n";
-const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised, please re-input \n";
+const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \n";
+const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched. \n";
+const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please re-input. \n";
 const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
+const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. Please re-input. \n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully.";
 const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your inputs.";
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
@@ -279,7 +280,7 @@ there should be no space between time and am/pm
 e.g. have dinner 5pm
 NOT have dinner 5 pm
 or
-have dinner 5:00
+have dinner 17:00
 
 acceptable dates:
 3/5 (dd/mm) -> 3 / 3 not acceptable
@@ -836,6 +837,9 @@ string WiseManager::displayTask(string displayType) {
 		}
 	}
 
+	else{
+		return MESSAGE_UNRECOGNISED_DISPLAY_TYPE;
+	}
 	return oss.str();
 }
 
