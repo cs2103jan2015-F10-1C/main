@@ -14,7 +14,10 @@ const int EDIT_TYPE = 4;
 const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
+const int HELP_TYPE = 8;
+const int CHANGE_DIRECTORY_TYPE = 9;
 const int ERROR_TYPE = -1;
+string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
 
 namespace WiseUI {
 
@@ -36,12 +39,17 @@ namespace WiseUI {
 			newManager = new WiseManager;
 			dataBaseRead = new ifstream;
 			dataBaseWrite = new ofstream;
-			dataBaseRead->open("dataBase.txt");
+
+			fileDirectory = newManager->getFileDirectory("fileNameStorage.txt");
+
+			dataBaseRead->open(fileDirectory);
 			dataBaseWrite->open("temp.txt");
 			newManager->initialise(dataBaseRead, dataBaseWrite, "temp.txt");
 			InitializeComponent();
 			String^ feedback = gcnew String(MESSAGE_WELCOME.c_str());
 			feedbackBox->Text = feedback;
+
+			SavingDirectoryBox->Text = gcnew String(fileDirectory.c_str());;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -81,6 +89,8 @@ namespace WiseUI {
 	private: System::Windows::Forms::TextBox^  displayBox;
 	private: System::Windows::Forms::TextBox^  Feedback;
 	private: System::Windows::Forms::TextBox^  Command;
+	private: System::Windows::Forms::TextBox^  SavingDirectory;
+	private: System::Windows::Forms::TextBox^  SavingDirectoryBox;
 
 
 
@@ -103,11 +113,13 @@ namespace WiseUI {
 			this->displayBox = (gcnew System::Windows::Forms::TextBox());
 			this->Feedback = (gcnew System::Windows::Forms::TextBox());
 			this->Command = (gcnew System::Windows::Forms::TextBox());
+			this->SavingDirectory = (gcnew System::Windows::Forms::TextBox());
+			this->SavingDirectoryBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
 			// CmdLineBox
 			// 
-			this->CmdLineBox->Location = System::Drawing::Point(83, 322);
+			this->CmdLineBox->Location = System::Drawing::Point(81, 418);
 			this->CmdLineBox->Multiline = true;
 			this->CmdLineBox->Name = L"CmdLineBox";
 			this->CmdLineBox->Size = System::Drawing::Size(516, 21);
@@ -116,7 +128,7 @@ namespace WiseUI {
 			// 
 			// Enter
 			// 
-			this->Enter->Location = System::Drawing::Point(634, 295);
+			this->Enter->Location = System::Drawing::Point(634, 417);
 			this->Enter->Name = L"Enter";
 			this->Enter->Size = System::Drawing::Size(75, 21);
 			this->Enter->TabIndex = 2;
@@ -133,23 +145,23 @@ namespace WiseUI {
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
 			this->dropdownBox->Name = L"dropdownBox";
-			this->dropdownBox->Size = System::Drawing::Size(360, 20);
+			this->dropdownBox->Size = System::Drawing::Size(376, 20);
 			this->dropdownBox->TabIndex = 3;
 			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
-			this->feedbackBox->Location = System::Drawing::Point(378, 38);
+			this->feedbackBox->Location = System::Drawing::Point(408, 38);
 			this->feedbackBox->Multiline = true;
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->feedbackBox->Size = System::Drawing::Size(250, 279);
+			this->feedbackBox->Size = System::Drawing::Size(413, 299);
 			this->feedbackBox->TabIndex = 4;
 			// 
 			// Exit
 			// 
 			this->Exit->AllowDrop = true;
-			this->Exit->Location = System::Drawing::Point(634, 322);
+			this->Exit->Location = System::Drawing::Point(746, 418);
 			this->Exit->Name = L"Exit";
 			this->Exit->Size = System::Drawing::Size(75, 21);
 			this->Exit->TabIndex = 6;
@@ -163,12 +175,12 @@ namespace WiseUI {
 			this->displayBox->Multiline = true;
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->displayBox->Size = System::Drawing::Size(360, 278);
+			this->displayBox->Size = System::Drawing::Size(376, 374);
 			this->displayBox->TabIndex = 7;
 			// 
 			// Feedback
 			// 
-			this->Feedback->Location = System::Drawing::Point(378, 12);
+			this->Feedback->Location = System::Drawing::Point(408, 12);
 			this->Feedback->Name = L"Feedback";
 			this->Feedback->Size = System::Drawing::Size(80, 21);
 			this->Feedback->TabIndex = 8;
@@ -176,17 +188,35 @@ namespace WiseUI {
 			// 
 			// Command
 			// 
-			this->Command->Location = System::Drawing::Point(12, 322);
+			this->Command->Location = System::Drawing::Point(12, 418);
 			this->Command->Name = L"Command";
 			this->Command->Size = System::Drawing::Size(72, 21);
 			this->Command->TabIndex = 9;
 			this->Command->Text = L"Command: //";
 			// 
+			// SavingDirectory
+			// 
+			this->SavingDirectory->Location = System::Drawing::Point(408, 343);
+			this->SavingDirectory->Name = L"SavingDirectory";
+			this->SavingDirectory->Size = System::Drawing::Size(123, 21);
+			this->SavingDirectory->TabIndex = 10;
+			this->SavingDirectory->Text = L"Current Saving File";
+			// 
+			// SavingDirectoryBox
+			// 
+			this->SavingDirectoryBox->Location = System::Drawing::Point(408, 370);
+			this->SavingDirectoryBox->Multiline = true;
+			this->SavingDirectoryBox->Name = L"SavingDirectoryBox";
+			this->SavingDirectoryBox->Size = System::Drawing::Size(413, 42);
+			this->SavingDirectoryBox->TabIndex = 11;
+			// 
 			// WiseGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(721, 352);
+			this->ClientSize = System::Drawing::Size(834, 451);
+			this->Controls->Add(this->SavingDirectoryBox);
+			this->Controls->Add(this->SavingDirectory);
 			this->Controls->Add(this->Command);
 			this->Controls->Add(this->Feedback);
 			this->Controls->Add(this->displayBox);
@@ -202,8 +232,6 @@ namespace WiseUI {
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
-
-			
 		}
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
@@ -226,17 +254,23 @@ namespace WiseUI {
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 newManager->executeCommand(temp, dataBaseWrite, commandType, outputMessage, "temp.txt");
+					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage, "temp.txt", fileDirectory);
 					 if (*commandType == EXIT_TYPE){
 						 Exit_Click(sender, e);
 					 }
 					 else if (*commandType == SEARCH_TYPE || *commandType == ADD_TYPE || *commandType == DELETE_TYPE
 						 || *commandType == DISPLAY_TYPE || *commandType == EDIT_TYPE || *commandType == ERROR_TYPE
-						 || *commandType == VIEW_TYPE){
+						 || *commandType == VIEW_TYPE || *commandType == HELP_TYPE){
 						 String^ feedback = gcnew String(outputMessage->c_str());
 						 feedbackBox->Text = feedback;
 					 }
-
+					 else if (*commandType == CHANGE_DIRECTORY_TYPE){
+						 String^ feedback = gcnew String(outputMessage->c_str());
+						 feedbackBox->Text = feedback;
+						 
+						 SavingDirectoryBox->Text = gcnew String(fileDirectory.c_str());
+					 }
+	
 					 if (*commandType == ADD_TYPE || *commandType == DELETE_TYPE || *commandType == EDIT_TYPE){
 						 string temp = newManager->displayAllTask();
 						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
@@ -279,7 +313,7 @@ namespace WiseUI {
 				 dataBaseRead->close();
 				 dataBaseWrite->close();
 				 dataBaseRead->open("temp.txt");
-				 dataBaseWrite->open("dataBase.txt");
+				 dataBaseWrite->open(fileDirectory);
 				 newManager->transferData(dataBaseWrite, dataBaseRead);
 				 dataBaseRead->close();
 				 dataBaseWrite->close();

@@ -15,6 +15,10 @@ const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please 
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
 const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
 const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
+
+const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
+const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
+
 const string MESSAGE_INVALID_HELP = "Desired command not detected. Please input the correct command that you need help in.";
 
 
@@ -27,6 +31,7 @@ const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
 const int HELP_TYPE = 8;
+const int CHANGE_DIRECTORY_TYPE = 9;
 const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
@@ -49,7 +54,25 @@ void WiseManager::initialise(ifstream* dataBaseRead, ofstream* dataBaseWrite, st
 	return;
 }
 
-void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName) {
+void WiseManager::setFileDirectory(string fileLocation, string fileNameStorage){
+	_savingDirectory = fileLocation;
+	ofstream storage(fileNameStorage);
+	storage << _savingDirectory;
+	storage.close();
+
+	return;
+}
+
+string WiseManager::getFileDirectory(string fileNameStorage){
+	ifstream storage(fileNameStorage);
+	string fileDirectory;
+	getline(storage, fileDirectory);
+	storage.close();
+
+	return fileDirectory;
+}
+
+void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, string fileName, string fileNameStorage) {
 
 	cout << MESSAGE_WELCOME;
 
@@ -60,7 +83,7 @@ void WiseManager::getStarted(ifstream* dataBaseRead, ofstream* dataBaseWrite, st
 	while (*commandType != EXIT_TYPE) {
 		cout << "command: ";
 		getline(cin, command);
-		executeCommand(command, dataBaseWrite, commandType, outputMessage, fileName);
+		executeCommand(command, dataBaseRead, dataBaseWrite, commandType, outputMessage, fileName, getFileDirectory(fileNameStorage));
 	}
 	return;
 }
@@ -71,7 +94,7 @@ void WiseManager::printMessage(string str) {
 
 void WiseManager::autoSave(ofstream* dataBaseWrite, string fileName){
 	dataBaseWrite->close();
-	dataBaseWrite->clear(); 
+	dataBaseWrite->clear();
 	dataBaseWrite->open(fileName);
 	if (_size == 0){
 		return;
@@ -108,7 +131,7 @@ void WiseManager::transferDataToList(string taskLine){
 	if (_size == 0) {
 		_tail = item;
 		_tail->next = item;
-		_tail->prev = item; 
+		_tail->prev = item;
 		_size++;
 	}
 	else if (_size > 0) {
@@ -118,7 +141,7 @@ void WiseManager::transferDataToList(string taskLine){
 		item->prev = _tail;
 		_tail = item;
 		_size++;
-	} 
+	}
 	return;
 }
 
@@ -156,8 +179,9 @@ int WiseManager::findPosition(string target, string container){
 	}
 }
 
-void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* commandType, string* outputMessage, string fileName) {  // Still use return void instead of bool.
+void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstream* dataBaseWrite, int* commandType, string* outputMessage, string fileName, string &newDirectory) {  // Still use return void instead of bool.
 	
+	bool changeDirectory = false;
 	string temp="", remainingCommand="";
 	int startOfCommand = command.find_first_not_of(" ", 0);
 	int endOfCommand = command.find_first_of(" ", startOfCommand);
@@ -208,7 +232,14 @@ void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* c
 	case EXIT:
 		*commandType = EXIT_TYPE;
 		return;
+	case DIRECTORY:
+		*outputMessage = changeFileDirectory(remainingCommand, changeDirectory);
+		*commandType = CHANGE_DIRECTORY_TYPE;
+		if (changeDirectory){
+			newDirectory = remainingCommand;
+		}
 	case HELP:
+		*outputMessage = help(remainingCommand);
 		*commandType = HELP_TYPE;
 		return;
 	case ERROR:
@@ -253,11 +284,14 @@ WiseManager::Command_Type WiseManager::identifyCommand(string command) {
 	else if (command == "search") {
 		return SEARCH;
 	}
-	else if (command == "help") {
-		return HELP;
-	}
 	else if (command == "exit") {
 		return EXIT;
+	}
+	else if (command == "directory") {
+		return DIRECTORY;
+	}
+	else if (command == "help") {
+		return HELP;
 	}
 	else
 		return ERROR;
@@ -624,9 +658,9 @@ string WiseManager::standardiseDate(string date) {
 		}
 
 		// case already in standardised form
-			int found = -1;
-			found = extract.find('/');
-			if (found > 0) {
+		int found = -1;
+		found = extract.find('/');
+		if (found > 0) {
 			return date;
 		}
 
@@ -645,7 +679,7 @@ string WiseManager::standardiseDate(string date) {
 				if (case2 == 0) { // if next
 					day = day + 7;
 				}
-			// if this, do nothing
+				// if this, do nothing
 			}
 		}
 
@@ -823,14 +857,14 @@ string WiseManager::displayTask(string displayType) {
 	/*==================================================================
 	Display Task used to, well obviously, display, task.
 	it can take in the following inputs, or none:
-	
+
 	today or empty string - to display tasks only scheduled for today.
 	e.g. display today
-	
+
 	specific date - to display task on a specific date.
 	e.g. display 3 march
 	display 3/3
-	
+
 	priority - display high / mid / low priority task.
 	e.g. display high priority, display mid priority
 	=================================================================*/
@@ -844,7 +878,7 @@ string WiseManager::displayTask(string displayType) {
 	for (int i = 0; i < displayType.size(); i++) {
 		displayType[i] = tolower(displayType[i]);
 	}
-	
+
 	if (displayType == "today" || displayType == "") {
 		string currentDate = getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
@@ -852,9 +886,9 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == currentDate) {
-				cout << counter << ". " << cur->details 
+				cout << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details 
+				oss << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
@@ -871,9 +905,9 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->priority == extract) {
-				cout << counter << ". " << cur->details 
+				cout << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details 
+				oss << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
@@ -888,9 +922,9 @@ string WiseManager::displayTask(string displayType) {
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == inputDate) {
-				cout << counter << ". " << cur->details 
+				cout << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << endl;
-				oss << counter << ". " << cur->details 
+				oss << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << "\r\n";
 				counter++;
 			}
@@ -928,7 +962,7 @@ bool WiseManager::compareStrings(string infoToBeSearched, string infoToBeChecked
 				startingPosOfInfo++;
 			}
 
-			if (startingPosOfInfo == infoToBeSearched.length()-2){ //take note need to include the -2 of the string length to run in UI
+			if (startingPosOfInfo == infoToBeSearched.length() - 2){ //take note need to include the -2 of the string length to run in UI
 				return true;
 			}
 		}
@@ -973,10 +1007,10 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 
 string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
 	ostringstream oss;
-	oss << "Index: " << thisTask->index << "\r\n"
-		<< "Details: " << thisTask->details << "\r\n" 
-		<< "Date: " << thisTask->date << "\r\n" 
-		<< "Time: " << thisTask->time << "\r\n" 
+		oss << "Index: " << thisTask->index << "\r\n"
+		<< "Details: " << thisTask->details << "\r\n"
+		<< "Date: " << thisTask->date << "\r\n"
+		<< "Time: " << thisTask->time << "\r\n"
 		<< "Priority: " << thisTask->priority << "\r\n";
 	return oss.str();
 }
@@ -1010,7 +1044,7 @@ string WiseManager::searchTask(string infoToBeSearched){
 	if (infoIsFound){
 		ostringstream oss;
 		for (int j = 0; j < tasksHaveThisInfo.size(); j++){
-			oss << j+1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
+			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
 		}
 		return oss.str();
 	}
@@ -1052,11 +1086,11 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 			taskToDelete = taskToDelete->next;
 			cout << taskToDelete->details << endl;
 		}
-		taskToDelete->prev->next = taskToDelete->next; 
+		taskToDelete->prev->next = taskToDelete->next;
 		taskToDelete->next->prev = taskToDelete->prev;
 		delete taskToDelete;
 		taskToDelete = NULL;
-		_size--; 
+		_size--;
 		return MESSAGE_DELETED;
 	}
 	else{
@@ -1124,8 +1158,8 @@ bool WiseManager::isSameTask(Task* A, Task* B){
 
 void WiseManager::identifyChange(string* category, string* change)
 {
-	int start = (*change).find_first_not_of(" ", 0); 
-	int end = (*change).find_first_of(" ", start);	
+	int start = (*change).find_first_not_of(" ", 0);
+	int end = (*change).find_first_of(" ", start);
 	if (end < 0){
 		*category = (*change).substr(start);
 		*change = "";
@@ -1150,7 +1184,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 
 	bool infoIsFound = false;
 	Task* currentTask = _tail->next;
-	
+
 	for (int i = 0; i < _size; i++){
 		if (haveThisInfo(infoToBeSearched, currentTask)){
 			infoIsFound = true;
@@ -1164,7 +1198,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 		vector<Task*>::iterator browse = (*matchingTasks).begin();
 		for (int j = 0; j < matchingTasks->size(); j++){
 			oss << j + 1 << "." << getAllInfoOfOneTask(*browse) << "\r\n";
-			 browse++;
+			browse++;
 		}
 		return oss.str();
 	}
@@ -1173,9 +1207,20 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	}
 }
 
+string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirectory){
+	if (newDirectory == ""){
+		return  MESSAGE_DIRECTORY_NOT_GIVEN;
+	}
+	newDirectory = newDirectory.substr(0, newDirectory.size() - 2);
+	setFileDirectory(newDirectory, "fileNameStorage.txt");
+	changeDirectory = true;
+
+	return MESSAGE_DIRECTORY_CHANGED;
+}
+
 void WiseManager::getFutureTasks(vector<Task*> &futureTasks){
 	Task* cur = _tail->next;
-	
+
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
 
@@ -1293,80 +1338,80 @@ string WiseManager::sortTasksByDate(){
 
 	vector<Task*> sortedFutureTasks;
 	if (jan.size() > 0){
-	std::sort(jan.begin(), jan.end(), compareTwoTasksByDay());
-	for (int i = 0; i < jan.size(); i++){
-	sortedFutureTasks.push_back(jan[i]);
+		std::sort(jan.begin(), jan.end(), compareTwoTasksByDay());
+		for (int i = 0; i < jan.size(); i++){
+			sortedFutureTasks.push_back(jan[i]);
+		}
 	}
-}
 	if (feb.size() > 0){
-	std::sort(feb.begin(), feb.end(), compareTwoTasksByDay());
-	for (int i = 0; i < feb.size(); i++){
-	sortedFutureTasks.push_back(feb[i]);
+		std::sort(feb.begin(), feb.end(), compareTwoTasksByDay());
+		for (int i = 0; i < feb.size(); i++){
+			sortedFutureTasks.push_back(feb[i]);
+		}
 	}
-}
 	if (mar.size() > 0){
-	std::sort(mar.begin(), mar.end(), compareTwoTasksByDay());
-	for (int i = 0; i < mar.size(); i++){
-	sortedFutureTasks.push_back(mar[i]);
+		std::sort(mar.begin(), mar.end(), compareTwoTasksByDay());
+		for (int i = 0; i < mar.size(); i++){
+			sortedFutureTasks.push_back(mar[i]);
+		}
 	}
-}
 	if (apr.size() > 0){
-	std::sort(apr.begin(), apr.end(), compareTwoTasksByDay());
-	for (int i = 0; i < apr.size(); i++){
-	sortedFutureTasks.push_back(apr[i]);
+		std::sort(apr.begin(), apr.end(), compareTwoTasksByDay());
+		for (int i = 0; i < apr.size(); i++){
+			sortedFutureTasks.push_back(apr[i]);
+		}
 	}
-}
 	if (may.size() > 0){
-	std::sort(may.begin(), may.end(), compareTwoTasksByDay());
-	for (int i = 0; i < may.size(); i++){
-	sortedFutureTasks.push_back(may[i]);
+		std::sort(may.begin(), may.end(), compareTwoTasksByDay());
+		for (int i = 0; i < may.size(); i++){
+			sortedFutureTasks.push_back(may[i]);
+		}
 	}
-}
 	if (jun.size() > 0){
-	std::sort(jun.begin(), jun.end(), compareTwoTasksByDay());
-	for (int i = 0; i < jun.size(); i++){
-	sortedFutureTasks.push_back(jun[i]);
+		std::sort(jun.begin(), jun.end(), compareTwoTasksByDay());
+		for (int i = 0; i < jun.size(); i++){
+			sortedFutureTasks.push_back(jun[i]);
+		}
 	}
-}
 	if (jul.size() > 0){
-	std::sort(jul.begin(), jul.end(), compareTwoTasksByDay());
-	for (int i = 0; i < jul.size(); i++){
-	sortedFutureTasks.push_back(jul[i]);
+		std::sort(jul.begin(), jul.end(), compareTwoTasksByDay());
+		for (int i = 0; i < jul.size(); i++){
+			sortedFutureTasks.push_back(jul[i]);
+		}
 	}
-}
 	if (aug.size() > 0){
-	std::sort(aug.begin(), aug.end(), compareTwoTasksByDay());
-	for (int i = 0; i < aug.size(); i++){
-	sortedFutureTasks.push_back(aug[i]);
+		std::sort(aug.begin(), aug.end(), compareTwoTasksByDay());
+		for (int i = 0; i < aug.size(); i++){
+			sortedFutureTasks.push_back(aug[i]);
+		}
 	}
-}
 	if (sep.size() > 0){
-	std::sort(sep.begin(), sep.end(), compareTwoTasksByDay());
-	for (int i = 0; i < sep.size(); i++){
-	sortedFutureTasks.push_back(sep[i]);
+		std::sort(sep.begin(), sep.end(), compareTwoTasksByDay());
+		for (int i = 0; i < sep.size(); i++){
+			sortedFutureTasks.push_back(sep[i]);
+		}
 	}
-}
 	if (oct.size() > 0){
-	std::sort(oct.begin(), oct.end(), compareTwoTasksByDay());
-	for (int i = 0; i < oct.size(); i++){
-	sortedFutureTasks.push_back(oct[i]);
+		std::sort(oct.begin(), oct.end(), compareTwoTasksByDay());
+		for (int i = 0; i < oct.size(); i++){
+			sortedFutureTasks.push_back(oct[i]);
+		}
 	}
-}
 	if (nov.size() > 0){
-	std::sort(nov.begin(), nov.end(), compareTwoTasksByDay());
-	for (int i = 0; i < nov.size(); i++){
-	sortedFutureTasks.push_back(nov[i]);
+		std::sort(nov.begin(), nov.end(), compareTwoTasksByDay());
+		for (int i = 0; i < nov.size(); i++){
+			sortedFutureTasks.push_back(nov[i]);
+		}
 	}
-}
 	if (dec.size() > 0){
-	std::sort(dec.begin(), dec.end(), compareTwoTasksByDay());
-	for (int i = 0; i < dec.size(); i++){
-	sortedFutureTasks.push_back(dec[i]);
+		std::sort(dec.begin(), dec.end(), compareTwoTasksByDay());
+		for (int i = 0; i < dec.size(); i++){
+			sortedFutureTasks.push_back(dec[i]);
+		}
 	}
-}
-	
+
 	for (int j = 0; j < sortedFutureTasks.size(); j++){
-	oss << j + 1 << "." << getAllInfoOfOneTask(sortedFutureTasks[j]) << "\r\n";
+		oss << j + 1 << "." << getAllInfoOfOneTask(sortedFutureTasks[j]) << "\r\n";
 	}
 
 	return oss.str();
@@ -1375,7 +1420,7 @@ string WiseManager::sortTasksByDate(){
 string WiseManager::sortTasksPriority(){
 	vector<Task*> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
 	ostringstream oss;
-	
+
 	getFutureTasks(futureTasks);
 
 	for (int i = 0; i <futureTasks.size(); i++){
@@ -1445,11 +1490,13 @@ string WiseManager::help(string desireCommand){
 	if (desireCommand == ""){
 		return MESSAGE_INVALID_HELP;
 	}
-	else if (desireCommand == "add"){
+
+	desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
+	if (desireCommand == "add"){
 
 		oss << "To use the add function, it should be input in the following format: "			<< "\r\n"
 			<< "add <details of the task> date time -priority		or" << "\r\n"
-			<< "add <details of the task> time date -priority		or" << "\r\n"
+			<< "add <details of the task> time date -priority		or" << "\r\n" << "\r\n"
 			<< "An example of a simple add task input will be: "		<< "\r\n"
 			<< "add do homework 3 march 5pm -high"						<< "\r\n"
 			<< "this means adding the task do homework on 3 march at 5pm with high priority"	<< "\r\n"
@@ -1467,12 +1514,11 @@ string WiseManager::help(string desireCommand){
 
 			<< "For the priority of the task, it can be varied according with inputs: "			<< "\r\n"
 			<< "-high represents task of high priority."										<< "\r\n"
-			<< "-med represents task of medium priority."										<< "\r\n"
+			<< "-mid represents task of medium priority."										<< "\r\n"
 			<< "-low represents task of low priority."											<< "\r\n"
-			<< "-high represents task of high priority."										<< "\r\n"
 			<< "\r\n"
 
-			<< "for details with conflicting terms such as certain days in a week and am / pm, user needs to include a quotation mark" << "\r\n"
+			<< "For details with conflicting terms such as certain days in a week and am / pm, user needs to include a quotation mark" << "\r\n"
 			<< "e.g.meet at \"taco tuesday\" or meet at \"cafe 3pm\" or \"high tea\""			<< "\r\n"
 			<< "this is to avoid creating a task on tuesday or at 3pm."							<< "\r\n";
 	}
@@ -1509,12 +1555,18 @@ string WiseManager::help(string desireCommand){
 	else if (desireCommand == "edit"){
 
 		oss << "To use the edit function, it should be input in the following format: "									<< "\r\n"
-			<< "edit <task index> <edit target> <edit informations"														<< "\r\n"
+			<< "edit <task index> <edit target> <edit informations>"														<< "\r\n"
 			<< "1. edit 1111 des physics homework"																		<< "\r\n"
 			<< "2. edit 1111 date 13 march"																				<< "\r\n"
 			<< "3. edit 1111 time 2pm"																					<< "\r\n"
 			<< "4. edit 1111 prior low" << "\r\n"
 			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
+			<< "\r\n";
+	}
+	else if (desireCommand == "directory"){
+		oss << "To use the edit function, it should be input in the following format: " << "\r\n"
+			<< "directory <new file directory>" << "\r\n"
+			<< "1. directory D:\\savefile.txt"
 			<< "\r\n";
 	}
 
