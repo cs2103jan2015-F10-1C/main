@@ -121,7 +121,7 @@ namespace WiseUI {
 			// 
 			this->dropdownBox->FormattingEnabled = true;
 			this->dropdownBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
-				L"Display All Tasks", L"Items to be done today",
+				L"Display All Tasks", L"Tasks to be done today",
 					L"Sort by Date", L"Sort by Priority", L"Display Unbounded Tasks"
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
@@ -234,6 +234,12 @@ namespace WiseUI {
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 					 }
+				 else if (selection == "Tasks to be done today"){
+					 string temp = newManager->getTodayTask();
+					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+					 displayBox->Text = tasksToBeDisplayed;
+				 }
+
 				 }
 	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
 				 dataBaseRead->close();

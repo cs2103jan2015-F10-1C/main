@@ -81,7 +81,8 @@ public:
 	bool haveThisInfo(string, Task*);
 	bool compareStrings(string, string);
 	void transferData(ofstream*, ifstream*);
-
+	string getTodayTask();
+	string getTodayDate();
 
 	WiseManager();
 	~WiseManager();

@@ -762,18 +762,7 @@ string WiseManager::displayTask(string displayType) {
 	e.g. display high priority, display mid priority
 	=================================================================*/
 
-	time_t rawTime;
-	struct tm * timeInfo = new struct tm;
 	ostringstream oss;
-
-	time(&rawTime);
-	localtime_s(timeInfo, &rawTime);
-
-	int day = timeInfo->tm_mday;
-	int month = timeInfo->tm_mon + 1;
-	int year = timeInfo->tm_year + 1900;
-	int wDay = timeInfo->tm_wday;
-
 	Task* cur = _tail->next;
 	int counter = 1;
 	char buffer[100];
@@ -784,7 +773,7 @@ string WiseManager::displayTask(string displayType) {
 	}
 	
 	if (displayType == "today" || displayType == "") {
-		string currentDate = to_string(day) + "/" + to_string(month);
+		string currentDate = getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
 		oss << buffer;
 		printMessage(buffer);
@@ -1104,4 +1093,36 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	else{
 		return MESSAGE_INFO_UNFOUND;
 	}
+}
+
+string WiseManager::getTodayDate(){
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int day = timeInfo->tm_mday;
+	int month = timeInfo->tm_mon + 1;
+	int year = timeInfo->tm_year + 1900;
+	int wDay = timeInfo->tm_wday;
+
+	string currentDate = to_string(day) + "/" + to_string(month);
+	return currentDate;
+}
+
+
+string WiseManager::getTodayTask(){
+	string currentDate = getTodayDate();
+	Task* cur = _tail->next;
+	ostringstream oss;
+
+	for (int i = 0; i < _size; i++){
+		if (cur->date == currentDate){
+			oss << getAllInfoOfOneTask(cur) << "\r\n";
+		}
+		cur = cur->next;
+	}
+
+	return oss.str();
 }
