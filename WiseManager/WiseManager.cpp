@@ -15,8 +15,14 @@ const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please 
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
 const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
 const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
+<<<<<<< HEAD
 const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
 const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
+=======
+const string MESSAGE_INVALID_HELP = "Desired command not detected. Please input the correct command that you need help in.";
+
+
+>>>>>>> fcc922c66265e2a4a5e9da35a3bfa40dcd3bb481
 
 const int ADD_TYPE = 1;
 const int DELETE_TYPE = 2;
@@ -25,7 +31,11 @@ const int EDIT_TYPE = 4;
 const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
+<<<<<<< HEAD
 const int CHANGE_DIRECTORY_TYPE = 8;
+=======
+const int HELP_TYPE = 8;
+>>>>>>> fcc922c66265e2a4a5e9da35a3bfa40dcd3bb481
 const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
@@ -226,17 +236,23 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 	case EXIT:
 		*commandType = EXIT_TYPE;
 		return;
+<<<<<<< HEAD
 	case DIRECTORY:
 		*outputMessage = changeFileDirectory(remainingCommand, changeDirectory);
 		*commandType = CHANGE_DIRECTORY_TYPE;
 		if (changeDirectory){
 			newDirectory = remainingCommand;
 		}
+=======
+	case HELP:
+		*commandType = HELP_TYPE;
+>>>>>>> fcc922c66265e2a4a5e9da35a3bfa40dcd3bb481
 		return;
 	case ERROR:
 		*outputMessage = MESSAGE_UNRECOGNISED_COMMAND_TYPE;
 		*commandType = ERROR_TYPE;
 		return;
+
 	}
 
 }
@@ -273,6 +289,9 @@ WiseManager::Command_Type WiseManager::identifyCommand(string command) {
 	}
 	else if (command == "search") {
 		return SEARCH;
+	}
+	else if (command == "help") {
+		return HELP;
 	}
 	else if (command == "exit") {
 		return EXIT;
@@ -1406,3 +1425,87 @@ string WiseManager::getUnboundedTasks(){
 
 	return oss.str();
 }
+
+string WiseManager::help(string desireCommand){
+
+	ostringstream oss;
+
+	if (desireCommand == ""){
+		return MESSAGE_INVALID_HELP;
+	}
+	else if (desireCommand == "add"){
+
+		oss << "To use the add function, it should be input in the following format: "			<< "\r\n"
+			<< "add <details of the task> date time -priority		or" << "\r\n"
+			<< "add <details of the task> time date -priority		or" << "\r\n"
+			<< "An example of a simple add task input will be: "		<< "\r\n"
+			<< "add do homework 3 march 5pm -high"						<< "\r\n"
+			<< "this means adding the task do homework on 3 march at 5pm with high priority"	<< "\r\n"
+			<< "\r\n"
+			<< "Possible flexicommands variations for adding a task will be: "					<< "\r\n"
+			<< "For the inclusion of time, indicate with :, am or pm."							<< "\r\n"
+			<< "there should be no space between time and am / pm"								<< "\r\n"
+			<< " e.g.have dinner 5pm"															<< "\r\n"
+			<< " The following inputs are wrong: have dinner 5 pm OR have dinner 5 : 00"		<< "\r\n"
+			<< "\r\n"
+
+			<< "For the inclusion of date, do note that the inputs are in (dd/mm)"				<< "\r\n"
+			<< "3 mar, 3 march, mar 3, march 3, today, tomorrow, days of week(monday - sunday)" << "\r\n"
+			<< "\r\n"
+
+			<< "For the priority of the task, it can be varied according with inputs: "			<< "\r\n"
+			<< "-high represents task of high priority."										<< "\r\n"
+			<< "-med represents task of medium priority."										<< "\r\n"
+			<< "-low represents task of low priority."											<< "\r\n"
+			<< "-high represents task of high priority."										<< "\r\n"
+			<< "\r\n"
+
+			<< "for details with conflicting terms such as certain days in a week and am / pm, user needs to include a quotation mark" << "\r\n"
+			<< "e.g.meet at \"taco tuesday\" or meet at \"cafe 3pm\" or \"high tea\""			<< "\r\n"
+			<< "this is to avoid creating a task on tuesday or at 3pm."							<< "\r\n";
+	}
+	else if (desireCommand == "display"){
+
+		oss << "To use the display function, it should be input in the following format: "	<< "\r\n"
+			<< "1. display"																	<< "\r\n"
+			<< "2. display today"															<< "\r\n"
+			<< "to display task that are scheduled only for today"							<< "\r\n"
+			<< "3. display tomorrow"														<< "\r\n"
+			<< "to display task that are scheduled only for tomorrow"						<< "\r\n"
+			<< "4. display 3 march"															<< "\r\n"
+			<< "5. display 3/3"																<< "\r\n"
+			<< "to display task that are scheduled only on a specific date"					<< "\r\n"
+			<< "5. display high"															<< "\r\n"
+			<< "to display task that are scheduled based on priority"						<< "\r\n"
+			<< "\r\n";
+	}
+	else if (desireCommand == "search"){
+
+		oss << "To use the search function, it should be input in the following format: "		<< "\r\n"
+			<< "search <task description>"														<< "\r\n"
+			<< "the function will then return the tasks with the keywords input by the user. "	<< "\r\n"
+			<< "please take note the the task indexes as they will be used for delete and edit purposes" << "\r\n"
+			<< "\r\n";
+	}
+	else if (desireCommand == "delete"){
+
+		oss << "To use the delete function, it should be input in the following format: "	<< "\r\n"
+			<< "delete <task index>"														<< "\r\n"
+			<< "the function will then delete the task with the index input by the user. "	<< "\r\n"
+			<< "\r\n";
+	}
+	else if (desireCommand == "edit"){
+
+		oss << "To use the edit function, it should be input in the following format: "									<< "\r\n"
+			<< "edit <task index> <edit target> <edit informations"														<< "\r\n"
+			<< "1. edit 1111 des physics homework"																		<< "\r\n"
+			<< "2. edit 1111 date 13 march"																				<< "\r\n"
+			<< "3. edit 1111 time 2pm"																					<< "\r\n"
+			<< "4. edit 1111 prior low" << "\r\n"
+			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
+			<< "\r\n";
+	}
+
+	return oss.str();
+}
+
