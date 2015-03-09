@@ -213,9 +213,13 @@ void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* c
 
 WiseManager::Command_Type WiseManager::identifyCommand(string command) {
 
-	for (size_t index = 0; index < command.length(); index++) {
+	int commandSize = command.length() - 2;  // Ignore the "/r/n" of the string.
+
+	for (size_t index = 0; index < commandSize; index++) {
 		command[index] = tolower(command[index]);
 	}
+
+	command = command.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
 
 	if (command == "add") {
 		return ADD;
