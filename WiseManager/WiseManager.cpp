@@ -269,7 +269,7 @@ there should be no space between time and am/pm
 e.g. have dinner 5pm
 NOT have dinner 5 pm
 or
-have dinner 5:00
+have dinner 17:00
 
 acceptable dates:
 3/5 (dd/mm) -> 3 / 3 not acceptable

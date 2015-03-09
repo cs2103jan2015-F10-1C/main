@@ -130,17 +130,17 @@ namespace WiseUI {
 			});
 			this->dropdownBox->Location = System::Drawing::Point(12, 11);
 			this->dropdownBox->Name = L"dropdownBox";
-			this->dropdownBox->Size = System::Drawing::Size(232, 20);
+			this->dropdownBox->Size = System::Drawing::Size(360, 20);
 			this->dropdownBox->TabIndex = 3;
 			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
-			this->feedbackBox->Location = System::Drawing::Point(250, 38);
+			this->feedbackBox->Location = System::Drawing::Point(378, 38);
 			this->feedbackBox->Multiline = true;
 			this->feedbackBox->Name = L"feedbackBox";
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->feedbackBox->Size = System::Drawing::Size(378, 279);
+			this->feedbackBox->Size = System::Drawing::Size(250, 279);
 			this->feedbackBox->TabIndex = 4;
 			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
@@ -161,13 +161,13 @@ namespace WiseUI {
 			this->displayBox->Multiline = true;
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->displayBox->Size = System::Drawing::Size(232, 278);
+			this->displayBox->Size = System::Drawing::Size(360, 278);
 			this->displayBox->TabIndex = 7;
 			this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
 			// 
 			// Feedback
 			// 
-			this->Feedback->Location = System::Drawing::Point(250, 12);
+			this->Feedback->Location = System::Drawing::Point(378, 12);
 			this->Feedback->Name = L"Feedback";
 			this->Feedback->Size = System::Drawing::Size(80, 21);
 			this->Feedback->TabIndex = 8;
@@ -180,7 +180,6 @@ namespace WiseUI {
 			this->Command->Size = System::Drawing::Size(72, 21);
 			this->Command->TabIndex = 9;
 			this->Command->Text = L"Command: //";
-			this->Command->TextChanged += gcnew System::EventHandler(this, &WiseGUI::textBox2_TextChanged);
 			// 
 			// WiseGUI
 			// 
@@ -233,6 +232,13 @@ namespace WiseUI {
 						 || *commandType == VIEW_TYPE){
 						 String^ feedback = gcnew String(outputMessage->c_str());
 						 feedbackBox->Text = feedback;
+					 }
+
+					 if (*commandType == ADD_TYPE || *commandType == DELETE_TYPE || *commandType == EDIT_TYPE){
+						 string temp = newManager->displayAllTask();
+						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+						 dropdownBox->SelectedItem = "Display All Tasks";
+						 displayBox->Text = tasksToBeDisplayed;
 					 }
 				 }
 				 return;
