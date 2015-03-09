@@ -50,11 +50,7 @@ private:
 	};
 
 	enum Command_Type{
-<<<<<<< HEAD
-		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR, DIRECTORY
-=======
-		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, HELP, ERROR
->>>>>>> fcc922c66265e2a4a5e9da35a3bfa40dcd3bb481
+		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR, DIRECTORY, HELP
 	};
 
 	// include any global variables required here
@@ -104,7 +100,7 @@ public:
 	string sortTasksByDate();
 	string sortTasksPriority();
 	string getUnboundedTasks();
-	string help(string desireCommand);
+	string help(string);
 
 
 	WiseManager();
@@ -114,4 +110,7 @@ public:
 	void initialise(ifstream*, ofstream*, string);
 	void getStarted(ifstream*, ofstream*, string, string);
 };
+
+
+
 
