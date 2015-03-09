@@ -1446,6 +1446,7 @@ string WiseManager::help(string desireCommand){
 			<< "1. edit 1111 des physics homework"																		<< "\r\n"
 			<< "2. edit 1111 date 13 march"																				<< "\r\n"
 			<< "3. edit 1111 time 2pm"																					<< "\r\n"
+			<< "4. edit 1111 prior low" << "\r\n"
 			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
 			<< "\r\n";
 	}
