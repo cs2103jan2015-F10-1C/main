@@ -315,6 +315,7 @@ void WiseManager::splitString(string userInput) {
 	string date;
 	string time;
 	string priority;
+	string index;
 
 	while (iss) {
 
@@ -419,11 +420,14 @@ void WiseManager::splitString(string userInput) {
 	date = standardiseDate(date);
 	time = standardiseTime(time);
 
+	index = getIndex(date);
+
 	Task* item = new Task;
 	item->details = details;
 	item->date = date;
 	item->time = time;
 	item->priority = priority;
+	item->index = index;
 
 	if (_size == 0) {
 		_tail = item;
@@ -439,6 +443,58 @@ void WiseManager::splitString(string userInput) {
 		_tail = item;
 		_size++;
 	}
+
+}
+
+string WiseManager::getIndex(string date) {
+
+	string defaultIndex = "0000";
+	string returnIndex = "";
+	int counter = 0;
+
+	
+	if (_size > 0) {
+		Task* cur = _tail->next;
+
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == date) {
+				counter++;
+			}
+			cur = cur->next;
+		}
+	}
+
+	// if task is unbounded, i.e. no date
+	if (date == "unbounded event") {
+		returnIndex = defaultIndex + to_string(counter);
+	}
+	else { // a date exists and should be in standard form i.e. 3/3
+
+		int pos = date.find('/');
+		string temp = "";
+
+		// assert pos
+		if (pos > 0) {
+			// extract day
+			temp = date.substr(0, pos);
+			if (temp.size() == 1) {
+				returnIndex = "0";
+			}
+			returnIndex = returnIndex + temp;
+
+			// extract month
+			temp = date.substr(pos + 1);
+			if (temp.size() == 1) {
+				returnIndex = returnIndex + "0";
+			}
+			returnIndex = returnIndex + temp;
+
+			// add in counter
+			returnIndex = returnIndex + to_string(counter);
+		}
+	}
+
+	return returnIndex;
 
 }
 
@@ -493,13 +549,18 @@ bool WiseManager::isDate1(string str) {
 bool WiseManager::isDate2(string str) {
 
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "monday", "tuesday", "wednesday", "thursday",
-		"friday", "saturday", "sunday", "/", "today", "tomorrow" };
+		"friday", "saturday", "sunday", "today", "tomorrow", "/" };
 	int pos = -1;
 
 	for (size_t i = 0; i < 17; i++) {
 		pos = str.find(dateKey[i]);
 		if (pos == 0) {
 			return true;
+		}
+		else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
+			if ((str[pos - 1] >= '0' && str[pos - 1] <= '9') && (str[pos + 1] >= '0' && str[pos + 1] <= '9')) {
+			return true;
+			}
 		}
 	}
 	return false;
@@ -749,7 +810,7 @@ string WiseManager::displayAllTask(){
 	ostringstream oss;
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
-		oss << i << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
+		oss << "[" << currentPosition->index << "]" << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
 			"Time: " << currentPosition->time << "\r\n" << "Priority: " << currentPosition->priority << "\r\n" << "\r\n";
 		currentPosition = currentPosition->next;
 	}
@@ -912,7 +973,8 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 
 string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
 	ostringstream oss;
-	oss << "Details: " << thisTask->details << "\r\n" 
+	oss << "Index: " << thisTask->index << "\r\n"
+		<< "Details: " << thisTask->details << "\r\n" 
 		<< "Date: " << thisTask->date << "\r\n" 
 		<< "Time: " << thisTask->time << "\r\n" 
 		<< "Priority: " << thisTask->priority << "\r\n";
@@ -921,7 +983,8 @@ string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function return
 
 string WiseManager::getAllInfoOfOneTask2(Task* thisTask){
 	ostringstream oss;
-	oss << "Details: " << thisTask->details 
+	oss << "Index: " << thisTask->index
+		<< " Details: " << thisTask->details 
 		<< " Date: " << thisTask->date 
 		<< " Time: " << thisTask->time 
 		<< " Priority: " << thisTask->priority << "\r\n";
