@@ -50,7 +50,7 @@ private:
 	};
 
 	enum Command_Type{
-		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR
+		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, HELP, ERROR
 	};
 
 	// include any global variables required here
@@ -96,6 +96,7 @@ public:
 	string sortTasksByDate();
 	string sortTasksPriority();
 	string getUnboundedTasks();
+	string help(string desireCommand);
 
 
 	WiseManager();
