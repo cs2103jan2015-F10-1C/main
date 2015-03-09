@@ -1095,6 +1095,41 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	}
 }
 
+void WiseManager::getFutureTasks(vector<Task*> &futureTasks){
+	Task* cur = _tail->next;
+	
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int dayNow = timeInfo->tm_mday;
+	int monthNow = timeInfo->tm_mon + 1;
+
+	for (int i = 0; i < _size; i++){
+		string curTaskDate = cur->date;
+		int posOfSlash = curTaskDate.find_first_of('/', 0);
+		string day = curTaskDate.substr(0, posOfSlash);
+		string month = curTaskDate.substr(posOfSlash + 1);
+		int dayInt = atoi(day.c_str());
+		int monthInt = atoi(month.c_str());
+		cur->day = dayInt;
+		cur->month = monthInt;
+		if (monthInt>monthNow){
+			futureTasks.push_back(cur);
+		}
+		else if (monthInt == monthNow && dayInt >= dayNow){
+			futureTasks.push_back(cur);
+		}
+		else{
+		}
+		cur = cur->next;
+	}
+
+	return;
+}
+
 string WiseManager::getTodayDate(){
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -1128,37 +1163,11 @@ string WiseManager::getTodayTask(){
 }
 
 string WiseManager::sortTasksByDate(){
-	Task* cur = _tail->next;
-	ostringstream oss;
+
 	vector<Task*> futureTasks;
-	time_t rawTime;
-	struct tm * timeInfo = new struct tm;
+	getFutureTasks(futureTasks);
 
-	time(&rawTime);
-	localtime_s(timeInfo, &rawTime);
-
-	int dayNow = timeInfo->tm_mday;
-	int monthNow = timeInfo->tm_mon + 1;
-
-	for (int i = 0; i < _size; i++){
-		string curTaskDate = cur->date;
-		int posOfSlash = curTaskDate.find_first_of('/', 0);
-		string day = curTaskDate.substr(0, posOfSlash);
-		string month = curTaskDate.substr(posOfSlash + 1);
-		int dayInt = atoi(day.c_str());
-		int monthInt = atoi(month.c_str());
-		cur->day = dayInt;
-		cur->month = monthInt;
-		if (monthInt>monthNow){
-			futureTasks.push_back(cur);
-		}
-		else if (monthInt == monthNow && dayInt >= dayNow){
-			futureTasks.push_back(cur);
-		}
-		else{
-		}
-		cur = cur->next;
-	}
+	ostringstream oss;
 
 	vector<Task*> jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
 	for (int i = 0; i < futureTasks.size(); i++){
@@ -1286,24 +1295,24 @@ string WiseManager::sortTasksByDate(){
 }
 
 string WiseManager::sortTasksPriority(){
-	vector<Task*> highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
+	vector<Task*> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
 	ostringstream oss;
-	Task* cur = _tail->next;
-	for (int i = 0; i < _size; i++){
-		if (cur->priority[0] == 'h'){
-			highPrior.push_back(cur);
+	
+	getFutureTasks(futureTasks);
+
+	for (int i = 0; i <futureTasks.size(); i++){
+		if (futureTasks[i]->priority[0] == 'h'){
+			highPrior.push_back(futureTasks[i]);
 		}
-		else if (cur->priority[0] == 'm'){
-			midPrior.push_back(cur);
+		else if (futureTasks[i]->priority[0] == 'm'){
+			midPrior.push_back(futureTasks[i]);
 		}
-		else if (cur->priority[0] == 'l'){
-			lowPrior.push_back(cur);
+		else if (futureTasks[i]->priority[0] == 'l'){
+			lowPrior.push_back(futureTasks[i]);
 		}
 		else{
-			unbounded.push_back(cur);
+			unbounded.push_back(futureTasks[i]);
 		}
-
-		cur = cur->next;
 	}
 
 	if (highPrior.size() > 0){

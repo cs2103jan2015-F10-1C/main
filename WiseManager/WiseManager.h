@@ -90,6 +90,7 @@ public:
 	bool haveThisInfo(string, Task*);
 	bool compareStrings(string, string);
 	void transferData(ofstream*, ifstream*);
+	void getFutureTasks(vector<Task*> &);
 	string getTodayTask();
 	string getTodayDate();
 	string sortTasksByDate();
