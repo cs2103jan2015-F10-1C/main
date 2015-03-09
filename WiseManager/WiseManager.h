@@ -93,6 +93,7 @@ public:
 	string getTodayTask();
 	string getTodayDate();
 	string sortTasksByDate();
+	string sortTasksPriority();
 
 
 	WiseManager();

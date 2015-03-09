@@ -1284,3 +1284,52 @@ string WiseManager::sortTasksByDate(){
 
 	return oss.str();
 }
+
+string WiseManager::sortTasksPriority(){
+	vector<Task*> highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
+	ostringstream oss;
+	Task* cur = _tail->next;
+	for (int i = 0; i < _size; i++){
+		if (cur->priority[0] == 'h'){
+			highPrior.push_back(cur);
+		}
+		else if (cur->priority[0] == 'm'){
+			midPrior.push_back(cur);
+		}
+		else if (cur->priority[0] == 'l'){
+			lowPrior.push_back(cur);
+		}
+		else{
+			unbounded.push_back(cur);
+		}
+
+		cur = cur->next;
+	}
+
+	if (highPrior.size() > 0){
+		for (int i = 0; i < highPrior.size(); i++){
+			sortedTasksByPrior.push_back(highPrior[i]);
+		}
+	}
+	if (midPrior.size() > 0){
+		for (int i = 0; i < midPrior.size(); i++){
+			sortedTasksByPrior.push_back(midPrior[i]);
+		}
+	}
+	if (lowPrior.size() > 0){
+		for (int i = 0; i < lowPrior.size(); i++){
+			sortedTasksByPrior.push_back(lowPrior[i]);
+		}
+	}
+	if (unbounded.size() > 0){
+		for (int i = 0; i < unbounded.size(); i++){
+			sortedTasksByPrior.push_back(unbounded[i]);
+		}
+	}
+
+	for (int j = 0; j < sortedTasksByPrior.size(); j++){
+		oss << j + 1 << "." << getAllInfoOfOneTask(sortedTasksByPrior[j]) << "\r\n";
+	}
+
+	return oss.str();
+}
