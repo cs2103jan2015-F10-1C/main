@@ -1126,3 +1126,161 @@ string WiseManager::getTodayTask(){
 
 	return oss.str();
 }
+
+string WiseManager::sortTasksByDate(){
+	Task* cur = _tail->next;
+	ostringstream oss;
+	vector<Task*> futureTasks;
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int dayNow = timeInfo->tm_mday;
+	int monthNow = timeInfo->tm_mon + 1;
+
+	for (int i = 0; i < _size; i++){
+		string curTaskDate = cur->date;
+		int posOfSlash = curTaskDate.find_first_of('/', 0);
+		string day = curTaskDate.substr(0, posOfSlash);
+		string month = curTaskDate.substr(posOfSlash + 1);
+		int dayInt = atoi(day.c_str());
+		int monthInt = atoi(month.c_str());
+		cur->day = dayInt;
+		cur->month = monthInt;
+		if (monthInt>monthNow){
+			futureTasks.push_back(cur);
+		}
+		else if (monthInt == monthNow && dayInt >= dayNow){
+			futureTasks.push_back(cur);
+		}
+		else{
+		}
+		cur = cur->next;
+	}
+
+	vector<Task*> jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
+	for (int i = 0; i < futureTasks.size(); i++){
+		switch (futureTasks[i]->month){
+		case 1:
+			jan.push_back(futureTasks[i]);
+			break;
+		case 2:
+			feb.push_back(futureTasks[i]);
+			break;
+		case 3:
+			mar.push_back(futureTasks[i]);
+			break;
+		case 4:
+			apr.push_back(futureTasks[i]);
+			break;
+		case 5:
+			may.push_back(futureTasks[i]);
+			break;
+		case 6:
+			jun.push_back(futureTasks[i]);
+			break;
+		case 7:
+			jul.push_back(futureTasks[i]);
+			break;
+		case 8:
+			aug.push_back(futureTasks[i]);
+			break;
+		case 9:
+			sep.push_back(futureTasks[i]);
+			break;
+		case 10:
+			oct.push_back(futureTasks[i]);
+			break;
+		case 11:
+			nov.push_back(futureTasks[i]);
+			break;
+		case 12:
+			dec.push_back(futureTasks[i]);
+			break;
+		default:
+			break;
+		}
+	}
+
+	vector<Task*> sortedFutureTasks;
+	if (jan.size() > 0){
+	std::sort(jan.begin(), jan.end(), compareTwoTasksByDay());
+	for (int i = 0; i < jan.size(); i++){
+	sortedFutureTasks.push_back(jan[i]);
+	}
+}
+	if (feb.size() > 0){
+	std::sort(feb.begin(), feb.end(), compareTwoTasksByDay());
+	for (int i = 0; i < feb.size(); i++){
+	sortedFutureTasks.push_back(feb[i]);
+	}
+}
+	if (mar.size() > 0){
+	std::sort(mar.begin(), mar.end(), compareTwoTasksByDay());
+	for (int i = 0; i < mar.size(); i++){
+	sortedFutureTasks.push_back(mar[i]);
+	}
+}
+	if (apr.size() > 0){
+	std::sort(apr.begin(), apr.end(), compareTwoTasksByDay());
+	for (int i = 0; i < apr.size(); i++){
+	sortedFutureTasks.push_back(apr[i]);
+	}
+}
+	if (may.size() > 0){
+	std::sort(may.begin(), may.end(), compareTwoTasksByDay());
+	for (int i = 0; i < may.size(); i++){
+	sortedFutureTasks.push_back(may[i]);
+	}
+}
+	if (jun.size() > 0){
+	std::sort(jun.begin(), jun.end(), compareTwoTasksByDay());
+	for (int i = 0; i < jun.size(); i++){
+	sortedFutureTasks.push_back(jun[i]);
+	}
+}
+	if (jul.size() > 0){
+	std::sort(jul.begin(), jul.end(), compareTwoTasksByDay());
+	for (int i = 0; i < jul.size(); i++){
+	sortedFutureTasks.push_back(jul[i]);
+	}
+}
+	if (aug.size() > 0){
+	std::sort(aug.begin(), aug.end(), compareTwoTasksByDay());
+	for (int i = 0; i < aug.size(); i++){
+	sortedFutureTasks.push_back(aug[i]);
+	}
+}
+	if (sep.size() > 0){
+	std::sort(sep.begin(), sep.end(), compareTwoTasksByDay());
+	for (int i = 0; i < sep.size(); i++){
+	sortedFutureTasks.push_back(sep[i]);
+	}
+}
+	if (oct.size() > 0){
+	std::sort(oct.begin(), oct.end(), compareTwoTasksByDay());
+	for (int i = 0; i < oct.size(); i++){
+	sortedFutureTasks.push_back(oct[i]);
+	}
+}
+	if (nov.size() > 0){
+	std::sort(nov.begin(), nov.end(), compareTwoTasksByDay());
+	for (int i = 0; i < nov.size(); i++){
+	sortedFutureTasks.push_back(nov[i]);
+	}
+}
+	if (dec.size() > 0){
+	std::sort(dec.begin(), dec.end(), compareTwoTasksByDay());
+	for (int i = 0; i < dec.size(); i++){
+	sortedFutureTasks.push_back(dec[i]);
+	}
+}
+	
+	for (int j = 0; j < sortedFutureTasks.size(); j++){
+	oss << j + 1 << "." << getAllInfoOfOneTask(sortedFutureTasks[j]) << "\r\n";
+	}
+
+	return oss.str();
+}

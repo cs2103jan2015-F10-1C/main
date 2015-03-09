@@ -239,7 +239,12 @@ namespace WiseUI {
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
-
+				 else if (selection == "Sort by Date"){
+					 string temp = newManager->sortTasksByDate();
+					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+					 displayBox->Text = tasksToBeDisplayed;
+				 }
+				 
 				 }
 	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
 				 dataBaseRead->close();

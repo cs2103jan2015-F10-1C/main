@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <fstream>
 #include <ctime>
-
+#include "stdlib.h"
 using namespace std;
 
 
@@ -34,10 +34,19 @@ private:
 		string date = "";
 		string time = "";
 		string priority = "";
+		int day = 0;
+		int month = 0;
+		bool done = false;
 
 		Task* prev = NULL;
 		Task* next = NULL;
 
+	};
+
+	struct compareTwoTasksByDay{
+		inline bool operator()(const Task* lhs, const Task* rhs) {
+			return lhs->day < rhs->day;
+		}
 	};
 
 	enum Command_Type{
@@ -83,6 +92,8 @@ public:
 	void transferData(ofstream*, ifstream*);
 	string getTodayTask();
 	string getTodayDate();
+	string sortTasksByDate();
+
 
 	WiseManager();
 	~WiseManager();
