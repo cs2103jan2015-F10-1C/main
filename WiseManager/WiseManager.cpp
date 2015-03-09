@@ -212,14 +212,19 @@ void WiseManager::executeCommand(string command, ofstream* dataBaseWrite, int* c
 }
 
 WiseManager::Command_Type WiseManager::identifyCommand(string command) {
-
-	int commandSize = command.length() - 2;  // Ignore the "/r/n" of the string.
-
-	for (size_t index = 0; index < commandSize; index++) {
-		command[index] = tolower(command[index]);
+	if (command[command.length() - 2] == '\r'&&command[command.length() - 1] == '\n'){
+		int commandSize = command.length() - 2;  // Ignore the "/r/n" of the string.
+		for (size_t index = 0; index < commandSize; index++) {
+			command[index] = tolower(command[index]);
+		}
+		command = command.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
 	}
 
-	command = command.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
+	else{
+		for (size_t index = 0; index < command.length(); index++) {
+			command[index] = tolower(command[index]);
+		}
+	}
 
 	if (command == "add") {
 		return ADD;
