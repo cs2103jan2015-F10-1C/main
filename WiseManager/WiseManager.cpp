@@ -1,6 +1,16 @@
 #include"WiseManager.h"
 using namespace std;
 
+const int ADD_TYPE = 1;
+const int DELETE_TYPE = 2;
+const int VIEW_TYPE = 3;
+const int EDIT_TYPE = 4;
+const int SEARCH_TYPE = 5;
+const int DISPLAY_TYPE = 6;
+const int EXIT_TYPE = 7;
+const int CHANGE_DIRECTORY_TYPE = 8;
+const int HELP_TYPE = 9;
+const int ERROR_TYPE = -1;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
@@ -20,19 +30,6 @@ const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been cha
 const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
 
 const string MESSAGE_INVALID_HELP = "Desired command not detected. Please input the correct command that you need help in.";
-
-
-
-const int ADD_TYPE = 1;
-const int DELETE_TYPE = 2;
-const int VIEW_TYPE = 3;
-const int EDIT_TYPE = 4;
-const int SEARCH_TYPE = 5;
-const int DISPLAY_TYPE = 6;
-const int EXIT_TYPE = 7;
-const int HELP_TYPE = 8;
-const int CHANGE_DIRECTORY_TYPE = 9;
-const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
 
@@ -238,6 +235,7 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 		if (changeDirectory){
 			newDirectory = remainingCommand;
 		}
+		return;
 	case HELP:
 		*outputMessage = help(remainingCommand);
 		*commandType = HELP_TYPE;

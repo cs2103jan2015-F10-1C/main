@@ -25,6 +25,7 @@ class WiseManager
 {
 private:
 
+	
 	// Tentatively, each entry is stored as a Node in a linked list. 
 	// subject to changes in future as more functions are implemented.
 
