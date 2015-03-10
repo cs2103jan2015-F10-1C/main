@@ -500,7 +500,12 @@ string WiseManager::getIndex(string date) {
 
 	// if task is unbounded, i.e. no date
 	if (date == "unbounded event") {
-		returnIndex = defaultIndex + to_string(counter);
+		if (counter < 10) {
+			returnIndex = defaultIndex + "0" + to_string(counter);
+		}
+		else {
+			returnIndex = defaultIndex + to_string(counter);
+		}
 	}
 	else { // a date exists and should be in standard form i.e. 3/3
 
@@ -524,7 +529,12 @@ string WiseManager::getIndex(string date) {
 			returnIndex = returnIndex + temp;
 
 			// add in counter
-			returnIndex = returnIndex + to_string(counter);
+			if (counter < 10) {
+				returnIndex = returnIndex + "0" + to_string(counter);
+			}
+			else {
+				returnIndex = returnIndex + to_string(counter);
+			}
 		}
 	}
 
