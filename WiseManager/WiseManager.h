@@ -34,6 +34,7 @@ private:
 		string date = "";
 		string time = "";
 		string priority = "";
+		string index = "";
 		int day = 0;
 		int month = 0;
 		bool done = false;
@@ -50,23 +51,27 @@ private:
 	};
 
 	enum Command_Type{
-		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, HELP, ERROR
+		ADD, VIEW, DELETE, EDIT, DISPLAY, SEARCH, EXIT, ERROR, DIRECTORY, HELP
 	};
 
 	// include any global variables required here
 
 	int _size;
 	Task* _tail;
+	string _savingDirectory;
 
 public:
 	// include members here
+	string getFileDirectory(string);
+	void setFileDirectory(string, string);
 	void autoSave(ofstream*, string);
 	void transferDataToList(string);
 	int findPosition(string, string);
 	string removeSpace(string);
-	void executeCommand(string, ofstream*, int*, string*, string);
+	void executeCommand(string, ifstream*, ofstream*, int*, string*, string, string&);
 	Command_Type identifyCommand(string);
 	void printMessage(string);
+	string changeFileDirectory(string&, bool&);
 	string addTask(string);
 	void splitString(string);
 	bool isSpecialDetail(string);
@@ -77,6 +82,7 @@ public:
 	bool isBuffer(string);
 	string standardiseDate(string);
 	string standardiseTime(string);
+	string getIndex(string);
 	string displayTask(string);
 	string displayAllTask();
 	string searchTask(string);
@@ -96,7 +102,7 @@ public:
 	string sortTasksByDate();
 	string sortTasksPriority();
 	string getUnboundedTasks();
-	string help(string desireCommand);
+	string help(string);
 
 
 	WiseManager();
@@ -104,6 +110,9 @@ public:
 
 	// include initialiser here
 	void initialise(ifstream*, ofstream*, string);
-	void getStarted(ifstream*, ofstream*, string);
+	void getStarted(ifstream*, ofstream*, string, string);
 };
+
+
+
 
