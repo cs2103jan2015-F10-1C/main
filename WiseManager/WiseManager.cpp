@@ -105,21 +105,25 @@ void WiseManager::autoSave(ofstream* dataBaseWrite, string fileName){
 }
 
 void WiseManager::transferDataToList(string taskLine){
+	string index = "Index: ";
 	string detail = "Details: ";
 	string date = "Date: ";
 	string time = "Time: ";
 	string priority = "Priority: ";
+	int indextPosition = findPosition(index, taskLine) + index.size();
 	int detailPosition = findPosition(detail, taskLine) + detail.size();
 	int datePosition = findPosition(date, taskLine) + date.size();
 	int timePosition = findPosition(time, taskLine) + time.size();
 	int priorityPosition = findPosition(priority, taskLine) + priority.size();
 
 	Task* item = new Task;
+	item->index = taskLine.substr(indextPosition, findPosition(detail, taskLine) - indextPosition);
 	item->details = taskLine.substr(detailPosition, findPosition(date, taskLine) - detailPosition);
 	item->date = taskLine.substr(datePosition, findPosition(time, taskLine) - datePosition);
 	item->time = taskLine.substr(timePosition, findPosition(priority, taskLine) - timePosition);
 	item->priority = taskLine.substr(priorityPosition);
 
+	item->index = removeSpace(item->index);
 	item->details = removeSpace(item->details);
 	item->date = removeSpace(item->date);
 	item->time = removeSpace(item->time);
@@ -347,6 +351,7 @@ void WiseManager::splitString(string userInput) {
 	string date;
 	string time;
 	string priority;
+	string index;
 
 	while (iss) {
 
@@ -451,11 +456,14 @@ void WiseManager::splitString(string userInput) {
 	date = standardiseDate(date);
 	time = standardiseTime(time);
 
+	index = getIndex(date);
+
 	Task* item = new Task;
 	item->details = details;
 	item->date = date;
 	item->time = time;
 	item->priority = priority;
+	item->index = index;
 
 	if (_size == 0) {
 		_tail = item;
@@ -471,6 +479,68 @@ void WiseManager::splitString(string userInput) {
 		_tail = item;
 		_size++;
 	}
+
+}
+
+string WiseManager::getIndex(string date) {
+
+	string defaultIndex = "0000";
+	string returnIndex = "";
+	int counter = 0;
+
+	
+	if (_size > 0) {
+		Task* cur = _tail->next;
+
+		for (int i = 0; i < _size; i++) {
+			if (cur->date == date) {
+				counter++;
+			}
+			cur = cur->next;
+		}
+	}
+
+	// if task is unbounded, i.e. no date
+	if (date == "unbounded event") {
+		if (counter < 10) {
+			returnIndex = defaultIndex + "0" + to_string(counter);
+		}
+		else {
+			returnIndex = defaultIndex + to_string(counter);
+		}
+	}
+	else { // a date exists and should be in standard form i.e. 3/3
+
+		int pos = date.find('/');
+		string temp = "";
+
+		// assert pos
+		if (pos > 0) {
+			// extract day
+			temp = date.substr(0, pos);
+			if (temp.size() == 1) {
+				returnIndex = "0";
+			}
+			returnIndex = returnIndex + temp;
+
+			// extract month
+			temp = date.substr(pos + 1);
+			if (temp.size() == 1) {
+				returnIndex = returnIndex + "0";
+			}
+			returnIndex = returnIndex + temp;
+
+			// add in counter
+			if (counter < 10) {
+				returnIndex = returnIndex + "0" + to_string(counter);
+			}
+			else {
+				returnIndex = returnIndex + to_string(counter);
+			}
+		}
+	}
+
+	return returnIndex;
 
 }
 
@@ -525,13 +595,18 @@ bool WiseManager::isDate1(string str) {
 bool WiseManager::isDate2(string str) {
 
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "monday", "tuesday", "wednesday", "thursday",
-		"friday", "saturday", "sunday", "/", "today", "tomorrow" };
+		"friday", "saturday", "sunday", "today", "tomorrow", "/" };
 	int pos = -1;
 
 	for (size_t i = 0; i < 17; i++) {
 		pos = str.find(dateKey[i]);
 		if (pos == 0) {
 			return true;
+		}
+		else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
+			if ((str[pos - 1] >= '0' && str[pos - 1] <= '9') && (str[pos + 1] >= '0' && str[pos + 1] <= '9')) {
+			return true;
+			}
 		}
 	}
 	return false;
@@ -781,7 +856,7 @@ string WiseManager::displayAllTask(){
 	ostringstream oss;
 	Task* currentPosition = _tail->next;
 	for (int i = 1; i <= _size; i++){
-		oss << i << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
+		oss << "[" << currentPosition->index << "]" << ". Details: " << currentPosition->details << "\r\n" << "Date: " << currentPosition->date << "\r\n" <<
 			"Time: " << currentPosition->time << "\r\n" << "Priority: " << currentPosition->priority << "\r\n" << "\r\n";
 		currentPosition = currentPosition->next;
 	}
@@ -819,7 +894,7 @@ string WiseManager::displayTask(string displayType) {
 	if (displayType == "today" || displayType == "") {
 		string currentDate = getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == currentDate) {
@@ -944,7 +1019,8 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 
 string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function returns all infomation about a specific task with Details/Date/Time/Priority for indication.
 	ostringstream oss;
-	oss << "Details: " << thisTask->details << "\r\n"
+		oss << "Index: " << thisTask->index << "\r\n"
+		<< "Details: " << thisTask->details << "\r\n"
 		<< "Date: " << thisTask->date << "\r\n"
 		<< "Time: " << thisTask->time << "\r\n"
 		<< "Priority: " << thisTask->priority << "\r\n";
@@ -953,9 +1029,10 @@ string WiseManager::getAllInfoOfOneTask(Task* thisTask){ // This function return
 
 string WiseManager::getAllInfoOfOneTask2(Task* thisTask){
 	ostringstream oss;
-	oss << "Details: " << thisTask->details
-		<< " Date: " << thisTask->date
-		<< " Time: " << thisTask->time
+	oss << "Index: " << thisTask->index
+		<< " Details: " << thisTask->details 
+		<< " Date: " << thisTask->date 
+		<< " Time: " << thisTask->time 
 		<< " Priority: " << thisTask->priority << "\r\n";
 	return oss.str();
 }
@@ -1034,8 +1111,40 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 
 }
 
-string WiseManager::editTask(string keyword) {
-	vector<Task*> matchingTasks;
+string WiseManager::editTask(string toEdit) {
+	string editIndex = toEdit.substr(0, 4);
+
+	Task* taskToEdit = _tail->next;
+	bool isFound = getTask(taskToEdit, editIndex);
+
+	if (!isFound)
+	{
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+	else
+	{
+		string change = toEdit.substr(4);
+		string category;
+		identifyChange(&category, &change);
+		if (category == "des"){
+			taskToEdit->details = change;
+		}
+		else if (category == "date"){
+			change = standardiseDate(change);
+			taskToEdit->date = change;
+		}
+		else if (category == "time"){
+			change = standardiseTime(change);
+			taskToEdit->time = change;
+		}
+		else if (category == "prior"){
+			taskToEdit->priority = change;
+		}
+		else {
+			return MESSAGE_ERROR;
+		}
+	}
+	/*vector<Task*> matchingTasks;
 	cout << showMatchingTasks(&matchingTasks, keyword) << endl;
 
 	cout << MESSAGE_TO_EDIT << endl;
@@ -1045,47 +1154,18 @@ string WiseManager::editTask(string keyword) {
 	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
 	Task* currentTask = matchingTasks[taskNum - 1];
 	Task* taskPositionInList = _tail->next;
-	bool changeIsDone = false;
-
+	bool changeIsDone = false;*/
+	/*
 	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
 	string rubbish, change;
 	getline(cin, rubbish);  //get rid of the 'enter'
 	getline(cin, change);
+	*/
 
-	string category;
-	identifyChange(&category, &change);
-
-	for (int i = 0; i < _size && !changeIsDone; i++){
-		if (isSameTask(currentTask, taskPositionInList)){
-			if (category == "des"){
-				taskPositionInList->details = change;
-				changeIsDone = true;
-			}
-			else if (category == "date"){
-				change = standardiseDate(change);
-				taskPositionInList->date = change;
-				changeIsDone = true;
-			}
-			else if (category == "time"){
-				change = standardiseTime(change);
-				taskPositionInList->time = change;
-				changeIsDone = true;
-			}
-			else if (category == "prior"){
-				taskPositionInList->priority = change;
-				changeIsDone = true;
-			}
-			else {
-				return MESSAGE_ERROR;
-			}
-		}
-		else{
-			taskPositionInList = taskPositionInList->next;
-		}
-	}
 	cout << "Updated specified task:" << endl;
-	return getAllInfoOfOneTask(taskPositionInList);
+	return getAllInfoOfOneTask(taskToEdit);
 }
+
 
 bool WiseManager::isSameTask(Task* A, Task* B){
 	return A->date == B->date && A->details == B->details && A->priority == B->priority && A->time == B->time;
@@ -1112,22 +1192,28 @@ void WiseManager::identifyChange(string* category, string* change)
 	}
 
 }
-string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoToBeSearched){
-	if (infoToBeSearched == ""){
-		return MESSAGE_NO_INFO_GIVEN;
+bool WiseManager::getTask(Task* matchingTask, string editIndex){
+	if (editIndex == ""){
+		return false;
 	}
 
-	bool infoIsFound = false;
+	//bool taskFound = false;
 	Task* currentTask = _tail->next;
 
 	for (int i = 0; i < _size; i++){
-		if (haveThisInfo(infoToBeSearched, currentTask)){
-			infoIsFound = true;
-			(*matchingTasks).push_back(currentTask);
+		if (currentTask->index == editIndex)
+		{
+			//taskFound = true;
+			matchingTask = currentTask;
+			return true;
 		}
-		currentTask = currentTask->next;
+		else
+		{
+			currentTask = currentTask->next;
+		}
 	}
-
+}
+	/*
 	if (infoIsFound){
 		ostringstream oss;
 		vector<Task*>::iterator browse = (*matchingTasks).begin();
@@ -1140,7 +1226,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	else{
 		return MESSAGE_INFO_UNFOUND;
 	}
-}
+}*/
 
 string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirectory){
 	if (newDirectory == ""){
@@ -1208,11 +1294,13 @@ string WiseManager::getTodayDate(){
 string WiseManager::getTodayTask(){
 	string currentDate = getTodayDate();
 	Task* cur = _tail->next;
-	ostringstream oss;
+	ostringstream oss; 
+	int j = 1;
 
 	for (int i = 0; i < _size; i++){
 		if (cur->date == currentDate){
-			oss << getAllInfoOfOneTask(cur) << "\r\n";
+			oss << j << "." << getAllInfoOfOneTask(cur) << "\r\n";
+			j++;
 		}
 		cur = cur->next;
 	}
@@ -1498,6 +1586,7 @@ string WiseManager::help(string desireCommand){
 			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
 			<< "\r\n";
 	}
+
 	else if (desireCommand == "directory"){
 		oss << "To use the edit function, it should be input in the following format: " << "\r\n"
 			<< "directory <new file directory>" << "\r\n"

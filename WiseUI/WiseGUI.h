@@ -256,7 +256,7 @@ namespace WiseUI {
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
 					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage, "temp.txt", fileDirectory); 
-					 MessageBox::Show(gcnew String(gcnew String(to_string(*commandType).c_str())));
+	
 					 
 					 if (*commandType == EXIT_TYPE){
 						 Exit_Click(sender, e);

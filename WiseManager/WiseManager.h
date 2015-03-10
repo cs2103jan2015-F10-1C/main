@@ -35,6 +35,7 @@ private:
 		string date = "";
 		string time = "";
 		string priority = "";
+		string index = "";
 		int day = 0;
 		int month = 0;
 		bool done = false;
@@ -82,12 +83,13 @@ public:
 	bool isBuffer(string);
 	string standardiseDate(string);
 	string standardiseTime(string);
+	string getIndex(string);
 	string displayTask(string);
 	string displayAllTask();
 	string searchTask(string);
 	string deleteTask(string);
 	string editTask(string);
-	string showMatchingTasks(vector<Task*>*, string);
+	bool getTask(Task*, string);
 	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);
