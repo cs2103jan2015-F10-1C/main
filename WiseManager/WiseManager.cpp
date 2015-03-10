@@ -1454,7 +1454,6 @@ string WiseManager::help(string desireCommand){
 			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
 			<< "\r\n";
 	}
-
 	return oss.str();
 }
 
