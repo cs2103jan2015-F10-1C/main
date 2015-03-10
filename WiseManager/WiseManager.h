@@ -88,7 +88,7 @@ public:
 	string searchTask(string);
 	string deleteTask(string);
 	string editTask(string);
-	string showMatchingTasks(vector<Task*>*, string);
+	bool getTask(Task*, string);
 	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);

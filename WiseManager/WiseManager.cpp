@@ -1099,8 +1099,40 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 
 }
 
-string WiseManager::editTask(string keyword) {
-	vector<Task*> matchingTasks;
+string WiseManager::editTask(string toEdit) {
+	string editIndex = toEdit.substr(0, 4);
+
+	Task* taskToEdit = _tail->next;
+	bool isFound = getTask(taskToEdit, editIndex);
+
+	if (!isFound)
+	{
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+	else
+	{
+		string change = toEdit.substr(4);
+		string category;
+		identifyChange(&category, &change);
+		if (category == "des"){
+			taskToEdit->details = change;
+		}
+		else if (category == "date"){
+			change = standardiseDate(change);
+			taskToEdit->date = change;
+		}
+		else if (category == "time"){
+			change = standardiseTime(change);
+			taskToEdit->time = change;
+		}
+		else if (category == "prior"){
+			taskToEdit->priority = change;
+		}
+		else {
+			return MESSAGE_ERROR;
+		}
+	}
+	/*vector<Task*> matchingTasks;
 	cout << showMatchingTasks(&matchingTasks, keyword) << endl;
 
 	cout << MESSAGE_TO_EDIT << endl;
@@ -1110,47 +1142,18 @@ string WiseManager::editTask(string keyword) {
 	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
 	Task* currentTask = matchingTasks[taskNum - 1];
 	Task* taskPositionInList = _tail->next;
-	bool changeIsDone = false;
-
+	bool changeIsDone = false;*/
+	/*
 	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
 	string rubbish, change;
 	getline(cin, rubbish);  //get rid of the 'enter'
 	getline(cin, change);
+	*/
 
-	string category;
-	identifyChange(&category, &change);
-
-	for (int i = 0; i < _size && !changeIsDone; i++){
-		if (isSameTask(currentTask, taskPositionInList)){
-			if (category == "des"){
-				taskPositionInList->details = change;
-				changeIsDone = true;
-			}
-			else if (category == "date"){
-				change = standardiseDate(change);
-				taskPositionInList->date = change;
-				changeIsDone = true;
-			}
-			else if (category == "time"){
-				change = standardiseTime(change);
-				taskPositionInList->time = change;
-				changeIsDone = true;
-			}
-			else if (category == "prior"){
-				taskPositionInList->priority = change;
-				changeIsDone = true;
-			}
-			else {
-				return MESSAGE_ERROR;
-			}
-		}
-		else{
-			taskPositionInList = taskPositionInList->next;
-		}
-	}
 	cout << "Updated specified task:" << endl;
-	return getAllInfoOfOneTask(taskPositionInList);
+	return getAllInfoOfOneTask(taskToEdit);
 }
+
 
 bool WiseManager::isSameTask(Task* A, Task* B){
 	return A->date == B->date && A->details == B->details && A->priority == B->priority && A->time == B->time;
@@ -1177,22 +1180,28 @@ void WiseManager::identifyChange(string* category, string* change)
 	}
 
 }
-string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoToBeSearched){
-	if (infoToBeSearched == ""){
-		return MESSAGE_NO_INFO_GIVEN;
+bool WiseManager::getTask(Task* matchingTask, string editIndex){
+	if (editIndex == ""){
+		return false;
 	}
 
-	bool infoIsFound = false;
+	//bool taskFound = false;
 	Task* currentTask = _tail->next;
 
 	for (int i = 0; i < _size; i++){
-		if (haveThisInfo(infoToBeSearched, currentTask)){
-			infoIsFound = true;
-			(*matchingTasks).push_back(currentTask);
+		if (currentTask->index == editIndex)
+		{
+			//taskFound = true;
+			matchingTask = currentTask;
+			return true;
 		}
-		currentTask = currentTask->next;
+		else
+		{
+			currentTask = currentTask->next;
+		}
 	}
-
+}
+	/*
 	if (infoIsFound){
 		ostringstream oss;
 		vector<Task*>::iterator browse = (*matchingTasks).begin();
@@ -1205,7 +1214,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	else{
 		return MESSAGE_INFO_UNFOUND;
 	}
-}
+}*/
 
 string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirectory){
 	if (newDirectory == ""){
