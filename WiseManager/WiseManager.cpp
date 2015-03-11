@@ -25,6 +25,7 @@ const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please 
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
 const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
 const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
+const string MESSAGE_WRONG_INDEX = "This index is not found. \n";
 
 const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
 const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
@@ -1111,67 +1112,6 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 
 }
 
-string WiseManager::editTask(string toEdit) {
-	if (toEdit == ""){
-		return MESSAGE_NO_INFO_GIVEN;
-	}
-
-	string editIndex = toEdit.substr(0, 6);
-	cout << editIndex << endl;
-
-	Task* taskToEdit = _tail->next;
-	bool isFound = getTask(taskToEdit, editIndex);
-
-	if (!isFound)
-	{
-		return MESSAGE_NO_INFO_GIVEN;
-	}
-	else
-	{
-		string change = toEdit.substr(6);
-		change = change.substr(0, change.size() - 2);
-		string category;
-		identifyChange(&category, &change);
-		if (category == "des"){
-			taskToEdit->details = change;
-		}
-		else if (category == "date"){
-			change = standardiseDate(change);
-			taskToEdit->date = change;
-		}
-		else if (category == "time"){
-			change = standardiseTime(change);
-			taskToEdit->time = change;
-		}
-		else if (category == "prior"){
-			taskToEdit->priority = change;
-		}
-		else {
-			return MESSAGE_ERROR;
-		}
-	}
-	/*vector<Task*> matchingTasks;
-	cout << showMatchingTasks(&matchingTasks, keyword) << endl;
-
-	cout << MESSAGE_TO_EDIT << endl;
-	int taskNum;
-	cin >> taskNum;
-
-	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
-	Task* currentTask = matchingTasks[taskNum - 1];
-	Task* taskPositionInList = _tail->next;
-	bool changeIsDone = false;*/
-	/*
-	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
-	string rubbish, change;
-	getline(cin, rubbish);  //get rid of the 'enter'
-	getline(cin, change);
-	*/
-
-	cout << "Updated specified task:" << endl;
-	return getAllInfoOfOneTask(taskToEdit);
-}
-
 
 bool WiseManager::isSameTask(Task* A, Task* B){
 	return A->date == B->date && A->details == B->details && A->priority == B->priority && A->time == B->time;
@@ -1198,9 +1138,14 @@ void WiseManager::identifyChange(string* category, string* change)
 	}
 
 }
-bool WiseManager::getTask(Task* matchingTask, string editIndex){
+string WiseManager::editTask(string toEdit){
+	if (toEdit == ""){
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+	string editIndex = toEdit.substr(0, 6);
+
 	if (editIndex == ""){
-		return false;
+		return MESSAGE_NO_INFO_GIVEN;
 	}
 
 	//bool taskFound = false;
@@ -1210,15 +1155,58 @@ bool WiseManager::getTask(Task* matchingTask, string editIndex){
 		if (currentTask->index == editIndex)
 		{
 			//taskFound = true;
-			matchingTask = currentTask;
-			return true;
+			string change = toEdit.substr(6);
+			change = change.substr(0, change.size() - 2);
+			string category;
+			identifyChange(&category, &change);
+			if (category == "des"){
+				currentTask->details = change;
+				return getAllInfoOfOneTask(currentTask);
+			}
+			else if (category == "date"){
+				change = standardiseDate(change);
+				currentTask->date = change;
+				return getAllInfoOfOneTask(currentTask);
+			}
+			else if (category == "time"){
+				change = standardiseTime(change);
+				currentTask->time = change;
+				return getAllInfoOfOneTask(currentTask);
+			}
+			else if (category == "prior"){
+				currentTask->priority = change;
+				return getAllInfoOfOneTask(currentTask);
+			}
+			else {
+				return MESSAGE_ERROR;
+			}
 		}
 		else
 		{
 			currentTask = currentTask->next;
 		}
+
 	}
-	return false;
+		/*vector<Task*> matchingTasks;
+		cout << showMatchingTasks(&matchingTasks, keyword) << endl;
+
+		cout << MESSAGE_TO_EDIT << endl;
+		int taskNum;
+		cin >> taskNum;
+
+		cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
+		Task* currentTask = matchingTasks[taskNum - 1];
+		Task* taskPositionInList = _tail->next;
+		bool changeIsDone = false;*/
+		/*
+		cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
+		string rubbish, change;
+		getline(cin, rubbish);  //get rid of the 'enter'
+		getline(cin, change);
+		*/
+
+
+		return MESSAGE_WRONG_INDEX;
 }
 	/*
 	if (infoIsFound){
