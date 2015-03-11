@@ -1068,7 +1068,7 @@ string WiseManager::searchTask(string infoToBeSearched){
 	if (infoIsFound){
 		ostringstream oss;
 		for (size_t j = 0; j < tasksHaveThisInfo.size(); j++){
-			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << endl;
+			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << "\r\n";
 		}
 		return oss.str();
 	}
