@@ -18,7 +18,7 @@ const string MESSAGE_ERROR = "Invalid input. \n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched. \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please re-input. \n";
-const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
+const string MESSAGE_DISPLAY = "Displaying %s task(s) \r\n";
 const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. Please re-input. \n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully.";
 const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your index that you have input.";
@@ -892,7 +892,7 @@ string WiseManager::displayTask(string displayType) {
 	if (displayType == "today" || displayType == "") {
 		string currentDate = getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
-		oss << buffer << "\r\n";
+		oss << buffer ;
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
 			if (cur->date == currentDate) {
@@ -911,7 +911,7 @@ string WiseManager::displayTask(string displayType) {
 		istringstream iss(displayType);
 		iss >> extract;
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
-		oss << buffer << "\r\n";
+		oss << buffer ;
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
 			if (cur->priority == extract) {
@@ -928,7 +928,7 @@ string WiseManager::displayTask(string displayType) {
 	else if (isDate1(displayType) || isDate2(displayType)) {
 		string inputDate = standardiseDate(displayType);
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
-		oss << buffer << "\r\n";
+		oss << buffer ;
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
 			if (cur->date == inputDate) {
