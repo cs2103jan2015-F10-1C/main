@@ -910,12 +910,24 @@ string WiseManager::displayTask(string displayType) {
 
 	else if (displayType == "high priority" || displayType == "mid priority" || displayType == "low priority") {
 		string extract;
-		istringstream iss(displayType);
-		iss >> extract;
+		int endOfPrior = displayType.find_first_of(" ", 0);
+		extract = displayType.substr(0, endOfPrior);
+
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
 		oss << buffer ;
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
+			if (cur->priority[0] == 'h'){
+				cur->priority = "high";
+			}
+			else if (cur->priority[0] == 'l'){
+				cur->priority = "low";
+			}
+			else if (cur->priority[0] == 'm'){
+				cur->priority = "mid";
+			}
+
+
 			if (cur->priority == extract) {
 				cout << counter << ". " << cur->details
 					<< "[" << cur->time << "]" << endl;
