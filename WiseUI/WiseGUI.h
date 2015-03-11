@@ -4,6 +4,7 @@
 #include<sstream>
 #include<iostream>
 #include<vector>
+#include <cassert>
 #include <msclr\marshal_cppstd.h>
 
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
@@ -275,11 +276,12 @@ namespace WiseUI {
 						 feedbackBox->Text = feedback;
 					 }
 					 else if (*commandType == CHANGE_DIRECTORY_TYPE){
-	
-						 String^ feedback = gcnew String(outputMessage->c_str());
-						 feedbackBox->Text = feedback;
-						 
-						 SavingDirectoryBox->Text = gcnew String(fileDirectory.c_str());
+							String^ feedback = gcnew String(outputMessage->c_str());
+
+							feedbackBox->Text = feedback;
+
+							SavingDirectoryBox->Text = gcnew String(fileDirectory.c_str());
+						
 					 }
 	
 					 if (*commandType == ADD_TYPE || *commandType == DELETE_TYPE || *commandType == EDIT_TYPE){

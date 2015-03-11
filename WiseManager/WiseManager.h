@@ -16,6 +16,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <cassert>
 #include <ctime>
 #include "stdlib.h"
 using namespace std;

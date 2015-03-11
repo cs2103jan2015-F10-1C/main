@@ -28,6 +28,7 @@ const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, p
 const string MESSAGE_WRONG_INDEX = "This index is not found. \n";
 
 const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
+const string MESSAGE_DIRECTORY_NOT_CHANGED = "The saving file directory is not found. \n";
 const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
 
 const string MESSAGE_INVALID_HELP = "Desired command not detected. Please input the correct command that you need help in.";
@@ -1201,10 +1202,22 @@ string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirect
 		return  MESSAGE_DIRECTORY_NOT_GIVEN;
 	}
 	newDirectory = newDirectory.substr(0, newDirectory.size() - 2);
-	setFileDirectory(newDirectory, "fileNameStorage.txt");
-	changeDirectory = true;
 
-	return MESSAGE_DIRECTORY_CHANGED;
+	ofstream in;
+	in.open(newDirectory);
+	bool isOpen = false;
+	isOpen = in.is_open();
+	if (isOpen) {
+		setFileDirectory(newDirectory, "fileNameStorage.txt");
+		changeDirectory = true;
+		in.close();
+		return MESSAGE_DIRECTORY_CHANGED;
+	}
+	else{
+		in.close();
+		return MESSAGE_DIRECTORY_NOT_CHANGED;
+	}
+	
 }
 
 void WiseManager::getFutureTasks(vector<Task*> &futureTasks){
