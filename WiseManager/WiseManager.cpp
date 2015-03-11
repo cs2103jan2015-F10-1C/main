@@ -1075,21 +1075,20 @@ string WiseManager::deleteTask(string indexToBeDeleted){
 	else{
 		indexToBeDeleted = indexToBeDeleted.substr(0, indexToBeDeleted.size() - 2);
 		Task* iterateList = _tail->next;
+
 		for (int i = 0; i < _size; i++){
 
 			if (indexToBeDeleted == iterateList->index){
-					
-				if (iterateList = _tail){
-					_tail = iterateList->prev;
-				}
+					if (iterateList == _tail) {
+						_tail = iterateList->prev;
+					}
+					iterateList->prev->next = iterateList->next;
+					iterateList->next->prev = iterateList->prev;
+					delete iterateList;
+					_size--;
 
-				iterateList->prev->next = iterateList->next;
-				iterateList->next->prev = iterateList->prev;
-				delete iterateList;
-				iterateList = NULL;
-				_size--;
-				deleted = true;
-				break;
+					deleted = true;
+					break;
 			}
 			else{
 				iterateList = iterateList->next;
