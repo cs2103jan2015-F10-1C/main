@@ -120,18 +120,18 @@ namespace WiseUI {
 			// 
 			// CmdLineBox
 			// 
-			this->CmdLineBox->Location = System::Drawing::Point(81, 418);
+			this->CmdLineBox->Location = System::Drawing::Point(81, 453);
 			this->CmdLineBox->Multiline = true;
 			this->CmdLineBox->Name = L"CmdLineBox";
-			this->CmdLineBox->Size = System::Drawing::Size(516, 21);
+			this->CmdLineBox->Size = System::Drawing::Size(696, 22);
 			this->CmdLineBox->TabIndex = 0;
 			this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 			// 
 			// Enter
 			// 
-			this->Enter->Location = System::Drawing::Point(634, 417);
+			this->Enter->Location = System::Drawing::Point(783, 454);
 			this->Enter->Name = L"Enter";
-			this->Enter->Size = System::Drawing::Size(75, 21);
+			this->Enter->Size = System::Drawing::Size(75, 23);
 			this->Enter->TabIndex = 2;
 			this->Enter->Text = L"Enter";
 			this->Enter->UseVisualStyleBackColor = true;
@@ -144,27 +144,29 @@ namespace WiseUI {
 				L"Display All Tasks", L"Tasks to be done today",
 					L"Sort by Date", L"Sort by Priority", L"Display Unbounded Tasks"
 			});
-			this->dropdownBox->Location = System::Drawing::Point(12, 11);
+			this->dropdownBox->Location = System::Drawing::Point(12, 12);
 			this->dropdownBox->Name = L"dropdownBox";
-			this->dropdownBox->Size = System::Drawing::Size(376, 20);
+			this->dropdownBox->Size = System::Drawing::Size(376, 21);
 			this->dropdownBox->TabIndex = 3;
 			this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
 			// 
 			// feedbackBox
 			// 
-			this->feedbackBox->Location = System::Drawing::Point(408, 38);
+			this->feedbackBox->Location = System::Drawing::Point(408, 41);
 			this->feedbackBox->Multiline = true;
 			this->feedbackBox->Name = L"feedbackBox";
+			this->feedbackBox->ReadOnly = true;
 			this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->feedbackBox->Size = System::Drawing::Size(413, 299);
+			this->feedbackBox->Size = System::Drawing::Size(531, 324);
 			this->feedbackBox->TabIndex = 4;
+			this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
 			// 
 			// Exit
 			// 
 			this->Exit->AllowDrop = true;
-			this->Exit->Location = System::Drawing::Point(746, 418);
+			this->Exit->Location = System::Drawing::Point(864, 454);
 			this->Exit->Name = L"Exit";
-			this->Exit->Size = System::Drawing::Size(75, 21);
+			this->Exit->Size = System::Drawing::Size(75, 23);
 			this->Exit->TabIndex = 6;
 			this->Exit->Text = L"E&xit";
 			this->Exit->UseVisualStyleBackColor = true;
@@ -172,50 +174,52 @@ namespace WiseUI {
 			// 
 			// displayBox
 			// 
-			this->displayBox->Location = System::Drawing::Point(12, 38);
+			this->displayBox->Location = System::Drawing::Point(12, 41);
 			this->displayBox->Multiline = true;
 			this->displayBox->Name = L"displayBox";
+			this->displayBox->ReadOnly = true;
 			this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->displayBox->Size = System::Drawing::Size(376, 374);
+			this->displayBox->Size = System::Drawing::Size(376, 405);
 			this->displayBox->TabIndex = 7;
 			// 
 			// Feedback
 			// 
-			this->Feedback->Location = System::Drawing::Point(408, 12);
+			this->Feedback->Location = System::Drawing::Point(408, 13);
 			this->Feedback->Name = L"Feedback";
-			this->Feedback->Size = System::Drawing::Size(80, 21);
+			this->Feedback->Size = System::Drawing::Size(80, 20);
 			this->Feedback->TabIndex = 8;
 			this->Feedback->Text = L"Feedback Box";
 			// 
 			// Command
 			// 
-			this->Command->Location = System::Drawing::Point(12, 418);
+			this->Command->Location = System::Drawing::Point(12, 453);
 			this->Command->Name = L"Command";
-			this->Command->Size = System::Drawing::Size(72, 21);
+			this->Command->Size = System::Drawing::Size(72, 20);
 			this->Command->TabIndex = 9;
 			this->Command->Text = L"Command: //";
 			// 
 			// SavingDirectory
 			// 
-			this->SavingDirectory->Location = System::Drawing::Point(408, 343);
+			this->SavingDirectory->Location = System::Drawing::Point(408, 372);
 			this->SavingDirectory->Name = L"SavingDirectory";
-			this->SavingDirectory->Size = System::Drawing::Size(123, 21);
+			this->SavingDirectory->Size = System::Drawing::Size(123, 20);
 			this->SavingDirectory->TabIndex = 10;
 			this->SavingDirectory->Text = L"Current Saving File";
 			// 
 			// SavingDirectoryBox
 			// 
-			this->SavingDirectoryBox->Location = System::Drawing::Point(408, 370);
+			this->SavingDirectoryBox->Location = System::Drawing::Point(408, 401);
 			this->SavingDirectoryBox->Multiline = true;
 			this->SavingDirectoryBox->Name = L"SavingDirectoryBox";
-			this->SavingDirectoryBox->Size = System::Drawing::Size(413, 42);
+			this->SavingDirectoryBox->ReadOnly = true;
+			this->SavingDirectoryBox->Size = System::Drawing::Size(531, 45);
 			this->SavingDirectoryBox->TabIndex = 11;
 			// 
 			// WiseGUI
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(834, 451);
+			this->ClientSize = System::Drawing::Size(951, 489);
 			this->Controls->Add(this->SavingDirectoryBox);
 			this->Controls->Add(this->SavingDirectory);
 			this->Controls->Add(this->Command);
@@ -324,5 +328,7 @@ namespace WiseUI {
 				 Application::Exit();
 	}
 
+private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
