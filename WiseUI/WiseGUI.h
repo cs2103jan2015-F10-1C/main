@@ -42,6 +42,9 @@ namespace WiseUI {
 			dataBaseWrite = new ofstream;
 
 			fileDirectory = newManager->getFileDirectory("fileNameStorage.txt");
+			if (fileDirectory == ""){
+				MessageBox::Show("There is no saving file existing, please input a new file directory.");
+			}
 
 			dataBaseRead->open(fileDirectory);
 			dataBaseWrite->open("temp.txt");
