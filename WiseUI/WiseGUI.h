@@ -14,9 +14,10 @@ const int EDIT_TYPE = 4;
 const int SEARCH_TYPE = 5;
 const int DISPLAY_TYPE = 6;
 const int EXIT_TYPE = 7;
-const int HELP_TYPE = 8;
-const int CHANGE_DIRECTORY_TYPE = 9;
+const int CHANGE_DIRECTORY_TYPE = 8;
+const int HELP_TYPE = 9;
 const int ERROR_TYPE = -1;
+
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
 
 namespace WiseUI {
@@ -254,7 +255,9 @@ namespace WiseUI {
 				 }
 				 else{
 					 string temp = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage, "temp.txt", fileDirectory);
+					 newManager->executeCommand(temp, dataBaseRead, dataBaseWrite, commandType, outputMessage, "temp.txt", fileDirectory); 
+	
+					 
 					 if (*commandType == EXIT_TYPE){
 						 Exit_Click(sender, e);
 					 }
@@ -265,6 +268,7 @@ namespace WiseUI {
 						 feedbackBox->Text = feedback;
 					 }
 					 else if (*commandType == CHANGE_DIRECTORY_TYPE){
+	
 						 String^ feedback = gcnew String(outputMessage->c_str());
 						 feedbackBox->Text = feedback;
 						 

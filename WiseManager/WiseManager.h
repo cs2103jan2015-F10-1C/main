@@ -25,6 +25,7 @@ class WiseManager
 {
 private:
 
+	
 	// Tentatively, each entry is stored as a Node in a linked list. 
 	// subject to changes in future as more functions are implemented.
 
@@ -88,7 +89,7 @@ public:
 	string searchTask(string);
 	string deleteTask(string);
 	string editTask(string);
-	string showMatchingTasks(vector<Task*>*, string);
+	bool getTask(Task*, string);
 	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);

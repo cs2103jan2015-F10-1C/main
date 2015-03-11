@@ -1,6 +1,16 @@
 ﻿#include"WiseManager.h"
 using namespace std;
 
+const int ADD_TYPE = 1;
+const int DELETE_TYPE = 2;
+const int VIEW_TYPE = 3;
+const int EDIT_TYPE = 4;
+const int SEARCH_TYPE = 5;
+const int DISPLAY_TYPE = 6;
+const int EXIT_TYPE = 7;
+const int CHANGE_DIRECTORY_TYPE = 8;
+const int HELP_TYPE = 9;
+const int ERROR_TYPE = -1;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
@@ -20,19 +30,6 @@ const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been cha
 const string MESSAGE_DIRECTORY_NOT_GIVEN = "The new directory is not given. Please re-input. \n";
 
 const string MESSAGE_INVALID_HELP = "Desired command not detected. Please input the correct command that you need help in.";
-
-
-
-const int ADD_TYPE = 1;
-const int DELETE_TYPE = 2;
-const int VIEW_TYPE = 3;
-const int EDIT_TYPE = 4;
-const int SEARCH_TYPE = 5;
-const int DISPLAY_TYPE = 6;
-const int EXIT_TYPE = 7;
-const int HELP_TYPE = 8;
-const int CHANGE_DIRECTORY_TYPE = 9;
-const int ERROR_TYPE = -1;
 
 WiseManager::WiseManager() {
 
@@ -108,21 +105,25 @@ void WiseManager::autoSave(ofstream* dataBaseWrite, string fileName){
 }
 
 void WiseManager::transferDataToList(string taskLine){
+	string index = "Index: ";
 	string detail = "Details: ";
 	string date = "Date: ";
 	string time = "Time: ";
 	string priority = "Priority: ";
+	int indextPosition = findPosition(index, taskLine) + index.size();
 	int detailPosition = findPosition(detail, taskLine) + detail.size();
 	int datePosition = findPosition(date, taskLine) + date.size();
 	int timePosition = findPosition(time, taskLine) + time.size();
 	int priorityPosition = findPosition(priority, taskLine) + priority.size();
 
 	Task* item = new Task;
+	item->index = taskLine.substr(indextPosition, findPosition(detail, taskLine) - indextPosition);
 	item->details = taskLine.substr(detailPosition, findPosition(date, taskLine) - detailPosition);
 	item->date = taskLine.substr(datePosition, findPosition(time, taskLine) - datePosition);
 	item->time = taskLine.substr(timePosition, findPosition(priority, taskLine) - timePosition);
 	item->priority = taskLine.substr(priorityPosition);
 
+	item->index = removeSpace(item->index);
 	item->details = removeSpace(item->details);
 	item->date = removeSpace(item->date);
 	item->time = removeSpace(item->time);
@@ -238,6 +239,7 @@ void WiseManager::executeCommand(string command, ifstream* dataBaseRead, ofstrea
 		if (changeDirectory){
 			newDirectory = remainingCommand;
 		}
+		return;
 	case HELP:
 		*outputMessage = help(remainingCommand);
 		*commandType = HELP_TYPE;
@@ -500,7 +502,12 @@ string WiseManager::getIndex(string date) {
 
 	// if task is unbounded, i.e. no date
 	if (date == "unbounded event") {
-		returnIndex = defaultIndex + to_string(counter);
+		if (counter < 10) {
+			returnIndex = defaultIndex + "0" + to_string(counter);
+		}
+		else {
+			returnIndex = defaultIndex + to_string(counter);
+		}
 	}
 	else { // a date exists and should be in standard form i.e. 3/3
 
@@ -524,7 +531,12 @@ string WiseManager::getIndex(string date) {
 			returnIndex = returnIndex + temp;
 
 			// add in counter
-			returnIndex = returnIndex + to_string(counter);
+			if (counter < 10) {
+				returnIndex = returnIndex + "0" + to_string(counter);
+			}
+			else {
+				returnIndex = returnIndex + to_string(counter);
+			}
 		}
 	}
 
@@ -620,8 +632,8 @@ string WiseManager::standardiseDate(string date) {
 	string standardisedDate;
 	string extract;
 	istringstream iss(date);
-	string day_extract = " ";
-	string month_extract = " ";
+	string day_extract = "";
+	string month_extract = "";
 
 	// get current date
 
@@ -882,7 +894,7 @@ string WiseManager::displayTask(string displayType) {
 	if (displayType == "today" || displayType == "") {
 		string currentDate = getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		printMessage(buffer);
 		for (int i = 0; i < _size; i++) {
 			if (cur->date == currentDate) {
@@ -1094,8 +1106,41 @@ string WiseManager::deleteTask(string indexToBeDeleted){
 
 }
 
-string WiseManager::editTask(string keyword) {
-	vector<Task*> matchingTasks;
+string WiseManager::editTask(string toEdit) {
+	string editIndex = toEdit.substr(0, 6);
+	cout << editIndex << endl;
+
+	Task* taskToEdit = _tail->next;
+	bool isFound = getTask(taskToEdit, editIndex);
+
+	if (!isFound)
+	{
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+	else
+	{
+		string change = toEdit.substr(6);
+		string category;
+		identifyChange(&category, &change);
+		if (category == "des"){
+			taskToEdit->details = change;
+		}
+		else if (category == "date"){
+			change = standardiseDate(change);
+			taskToEdit->date = change;
+		}
+		else if (category == "time"){
+			change = standardiseTime(change);
+			taskToEdit->time = change;
+		}
+		else if (category == "prior"){
+			taskToEdit->priority = change;
+		}
+		else {
+			return MESSAGE_ERROR;
+		}
+	}
+	/*vector<Task*> matchingTasks;
 	cout << showMatchingTasks(&matchingTasks, keyword) << endl;
 
 	cout << MESSAGE_TO_EDIT << endl;
@@ -1105,47 +1150,18 @@ string WiseManager::editTask(string keyword) {
 	cout << getAllInfoOfOneTask(matchingTasks[taskNum - 1]) << endl;
 	Task* currentTask = matchingTasks[taskNum - 1];
 	Task* taskPositionInList = _tail->next;
-	bool changeIsDone = false;
-
+	bool changeIsDone = false;*/
+	/*
 	cout << MESSAGE_EDIT_INSTRUCTIONS << endl;
 	string rubbish, change;
 	getline(cin, rubbish);  //get rid of the 'enter'
 	getline(cin, change);
+	*/
 
-	string category;
-	identifyChange(&category, &change);
-
-	for (int i = 0; i < _size && !changeIsDone; i++){
-		if (isSameTask(currentTask, taskPositionInList)){
-			if (category == "des"){
-				taskPositionInList->details = change;
-				changeIsDone = true;
-			}
-			else if (category == "date"){
-				change = standardiseDate(change);
-				taskPositionInList->date = change;
-				changeIsDone = true;
-			}
-			else if (category == "time"){
-				change = standardiseTime(change);
-				taskPositionInList->time = change;
-				changeIsDone = true;
-			}
-			else if (category == "prior"){
-				taskPositionInList->priority = change;
-				changeIsDone = true;
-			}
-			else {
-				return MESSAGE_ERROR;
-			}
-		}
-		else{
-			taskPositionInList = taskPositionInList->next;
-		}
-	}
 	cout << "Updated specified task:" << endl;
-	return getAllInfoOfOneTask(taskPositionInList);
+	return getAllInfoOfOneTask(taskToEdit);
 }
+
 
 bool WiseManager::isSameTask(Task* A, Task* B){
 	return A->date == B->date && A->details == B->details && A->priority == B->priority && A->time == B->time;
@@ -1172,22 +1188,29 @@ void WiseManager::identifyChange(string* category, string* change)
 	}
 
 }
-string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoToBeSearched){
-	if (infoToBeSearched == ""){
-		return MESSAGE_NO_INFO_GIVEN;
+bool WiseManager::getTask(Task* matchingTask, string editIndex){
+	if (editIndex == ""){
+		return false;
 	}
 
-	bool infoIsFound = false;
+	//bool taskFound = false;
 	Task* currentTask = _tail->next;
 
 	for (int i = 0; i < _size; i++){
-		if (haveThisInfo(infoToBeSearched, currentTask)){
-			infoIsFound = true;
-			(*matchingTasks).push_back(currentTask);
+		if (currentTask->index == editIndex)
+		{
+			//taskFound = true;
+			matchingTask = currentTask;
+			return true;
 		}
-		currentTask = currentTask->next;
+		else
+		{
+			currentTask = currentTask->next;
+		}
 	}
-
+	return false;
+}
+	/*
 	if (infoIsFound){
 		ostringstream oss;
 		vector<Task*>::iterator browse = (*matchingTasks).begin();
@@ -1200,7 +1223,7 @@ string WiseManager::showMatchingTasks(vector<Task*> *matchingTasks, string infoT
 	else{
 		return MESSAGE_INFO_UNFOUND;
 	}
-}
+}*/
 
 string WiseManager::changeFileDirectory(string &newDirectory, bool &changeDirectory){
 	if (newDirectory == ""){
@@ -1268,11 +1291,13 @@ string WiseManager::getTodayDate(){
 string WiseManager::getTodayTask(){
 	string currentDate = getTodayDate();
 	Task* cur = _tail->next;
-	ostringstream oss;
+	ostringstream oss; 
+	int j = 1;
 
 	for (int i = 0; i < _size; i++){
 		if (cur->date == currentDate){
-			oss << getAllInfoOfOneTask(cur) << "\r\n";
+			oss << j << "." << getAllInfoOfOneTask(cur) << "\r\n";
+			j++;
 		}
 		cur = cur->next;
 	}
