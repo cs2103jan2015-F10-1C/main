@@ -911,7 +911,7 @@ string WiseManager::displayTask(string displayType) {
 		istringstream iss(displayType);
 		iss >> extract;
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
 			if (cur->priority == extract) {
@@ -928,7 +928,7 @@ string WiseManager::displayTask(string displayType) {
 	else if (isDate1(displayType) || isDate2(displayType)) {
 		string inputDate = standardiseDate(displayType);
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		printMessage(buffer);
 		for (size_t i = 0; i < _size; i++) {
 			if (cur->date == inputDate) {
