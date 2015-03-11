@@ -1112,6 +1112,10 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 }
 
 string WiseManager::editTask(string toEdit) {
+	if (toEdit == ""){
+		return MESSAGE_NO_INFO_GIVEN;
+	}
+
 	string editIndex = toEdit.substr(0, 6);
 	cout << editIndex << endl;
 
@@ -1125,6 +1129,7 @@ string WiseManager::editTask(string toEdit) {
 	else
 	{
 		string change = toEdit.substr(6);
+		change = change.substr(0, change.size() - 2);
 		string category;
 		identifyChange(&category, &change);
 		if (category == "des"){
