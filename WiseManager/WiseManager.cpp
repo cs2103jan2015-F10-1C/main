@@ -585,7 +585,7 @@ bool WiseManager::isDate1(string str) {
 
 	for (size_t i = 0; i < 24; i++) {
 		pos = str.find(dateKey[i]);
-		if (pos == 0) {
+		if (pos == 0 || pos == 2 || pos == 3) {
 			return true;
 		}
 	}
@@ -886,10 +886,7 @@ string WiseManager::displayTask(string displayType) {
 	int counter = 1;
 	char buffer[100];
 
-	// just in case, change everything to lower case
-	for (int i = 0; i < displayType.size(); i++) {
-		displayType[i] = tolower(displayType[i]);
-	}
+	displayType = displayType.substr(0, displayType.size() - 2);
 
 	if (displayType == "today" || displayType == "") {
 		string currentDate = getTodayDate();
