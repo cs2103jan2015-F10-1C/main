@@ -89,7 +89,6 @@ public:
 	string searchTask(string);
 	string deleteTask(string);
 	string editTask(string);
-	bool getTask(Task*, string);
 	bool isSameTask(Task*, Task*);
 	void identifyChange(string*, string*);
 	string getAllInfoOfOneTask(Task*);
