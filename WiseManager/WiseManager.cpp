@@ -1,4 +1,4 @@
-#include"WiseManager.h"
+﻿#include"WiseManager.h"
 using namespace std;
 
 const int ADD_TYPE = 1;
@@ -21,7 +21,7 @@ const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please
 const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
 const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. Please re-input. \n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully.";
-const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your inputs.";
+const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your index that you have input.";
 const string MESSAGE_TO_DELETE = "Please select which of the following tasks you want to delete:";
 const string MESSAGE_TO_EDIT = "Please select the task number you want to edit:";
 const string MESSAGE_EDIT_INSTRUCTIONS = "Enter the category (des, date, time, prior), followed by the changes:";
@@ -633,8 +633,8 @@ string WiseManager::standardiseDate(string date) {
 	string standardisedDate;
 	string extract;
 	istringstream iss(date);
-	string day_extract = " ";
-	string month_extract = " ";
+	string day_extract = "";
+	string month_extract = "";
 
 	// get current date
 
@@ -1067,47 +1067,42 @@ string WiseManager::searchTask(string infoToBeSearched){
 
 }
 
-string WiseManager::deleteTask(string infoToBeDeleted){
-	string rubbish;
-
-	if (infoToBeDeleted == ""){
+string WiseManager::deleteTask(string indexToBeDeleted){
+	bool deleted = false;
+	if (indexToBeDeleted == ""){
 		return MESSAGE_NOT_DELETED;
 	}
-	bool canBeDeleted = false;
-	Task* currentTask = _tail->next;
-	vector<Task*> tasksWithInformation;
-	for (int i = 0; i < _size; i++){
-		if (haveThisInfo(infoToBeDeleted, currentTask)){
-			canBeDeleted = true;
-			tasksWithInformation.push_back(currentTask);
-		}
-		currentTask = currentTask->next;
-	}
 
-	if (canBeDeleted){
-		vector<Task*>::iterator Iter = tasksWithInformation.begin();
-		cout << MESSAGE_TO_DELETE << endl;
-		for (int lineNumber = 1; Iter != tasksWithInformation.end(); Iter++, lineNumber++){
-			cout << lineNumber << "." << getAllInfoOfOneTask(*Iter) << endl;
-		}
-		int lineToBeDeleted;
-		cin >> lineToBeDeleted;
-		cout << lineToBeDeleted;
-		getline(cin, rubbish);
-		Task* taskToDelete = _tail->next;
-		while (tasksWithInformation[lineToBeDeleted - 1]->details != taskToDelete->details){
-			taskToDelete = taskToDelete->next;
-			cout << taskToDelete->details << endl;
-		}
-		taskToDelete->prev->next = taskToDelete->next;
-		taskToDelete->next->prev = taskToDelete->prev;
-		delete taskToDelete;
-		taskToDelete = NULL;
-		_size--;
-		return MESSAGE_DELETED;
-	}
 	else{
-		return MESSAGE_NOT_DELETED;
+		indexToBeDeleted = indexToBeDeleted.substr(0, indexToBeDeleted.size() - 2);
+		Task* iterateList = _tail->next;
+
+		for (int i = 0; i < _size; i++){
+
+			if (indexToBeDeleted == iterateList->index){
+					if (iterateList == _tail) {
+						_tail = iterateList->prev;
+					}
+					iterateList->prev->next = iterateList->next;
+					iterateList->next->prev = iterateList->prev;
+					delete iterateList;
+					_size--;
+
+					deleted = true;
+					break;
+			}
+			else{
+				iterateList = iterateList->next;
+			}
+		}
+
+
+		if (deleted){
+			return MESSAGE_DELETED;
+		}
+		else{
+			return MESSAGE_NOT_DELETED;
+		}
 	}
 
 }
