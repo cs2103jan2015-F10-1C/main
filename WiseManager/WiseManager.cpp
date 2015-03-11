@@ -122,7 +122,7 @@ void WiseManager::transferDataToList(string taskLine){
 	item->details = taskLine.substr(detailPosition, findPosition(date, taskLine) - detailPosition);
 	item->date = taskLine.substr(datePosition, findPosition(time, taskLine) - datePosition);
 	item->time = taskLine.substr(timePosition, findPosition(priority, taskLine) - timePosition);
-	item->priority = taskLine.substr(priorityPosition);
+	item->priority = taskLine.substr(priorityPosition, taskLine.length()-2);
 
 	item->index = removeSpace(item->index);
 	item->details = removeSpace(item->details);
@@ -346,13 +346,13 @@ string WiseManager::addTask(string taskInformation) {
 void WiseManager::splitString(string userInput) {
 
 	istringstream iss(userInput);
-	string extract;
-	string buffer;
-	string details;
-	string date;
-	string time;
-	string priority;
-	string index;
+	string extract = "";
+	string buffer = "";
+	string details = "";
+	string date = "";
+	string time = "";
+	string priority = "";
+	string index = "";
 
 	while (iss) {
 
@@ -986,7 +986,7 @@ bool WiseManager::compareStrings(string infoToBeSearched, string infoToBeChecked
 				startingPosOfInfo++;
 			}
 
-			if (startingPosOfInfo == infoToBeSearched.length() - 2){ //take note need to include the -2 of the string length to run in UI
+			if (startingPosOfInfo == infoToBeSearched.length()){ 
 				return true;
 			}
 		}
@@ -1024,8 +1024,9 @@ bool WiseManager::haveThisInfo(string infoToBeSearched, Task* currentTask){
 	else{
 		priority = currentTask->priority;
 	}
-
-	return(compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
+	infoToBeSearched = infoToBeSearched.substr(0, infoToBeSearched.size() - 2); //take note need to include the -2 of the string length to run in UI
+	
+	return (compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) || 
 		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
 }
 
