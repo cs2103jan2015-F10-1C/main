@@ -18,7 +18,7 @@ const string MESSAGE_ERROR = "Invalid input. \n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched. \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please re-input. \n";
-const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
+const string MESSAGE_DISPLAY = "Displaying %s task(s) \r\n";
 const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. Please re-input. \n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully.";
 const string MESSAGE_NOT_DELETED = "The Task have been not been deleted. Please Check your index that you have input.";
@@ -376,15 +376,17 @@ void WiseManager::splitString(string userInput) {
 
 			extract = extract.substr(1); // removes the " at start of word
 
-			do{
-				if (details.empty()) {
-					details = extract;
-				}
-				else {
-					details = details + " " + extract;
-				}
-				iss >> extract;
-			} while (extract[extract.length() - 1] != '"');
+			if (extract[extract.length() - 1] != '"') {
+				do{
+					if (details.empty()) {
+						details = extract;
+					}
+					else {
+						details = details + " " + extract;
+					}
+					iss >> extract;
+				} while (extract[extract.length() - 1] != '"');
+			}
 
 			extract = extract.substr(0, extract.length() - 1); // remove the final "
 			details = details + " " + extract;
@@ -735,10 +737,10 @@ string WiseManager::standardiseDate(string date) {
 		month++;
 	}
 
-	if (day_extract == " ") {
+	if (day_extract == "") {
 		day_extract = to_string(day);
 	}
-	if (month_extract == " ") {
+	if (month_extract == "") {
 		month_extract = to_string(month);
 	}
 
@@ -1519,8 +1521,11 @@ string WiseManager::help(string desireCommand){
 			<< "4. display 3 march"															<< "\r\n"
 			<< "5. display 3/3"																<< "\r\n"
 			<< "to display task that are scheduled only on a specific date"					<< "\r\n"
-			<< "5. display high priority"													<< "\r\n"
+			<< "6. display high priority"													<< "\r\n"
 			<< "to display task that are scheduled based on priority"						<< "\r\n"
+			<< "7. display [day]"															<< "\r\n"
+			<< "to display task of the particular day"										
+			<< "\r\n"
 			<< "\r\n";
 	}
 	else if (desireCommand == "search"){
