@@ -1522,7 +1522,7 @@ string WiseManager::help(string desireCommand){
 			<< "4. display 3 march"															<< "\r\n"
 			<< "5. display 3/3"																<< "\r\n"
 			<< "to display task that are scheduled only on a specific date"					<< "\r\n"
-			<< "5. display high"															<< "\r\n"
+			<< "5. display high priority"													<< "\r\n"
 			<< "to display task that are scheduled based on priority"						<< "\r\n"
 			<< "\r\n";
 	}
