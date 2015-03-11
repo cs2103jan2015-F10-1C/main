@@ -1112,7 +1112,8 @@ string WiseManager::deleteTask(string infoToBeDeleted){
 }
 
 string WiseManager::editTask(string toEdit) {
-	string editIndex = toEdit.substr(0, 4);
+	string editIndex = toEdit.substr(0, 6);
+	cout << editIndex << endl;
 
 	Task* taskToEdit = _tail->next;
 	bool isFound = getTask(taskToEdit, editIndex);
@@ -1123,7 +1124,7 @@ string WiseManager::editTask(string toEdit) {
 	}
 	else
 	{
-		string change = toEdit.substr(4);
+		string change = toEdit.substr(6);
 		string category;
 		identifyChange(&category, &change);
 		if (category == "des"){
@@ -1212,6 +1213,7 @@ bool WiseManager::getTask(Task* matchingTask, string editIndex){
 			currentTask = currentTask->next;
 		}
 	}
+	return false;
 }
 	/*
 	if (infoIsFound){
