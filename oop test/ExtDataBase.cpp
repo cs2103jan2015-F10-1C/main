@@ -79,6 +79,7 @@ vector<string>* ExtDataBase::getContent() {
 				break;
 			}
 			getline(ifs, line);
+
 			line = "add " + line;
 			vec->push_back(line);
 		}

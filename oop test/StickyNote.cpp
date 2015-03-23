@@ -48,7 +48,6 @@ string StickyNote::getIndex() {
 	return _index;
 }
 
-<<<<<<< HEAD
 int StickyNote::getDay(){
 	return _day;
 }
@@ -60,10 +59,11 @@ void StickyNote::setDay(int day){
 }
 void StickyNote::setMonth(int month){
 	_month = month;
-=======
-string StickyNote::getStatus() {
+}
+
+string StickyNote::getStatus(){
 	return _status;
->>>>>>> origin/oop_test
+
 }
 
 void StickyNote::setDetails(string change) {
