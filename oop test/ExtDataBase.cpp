@@ -4,13 +4,13 @@
 ExtDataBase::ExtDataBase() {
 	ifstream ifs;
 	ofstream ofs;
-	ifs.open("../DirectoryStorage.txt");
+	ifs.open("DirectoryStorage.txt");
 
 	if (ifs.is_open()) {
 		getline(ifs, _currentLocation);
 	}
 	else {
-		ofs.open("../DirectoryStorage.txt");
+		ofs.open("DirectoryStorage.txt");
 		ofs << DEFAULT_SAVE_LOCATION;
 		_currentLocation = DEFAULT_SAVE_LOCATION;
 	}
@@ -28,6 +28,7 @@ string ExtDataBase::getLocation() {
 
 string ExtDataBase::setLocation(Storage& _storage, string newDirectory) {
 
+	newDirectory = newDirectory.substr(0, newDirectory.size() - 2);
 	ofstream ofs;
 	ofs.open(newDirectory);
 	bool isOpen = false;

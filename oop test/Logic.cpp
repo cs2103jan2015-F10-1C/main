@@ -88,3 +88,13 @@ void Logic::initialise() {
 	}
 	
 }
+
+string Logic::getCurrentDirectory(){
+	ifstream in;
+	in.open("DirectoryStorage.txt");
+	assert(in.is_open() == true);
+	string _currentDirectory;
+	getline(in, _currentDirectory);
+
+	return _currentDirectory;
+}

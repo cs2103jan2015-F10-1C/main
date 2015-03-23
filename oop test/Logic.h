@@ -23,11 +23,13 @@ private:
 	ExtDataBase _extdb;
 
 
+
 public:
 	Logic();
 	~Logic();
 	string handleInput(string);
 	void initialise();
+	string getCurrentDirectory();
 
 };
 
