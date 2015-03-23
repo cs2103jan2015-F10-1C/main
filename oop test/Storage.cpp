@@ -69,8 +69,14 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 	if (iter->getDate() != "unbounded event") {
 		oss << iter->getDate() << " ";
 	}
+	else {
+		oss << "99/99" << " ";
+	}
 	if (iter->getTime() != "All day event") {
 		oss << iter->getTime() << " ";
+	}
+	else {
+		oss << "99:99" << " ";
 	}
 	if (iter->getPriority() != "") {
 		oss << "-" << iter->getPriority(); 
