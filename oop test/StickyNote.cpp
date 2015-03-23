@@ -70,3 +70,7 @@ void StickyNote::setPriority(string change) {
 void StickyNote::setCategory(string change) {
 	_category = change;
 }
+
+void StickyNote::setIndex(string change) {
+	_index = change;
+}

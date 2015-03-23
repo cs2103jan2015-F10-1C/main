@@ -48,6 +48,11 @@ string Standardise::standardiseDate(string date) {
 		return date;
 	}
 
+	if (date == "99/99") {
+		return "unbounded event";
+	}
+
+
 	while (iss) {
 
 		iss >> extract;
@@ -141,6 +146,10 @@ string Standardise::standardiseTime(string inputTime) {
 
 	if (inputTime == "All day event") {
 		return inputTime;
+	}
+
+	if (inputTime == "99:99") {
+		return "All day event";
 	}
 
 	int hour_s;
@@ -243,13 +252,13 @@ string Standardise::standardiseTime(string inputTime) {
 
 }
 
-string Standardise::standardiseCategory(bool isADeadline, string date) {
+string Standardise::standardiseCategory(bool isADeadline, string time) {
 
 	if (isADeadline) {
 		return "Deadline";
 	}
 	else {
-		if (date == "unbounded event") {
+		if (time == "All day event") {
 			return "unbounded";
 		}
 		else {

@@ -28,5 +28,6 @@ public:
 	void setDate(string);
 	void setTime(string);
 	void setPriority(string);
+	void setIndex(string);
 };
 

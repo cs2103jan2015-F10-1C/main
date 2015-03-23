@@ -30,14 +30,95 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 		return MESSAGE_NO_INFO_GIVEN;
 	}
 
+	toEdit = toEdit.substr(7);
+	bool isUndo = false;
+	string type = toEdit.substr(0, 5); 
+	if (type == "undo ") {
+		isUndo = true;
+		toEdit = toEdit.substr(5);
+	}
+
 	size_t _size = _storage.getSize();
 	list<StickyNote>::iterator iter = _storage.getIter();
-	Standardise standard;
-	Date date;
+	
+	string details = "";
+	string date = "";
+	string time = "";
+	string priority;
+	string index = "";
+	string category = "";
+	bool isADeadline = false;
+	bool indexChange = false;
+	Date checkDate;
+	Standardise item;
+	
+	
+	//Standardise standard;
+	//Date date;
 
 	for (size_t i = 0; i < _size; i++, iter++) {
 		if (iter->getIndex() == editIndex) {
 
+			string undo;
+			undo = _storage.oneTaskInfoTypeTwo(iter);
+
+			HandleInput handleInput;
+
+			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
+
+			bool changeOccur = false;
+			
+			if (details != "" && details != iter->getDetails()) {
+				iter->setDetails(details);
+				changeOccur = true;
+			}
+
+			if (date != "" && date != "unbounded event" && date != iter->getDate()) {
+				date = item.standardiseDate(date);
+				iter->setDate(date);
+				index = handleInput.getIndex(date, _storage);
+				iter->setIndex(index);
+				if (!isUndo) {
+					undo = "edit " + index + " undo " + undo;
+					_undoEdit.push(undo);
+				}
+				changeOccur = true;
+			}
+
+			if (time != "" && time != "All day event" && time != iter->getTime()) {
+				time = item.standardiseTime(time);
+				if (date == "unbounded event" && time != "All day event") {
+					date = checkDate.getTodayDate();
+				}
+				iter->setTime(time);
+				iter->setDate(date);
+				changeOccur = true;
+			}
+
+			if (priority != "" && priority != iter->getPriority()) {
+				iter->setPriority(priority);
+				changeOccur = true;
+			}
+
+			category = item.standardiseCategory(isADeadline, time);
+			if (category != iter->getCategory()) {
+				iter->setCategory(category);
+				changeOccur = true;
+			}
+
+			if (!isUndo) {
+				undo = "edit " + editIndex + " undo " + undo;
+				_undoEdit.push(undo);
+			}
+			
+			if (changeOccur) {
+				return _storage.oneTaskInfoTypeOne(iter);
+			}
+			else {
+				return MESSAGE_ERROR;
+			}
+
+			/*
 			string undo;
 			undo = "edit " + editIndex + " des \"" + iter->getDetails() + "\"" + " date " + iter->getDate() + " time " + iter->getTime() + " prior " + iter->getPriority();
 			_undoEdit.push(undo);
@@ -109,32 +190,9 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 			else {
 				return MESSAGE_ERROR;
 			}
-			
-			
-			/*
-			identifyChange(&category, &change);
-			if (category == "des"){
-				iter->setDetails(change);
-				return _storage.oneTaskInfoTypeOne(iter);
-			}
-			else if (category == "date"){
-				change = standard.standardiseDate(change);
-				iter->setDate(change);
-				return _storage.oneTaskInfoTypeOne(iter);
-			}
-			else if (category == "time"){
-				change = standard.standardiseTime(change);
-				iter->setTime(change);
-				return _storage.oneTaskInfoTypeOne(iter);
-			}
-			else if (category == "prior"){
-				iter->setPriority(change);
-				return _storage.oneTaskInfoTypeOne(iter);
-			}
-			else {
-				return MESSAGE_ERROR;
-			}
 			*/
+			
+			
 		}
 
 	}
@@ -151,28 +209,6 @@ string ExecuteEdit::undo() {
 }
 
 /*
-void ExecuteEdit::identifyChange(string* category, string* change) {
-
-	int start = (*change).find_first_not_of(" ", 0);
-	int end = (*change).find_first_of(" ", start);
-	if (end < 0){
-		*category = (*change).substr(start);
-		*change = "";
-	}
-	else{
-		string temp = *change;
-		*category = temp.substr(start, end - start);
-		int startOfChange = temp.find_first_not_of(" ", end);
-		if (startOfChange < 0){
-			*change = "";
-		}
-		else{
-			*change = temp.substr(startOfChange);
-		}
-	}
-}
-*/
-
 bool ExecuteEdit::isKeyWord(string extract) {
 
 	if (extract == "des" || extract == "date" || extract == "time" || extract == "prior") {
@@ -181,3 +217,4 @@ bool ExecuteEdit::isKeyWord(string extract) {
 	return false;
 
 }
+*/
