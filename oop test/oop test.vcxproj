@@ -72,6 +72,7 @@
     <ClCompile Include="ExecuteDropDown.cpp" />
     <ClCompile Include="ExecuteEdit.cpp" />
     <ClCompile Include="ExecuteHelp.cpp" />
+    <ClCompile Include="ExecuteMark.cpp" />
     <ClCompile Include="ExecuteSearch.cpp" />
     <ClCompile Include="ExtDataBase.cpp" />
     <ClCompile Include="HandleInput.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="ExecuteDropDown.h" />
     <ClInclude Include="ExecuteEdit.h" />
     <ClInclude Include="ExecuteHelp.h" />
+    <ClInclude Include="ExecuteMark.h" />
     <ClInclude Include="ExecuteSearch.h" />
     <ClInclude Include="Executor.h" />
     <ClInclude Include="ExtDataBase.h" />

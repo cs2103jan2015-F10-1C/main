@@ -57,7 +57,8 @@ string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 		<< "Details: " << iter->getDetails() << "\r\n"
 		<< "Date: " << iter->getDate() << "\r\n"
 		<< "Time: " << iter->getTime() << "\r\n"
-		<< "Priority: " << iter->getPriority() << "\r\n";
+		<< "Priority: " << iter->getPriority() << "\r\n"
+		<< "Status: " << iter->getStatus() << "\r\n";
 	return oss.str();
 
 }
@@ -69,8 +70,14 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 	if (iter->getDate() != "unbounded event") {
 		oss << iter->getDate() << " ";
 	}
+	else {
+		oss << "99/99" << " ";
+	}
 	if (iter->getTime() != "All day event") {
 		oss << iter->getTime() << " ";
+	}
+	else {
+		oss << "99:99" << " ";
 	}
 	if (iter->getPriority() != "") {
 		oss << "-" << iter->getPriority(); 

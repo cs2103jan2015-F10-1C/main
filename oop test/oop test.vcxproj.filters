@@ -66,7 +66,11 @@
     <ClCompile Include="HandleInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ExecuteDropDown.cpp">
+=======
+    <ClCompile Include="ExecuteMark.cpp">
+>>>>>>> origin/oop_test
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +129,11 @@
     <ClInclude Include="HandleInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ExecuteDropDown.h">
+=======
+    <ClInclude Include="ExecuteMark.h">
+>>>>>>> origin/oop_test
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -38,6 +38,7 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 	StickyNote note;
 	note.setEverything(details, date, time, priority, index);
 	note.setCategory(category);
+	note.setStatus("incomplete");
 	string result = _storage.addNewNote(note);
 
 	string undo;

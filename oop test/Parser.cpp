@@ -76,6 +76,9 @@ UserTask* Parser::parse(string command) {
 	else if (command == "undo") {
 		_task->setCommand(COMMAND::UNDO);
 	}
+	else if (command == "mark") {
+		_task->setCommand(COMMAND::MARK);
+	}
 	else
 		_task->setCommand(COMMAND::ERROR);
 
