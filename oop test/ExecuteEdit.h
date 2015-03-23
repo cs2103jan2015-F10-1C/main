@@ -5,6 +5,8 @@
 #include "UserTask.h"
 #include "Standardise.h"
 #include "ExtDataBase.h"
+#include "Date.h"
+#include "HandleInput.h"
 
 class ExecuteEdit : public Executor {
 private:
@@ -19,6 +21,6 @@ public:
 	string undo();
 
 	//void identifyChange(string*, string*);
-	bool isKeyWord(string);
+	//bool isKeyWord(string);
 };
 

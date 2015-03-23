@@ -14,7 +14,6 @@ int main() {
 		result = logic->handleInput(input);
 		cout << result;
 
-
 	}
 
 

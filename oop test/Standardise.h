@@ -12,5 +12,6 @@ public:
 	~Standardise();
 	string standardiseDate(string);
 	string standardiseTime(string);
+	string standardiseCategory(bool, string);
 };
 
