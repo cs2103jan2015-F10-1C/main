@@ -69,6 +69,7 @@
     <ClCompile Include="ExecuteDelete.cpp" />
     <ClCompile Include="ExecuteDirectory.cpp" />
     <ClCompile Include="ExecuteDisplay.cpp" />
+    <ClCompile Include="ExecuteDropDown.cpp" />
     <ClCompile Include="ExecuteEdit.cpp" />
     <ClCompile Include="ExecuteHelp.cpp" />
     <ClCompile Include="ExecuteSearch.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="ExecuteDelete.h" />
     <ClInclude Include="ExecuteDirectory.h" />
     <ClInclude Include="ExecuteDisplay.h" />
+    <ClInclude Include="ExecuteDropDown.h" />
     <ClInclude Include="ExecuteEdit.h" />
     <ClInclude Include="ExecuteHelp.h" />
     <ClInclude Include="ExecuteSearch.h" />
