@@ -13,6 +13,7 @@ ExecuteDisplay::~ExecuteDisplay()
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string displayType = _task->getRemaining();
+	displayType = displayType.substr(0, displayType.size() - 2);
 	ostringstream oss;
 	int counter = 1;
 	char buffer[100];
@@ -31,7 +32,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 	else if (displayType == "today" || displayType == "") {
 		string currentDate = checkDate.getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getDate() == currentDate) {
 				oss << counter << ". " << iter->getDetails()
