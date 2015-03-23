@@ -66,6 +66,8 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteSearch(task);
 	case DISPLAY:
 		return new ExecuteDisplay(task);
+	case DISPLAYDROPDOWN:
+		return new ExecuteDropDown(task);
 	case HELP:
 		return new ExecuteHelp(task);
 	case DIRECTORY:
