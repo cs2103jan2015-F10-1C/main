@@ -12,7 +12,7 @@ Logic::~Logic() {
 }
 
 string Logic::handleInput(string userInput) {
-
+	
 	UserTask* task = _parser->parse(userInput);
 	string result;
 	Executor* executor;
