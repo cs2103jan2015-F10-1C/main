@@ -33,6 +33,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 	size_t _size = _storage.getSize();
 	list<StickyNote>::iterator iter = _storage.getIter();
 	Standardise standard;
+	Date date;
 
 	for (size_t i = 0; i < _size; i++, iter++) {
 		if (iter->getIndex() == editIndex) {
@@ -82,6 +83,9 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 					else if (extract == "time") {
 						con = standard.standardiseTime(con);
 						iter->setTime(con);
+						if (iter->getDate() == "" || iter->getDate() == "unbounded event") {
+							iter->setDate(date.getTodayDate());
+						}
 						changeOccured = true;
 
 					}

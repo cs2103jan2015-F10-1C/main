@@ -242,3 +242,19 @@ string Standardise::standardiseTime(string inputTime) {
 	return changed;
 
 }
+
+string Standardise::standardiseCategory(bool isADeadline, string date) {
+
+	if (isADeadline) {
+		return "Deadline";
+	}
+	else {
+		if (date == "unbounded event") {
+			return "unbounded";
+		}
+		else {
+			return "normal";
+		}
+	}
+
+}

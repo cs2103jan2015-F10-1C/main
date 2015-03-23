@@ -20,6 +20,10 @@ void StickyNote::setEverything(string details, string date, string time, string 
 
 }
 
+string StickyNote::getCategory() {
+	return _category;
+}
+
 string StickyNote::getDetails() {
 	return _details;
 
@@ -61,4 +65,8 @@ void StickyNote::setTime(string change) {
 void StickyNote::setPriority(string change) {
 	_priority = change;
 
+}
+
+void StickyNote::setCategory(string change) {
+	_category = change;
 }

@@ -25,5 +25,6 @@ public:
 	bool isPriority(string);
 	bool isTime(string);
 	bool isBuffer(string);
+	bool isDeadline(string);
 };
 

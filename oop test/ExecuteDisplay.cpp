@@ -90,8 +90,9 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (displayType == "all") {
 		for (size_t i = 0; i < _size; i++, iter++){
-			oss << "[" << iter->getIndex() << "]" << ". Details: " << iter->getDetails() << "\r\n" << "Date: " << iter->getDate() << "\r\n" <<
-				"Time: " << iter->getTime() << "\r\n" << "Priority: " << iter->getPriority() << "\r\n" << "\r\n";
+			oss << "[" << iter->getIndex() << "]" << " [" << iter->getCategory() << "]" << "\r\n" 
+				<< "Details: " << iter->getDetails() << "\r\n" << "Date: " << iter->getDate() << "\r\n" 
+				<< "Time: " << iter->getTime() << "\r\n" << "Priority: " << iter->getPriority() << "\r\n" << "\r\n";
 		}
 	}
 	else{

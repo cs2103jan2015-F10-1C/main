@@ -22,6 +22,9 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 	string time;
 	string priority;
 	string index;
+	string category;
+	string deadline;
+	bool isADeadline = false;
 	Date checkDate;
 
 	while (iss) {
@@ -65,6 +68,10 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 			priority = extract.substr(1); // to remove "-"
 		}
 		else if (isTime(extract)) {
+			if (!deadline.empty()) {
+				isADeadline = true;
+				deadline.clear();
+			}
 			if (time.empty()) {
 				time = extract;
 			}
@@ -76,6 +83,10 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 			buffer.clear();
 		}
 		else if (checkDate.isDate1(extract)) { // date1 means there are more things to extract adjacent to it, either before or after. 
+			if (!deadline.empty()) {
+				isADeadline = true;
+				deadline.clear();
+			}
 			if (!buffer.empty()) {
 				date = buffer + " " + extract;
 			}
@@ -87,6 +98,10 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 			buffer.clear();
 		}
 		else if (checkDate.isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
+			if (!deadline.empty()) {
+				isADeadline = true;
+				deadline.clear();
+			}
 			if (buffer == "on") {
 				buffer.clear();
 			}
@@ -112,10 +127,37 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 				buffer = buffer + " " + extract;
 			}
 		}
+		else if (isDeadline(extract)) {
+			
+			if (extract == "be" && buffer == "to" && deadline.empty()) {
+				deadline = buffer + " " + extract;
+				buffer.clear();
+			}
+			else if (extract == "be" && buffer != "to") {
+				buffer = buffer + " " + extract;
+			}
+			else if ((extract == "by" && deadline.empty() ) || ( extract == "before" && deadline.empty() ) ) {
+				deadline = extract;
+			}
+			else if (extract == "by" || extract == "on" || extract == "is" || extract == "before") {
+				if (deadline != "due" || deadline != "end" || deadline != "finish" || deadline != "ready" || deadline != "deadline"
+					|| deadline != "prepare" || deadline != "complete" || deadline != "done" || deadline != "finished" 
+					|| deadline != "prepared" || deadline != "completed") {
+					buffer = buffer + " " + extract;
+				}
+			}
+			else {
+				deadline = deadline + " " + extract;
+			}
+		}
 		else {
 			if (!buffer.empty()) {
 				details = details + " " + buffer;
 				buffer.clear();
+			}
+			if (!deadline.empty()) {
+				details = details + " " + deadline;
+				deadline.clear();
 			}
 			if (details.empty()) {
 				details = extract;
@@ -127,13 +169,18 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 	} // end while(iss)
 
 	Standardise item;
-	date = item.standardiseDate(date);
 	time = item.standardiseTime(time);
+	date = item.standardiseDate(date);
+	if (date == "unbounded event" && time != "All day event") {
+		date = checkDate.getTodayDate();
+	}
+	category = item.standardiseCategory(isADeadline, date);
 	index = getIndex(date, _storage);
 
 
 	StickyNote note;
 	note.setEverything(details, date, time, priority, index);
+	note.setCategory(category);
 	string result = _storage.addNewNote(note);
 
 	string undo;
@@ -252,6 +299,21 @@ bool ExecuteAdd::isBuffer(string str) {
 	}
 	return false;
 }
+
+bool ExecuteAdd::isDeadline(string str) {
+
+	string deadlineKey[13] = { "be", "due", "finish", "end", "ready", "prepare", "complete", "done", "before", "by", "on", "deadline", "is" }; 
+	int pos = -1;
+
+	for (size_t i = 0; i < 13; i++) {
+		pos = str.find(deadlineKey[i]);
+		if (pos == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
 
 string ExecuteAdd::undo() {
 
