@@ -55,7 +55,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 		extract = displayType.substr(0, endOfPrior);
 
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getPriority() == extract) {
 				oss << counter << ". " << iter->getDetails()
@@ -73,7 +73,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 		Standardise standard;
 		string inputDate = standard.standardiseDate(displayType);
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getDate() == inputDate) {
 				oss << counter << ". " << iter->getDetails()
