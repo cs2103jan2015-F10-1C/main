@@ -14,12 +14,12 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string userInput = _task->getRemaining();
 
-	string details;
-	string date;
-	string time;
-	string priority;
-	string index;
-	string category;
+	string details="";
+	string date = "";
+	string time = "";
+	string priority = "";
+	string index = "";
+	string category = "";
 	HandleInput handleInput;
 	bool isADeadline = false;
 	Date checkDate;

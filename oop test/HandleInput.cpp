@@ -155,6 +155,10 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 		}
 	} // end while(iss)
 
+	int startingPos = details.find_first_not_of(" ");
+	if (startingPos >= 0){
+		details = details.substr(startingPos);
+	}
 }
 
 
