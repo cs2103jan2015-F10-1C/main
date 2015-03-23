@@ -31,10 +31,11 @@ const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been cha
 const string MESSAGE_DIRECTORY_NOT_CHANGED = "The new directory is not found. Please re-input. \n";
 const string MESSAGE_INVALID_HELP = "Help is available for the following functions: \nadd, display, delete, edit, search, directory. \nPlease key in, for example: \"help add\" to learn more about the add function.\n";
 const string MESSAGE_INVALID_UNDO = "There is nothing to undo. \n"; 
+const string MESSAGE_MARKED = "task has been marked as cleared\n";
 
 
-const string DEFAULT_SAVE_LOCATION = "D:/storage.txt";
+const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";
 
 enum COMMAND {
-	ADD,DELETE,EDIT,SEARCH,DISPLAY,DIRECTORY,HELP,ERROR,EXIT,UNDO
+	ADD,DELETE,EDIT,SEARCH,DISPLAY,DIRECTORY,HELP,ERROR,EXIT,UNDO,MARK
 };

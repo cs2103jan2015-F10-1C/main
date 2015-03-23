@@ -12,6 +12,7 @@ private:
 		string _time = "";
 		string _priority = "";
 		string _index = "";
+		string _status = "";
 
 public:
 	StickyNote(void);
@@ -23,11 +24,13 @@ public:
 	string getPriority();
 	string getIndex();
 	string getCategory();
+	string getStatus();
 	void setCategory(string);
 	void setDetails(string);
 	void setDate(string);
 	void setTime(string);
 	void setPriority(string);
 	void setIndex(string);
+	void setStatus(string);
 };
 

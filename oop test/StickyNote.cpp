@@ -48,6 +48,10 @@ string StickyNote::getIndex() {
 	return _index;
 }
 
+string StickyNote::getStatus() {
+	return _status;
+}
+
 void StickyNote::setDetails(string change) {
 	_details = change;
 }
@@ -73,4 +77,8 @@ void StickyNote::setCategory(string change) {
 
 void StickyNote::setIndex(string change) {
 	_index = change;
+}
+
+void StickyNote::setStatus(string change) {
+	_status = change;
 }

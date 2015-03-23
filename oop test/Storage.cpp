@@ -57,7 +57,8 @@ string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 		<< "Details: " << iter->getDetails() << "\r\n"
 		<< "Date: " << iter->getDate() << "\r\n"
 		<< "Time: " << iter->getTime() << "\r\n"
-		<< "Priority: " << iter->getPriority() << "\r\n";
+		<< "Priority: " << iter->getPriority() << "\r\n"
+		<< "Status: " << iter->getStatus() << "\r\n";
 	return oss.str();
 
 }

@@ -89,3 +89,13 @@ vector<string>* ExtDataBase::getContent() {
 	return vec;
 }
 
+void ExtDataBase::archive(string done) {
+
+	ofstream ofs;
+	ofs.open("../archive.txt", ios::app);
+	if (ofs.is_open()) {
+		ofs << done << endl;
+	}
+	ofs.close();
+	return;
+}

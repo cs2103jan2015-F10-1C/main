@@ -46,8 +46,8 @@ string Logic::handleInput(string userInput) {
 			 if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
 				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY) {
 				 _inputHistory.push(executor);
-				 _extdb.autoSave(_storage);
 			 }
+			 _extdb.autoSave(_storage);
 		 }
 
 	return result;
@@ -68,6 +68,8 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteDisplay(task);
 	case HELP:
 		return new ExecuteHelp(task);
+	case MARK:
+		return new ExecuteMark(task);
 	case DIRECTORY:
 		return new ExecuteDirectory(task);
 	};
