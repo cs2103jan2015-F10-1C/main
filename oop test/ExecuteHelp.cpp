@@ -20,7 +20,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 		return MESSAGE_INVALID_HELP;
 	}
 
-	//desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
+	desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
 	if (desireCommand == "add"){
 
 		oss << "To use the add function, it should be input in the following format: " << "\r\n"
@@ -75,7 +75,11 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 			<< "6. display high priority" << "\r\n"
 			<< "to display task that are scheduled based on priority" << "\r\n"
 			<< "7. display [day]" << "\r\n"
-			<< "to display task of the particular day"
+			<< "to display task of the particular day" << "\r\n"
+			<< "8. display month mar" << "\r\n"
+			<< "to display task of march" << "\r\n"
+			<< "9. display month march" << "\r\n"
+			<< "to display task of march"
 			<< "\r\n"
 			<< "\r\n";
 	}
