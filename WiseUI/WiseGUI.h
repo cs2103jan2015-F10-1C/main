@@ -19,8 +19,12 @@
 #include<iostream>
 #include<vector>
 #include <cassert>
+#include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
 
+AutomatedTesting* autoTest = new AutomatedTesting;
+vector<string> testCases;
+string test = "";
 
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
 
@@ -51,6 +55,14 @@ namespace WiseUI {
 			String^ directory = gcnew String(temp.c_str());
 			SavingDirectoryBox->Text = directory;
 
+			testCases = autoTest->getTestCases();
+			for (int i = 0; i < testCases.size(); i++){
+				test = testCases[i]+"\r\n";
+				String^ testMStr = gcnew String(test.c_str());
+				CmdLineBox->Text = testMStr;
+				test = "";
+			}
+
 			//
 			//TODO: Add the constructor code here
 			//
@@ -73,6 +85,7 @@ namespace WiseUI {
 	private: System::Windows::Forms::Button^  Enter;
 
 	protected: Logic* logic;
+			   
 
 
 	private: System::Windows::Forms::ComboBox^  dropdownBox;

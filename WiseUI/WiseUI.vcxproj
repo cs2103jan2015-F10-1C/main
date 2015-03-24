@@ -84,9 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutomatedTesting.cpp" />
     <ClCompile Include="WiseGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutomatedTesting.h" />
     <ClInclude Include="WiseGUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>

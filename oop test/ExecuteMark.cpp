@@ -13,6 +13,7 @@ ExecuteMark::~ExecuteMark()
 string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb) {
 
 	string index = _task->getRemaining();
+	index = index.substr(0, index.size() - 2);
 
 	if (index.size() != 6) {
 		return MESSAGE_ERROR;
