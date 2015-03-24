@@ -1,140 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="ExecuteAdd.cpp" />
+    <ClCompile Include="ExecuteDelete.cpp" />
+    <ClCompile Include="ExecuteDirectory.cpp" />
+    <ClCompile Include="ExecuteDisplay.cpp" />
+    <ClCompile Include="ExecuteDropDown.cpp" />
+    <ClCompile Include="ExecuteEdit.cpp" />
+    <ClCompile Include="ExecuteHelp.cpp" />
+    <ClCompile Include="ExecuteMark.cpp" />
+    <ClCompile Include="ExecuteSearch.cpp" />
+    <ClCompile Include="ExtDataBase.cpp" />
+    <ClCompile Include="HandleInput.cpp" />
+    <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Standardise.cpp" />
+    <ClCompile Include="StickyNote.cpp" />
+    <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="UserTask.cpp" />
+    <ClCompile Include="ExecuteSort.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Storage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StickyNote.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UserTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteAdd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Standardise.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteDelete.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteSearch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteDisplay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Date.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteHelp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExtDataBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExecuteDirectory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HandleInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="ExecuteDropDown.cpp">
-=======
-    <ClCompile Include="ExecuteMark.cpp">
->>>>>>> origin/oop_test
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Logic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Storage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StickyNote.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Executor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteAdd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Standardise.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteDelete.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteEdit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteSearch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteDisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Date.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteHelp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExtDataBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExecuteDirectory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HandleInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="ExecuteDropDown.h">
-=======
-    <ClInclude Include="ExecuteMark.h">
->>>>>>> origin/oop_test
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="Date.h" />
+    <ClInclude Include="ExecuteAdd.h" />
+    <ClInclude Include="ExecuteDelete.h" />
+    <ClInclude Include="ExecuteDirectory.h" />
+    <ClInclude Include="ExecuteDisplay.h" />
+    <ClInclude Include="ExecuteDropDown.h" />
+    <ClInclude Include="ExecuteEdit.h" />
+    <ClInclude Include="ExecuteHelp.h" />
+    <ClInclude Include="ExecuteMark.h" />
+    <ClInclude Include="ExecuteSearch.h" />
+    <ClInclude Include="Executor.h" />
+    <ClInclude Include="ExtDataBase.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="HandleInput.h" />
+    <ClInclude Include="Logic.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Standardise.h" />
+    <ClInclude Include="StickyNote.h" />
+    <ClInclude Include="Storage.h" />
+    <ClInclude Include="UserTask.h" />
+    <ClInclude Include="ExecuteSort.h" />
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.1! \n";
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.2! \n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
 
@@ -30,7 +30,8 @@ const string MESSAGE_NO_TASK_FOUND = "No task found. \n";
 const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
 const string MESSAGE_DIRECTORY_NOT_CHANGED = "The new directory is not found. Please re-input. \n";
 const string MESSAGE_INVALID_HELP = "Help is available for the following functions: \nadd, display, delete, edit, search, directory. \nPlease key in, for example: \"help add\" to learn more about the add function.\n";
-const string MESSAGE_INVALID_UNDO = "There is nothing to undo. \n"; 
+const string MESSAGE_INVALID_UNDO = "There is nothing to undo. \n";
+const string MESSAGE_INVALID_SORT = "The sort criteria is invalid. \n";
 const string MESSAGE_MARKED = "task has been marked as cleared\n";
 
 
@@ -38,6 +39,6 @@ const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";
 
 enum COMMAND {
 
-	ADD,DELETE,EDIT,SEARCH,DISPLAY,DISPLAYDROPDOWN,DIRECTORY,HELP,ERROR,EXIT,UNDO, MARK
+	ADD,DELETE,EDIT,SEARCH,DISPLAY,SORT,DISPLAYDROPDOWN,DIRECTORY,HELP,ERROR,EXIT,UNDO, MARK
 
 };

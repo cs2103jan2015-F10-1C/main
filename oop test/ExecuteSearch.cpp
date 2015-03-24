@@ -13,6 +13,7 @@ ExecuteSearch::~ExecuteSearch()
 string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string infoToBeSearched = _task->getRemaining();
+	infoToBeSearched = infoToBeSearched.substr(0, infoToBeSearched.size() - 2);
 	list<StickyNote>::iterator iter;
 	iter = _storage.getIter();
 	int _size = _storage.getSize();

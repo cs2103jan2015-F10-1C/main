@@ -9,6 +9,7 @@
 #include "ExecuteSearch.h"
 #include "ExecuteDisplay.h"
 #include "ExecuteDropDown.h"
+#include "ExecuteSort.h"
 #include "ExecuteHelp.h"
 #include "ExtDataBase.h"
 #include "ExecuteDirectory.h"
@@ -28,7 +29,7 @@ private:
 public:
 	Logic();
 	~Logic();
-	string handleInput(string);
+	string handleInput(string, bool&);
 	void initialise();
 	string getCurrentDirectory();
 
