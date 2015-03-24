@@ -14,6 +14,7 @@ public:
 	ExecuteDisplay(UserTask*);
 	~ExecuteDisplay();
 
+	bool checkIsMonth(string, string&, Storage&);
 	string execute(Storage&, ExtDataBase);
 	string undo();
 };
