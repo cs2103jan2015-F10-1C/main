@@ -23,7 +23,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 	desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
 	if (desireCommand == "add"){
 
-		oss << "To use the add function, it should be input in the following format: " << "\r\n"
+		oss << "To use ADD, it should be input in the following format: " << "\r\n"
 			<< "\r\n"
 			<< "1. add <details of the task> date time -priority				or" << "\r\n"
 			<< "2. add <details of the task> time date -priority				or" << "\r\n" << "\r\n"
@@ -63,7 +63,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (desireCommand == "display"){
 
-		oss << "To use the display function, it should be input in the following format: " << "\r\n"
+		oss << "To use DISPLAY, it should be input in the following format: " << "\r\n"
 			<< "1. display" << "\r\n"
 			<< "2. display today" << "\r\n"
 			<< "to display task that are scheduled only for today" << "\r\n"
@@ -85,7 +85,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (desireCommand == "search"){
 
-		oss << "To use the search function, it should be input in the following format: " << "\r\n"
+		oss << "To use SEARCH, it should be input in the following format: " << "\r\n"
 			<< "search <task description>" << "\r\n"
 			<< "the function will then return the tasks with the keywords input by the user. " << "\r\n"
 			<< "please take note the the task indexes (6 number) as they will be used for delete and edit purposes" << "\r\n"
@@ -93,7 +93,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (desireCommand == "delete"){
 
-		oss << "To use the delete function, it should be input in the following format: " << "\r\n"
+		oss << "To use DELETE, it should be input in the following format: " << "\r\n"
 			<< "delete <task index>" << "\r\n"
 			<< "1. delete 000001" << "\r\n"
 			<< "the function will then delete the task with the 000001 index in the task list. " << "\r\n"
@@ -101,7 +101,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (desireCommand == "edit"){
 
-		oss << "To use the edit function, it should be input in the following format: " << "\r\n"
+		oss << "To use EDIT, it should be input in the following format: " << "\r\n"
 			<< "edit <task index> <edit target> <edit informations>" << "\r\n"
 			<< "1. edit 000001 des physics homework" << "\r\n"
 			<< "2. edit 000002 date 13 march" << "\r\n"
@@ -110,11 +110,17 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 			<< "the function will edit the task specified with the task index and then modified the categories of the task accordingly."
 			<< "\r\n";
 	}
-
 	else if (desireCommand == "directory"){
-		oss << "To use the edit function, it should be input in the following format: " << "\r\n"
+		oss << "To CHANGE DIRECTORY, it should be input in the following format: " << "\r\n"
 			<< "directory <new file directory>" << "\r\n"
 			<< "1. directory D:\\savefile.txt"
+			<< "\r\n";
+	}
+	else if (desireCommand == "sort"){
+		oss << "To use SORT, it should be input in the following format: " << "\r\n"
+			<< "sort by <criteria>" << "\r\n"
+			<< "1. sort by date" << "\r\n"
+			<< "2. sort by priority"
 			<< "\r\n";
 	}
 	else{
