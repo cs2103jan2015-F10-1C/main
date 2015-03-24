@@ -20,6 +20,10 @@ void StickyNote::setEverything(string details, string date, string time, string 
 
 }
 
+string StickyNote::getCategory() {
+	return _category;
+}
+
 string StickyNote::getDetails() {
 	return _details;
 
@@ -44,6 +48,24 @@ string StickyNote::getIndex() {
 	return _index;
 }
 
+int StickyNote::getDay(){
+	return _day;
+}
+int StickyNote::getMonth(){
+	return _month;
+}
+void StickyNote::setDay(int day){
+	_day = day;
+}
+void StickyNote::setMonth(int month){
+	_month = month;
+}
+
+string StickyNote::getStatus(){
+	return _status;
+
+}
+
 void StickyNote::setDetails(string change) {
 	_details = change;
 }
@@ -61,4 +83,16 @@ void StickyNote::setTime(string change) {
 void StickyNote::setPriority(string change) {
 	_priority = change;
 
+}
+
+void StickyNote::setCategory(string change) {
+	_category = change;
+}
+
+void StickyNote::setIndex(string change) {
+	_index = change;
+}
+
+void StickyNote::setStatus(string change) {
+	_status = change;
 }

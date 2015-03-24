@@ -7,6 +7,7 @@
 #include "Standardise.h"
 #include "Date.h"
 #include "ExtDataBase.h"
+#include "HandleInput.h"
 
 class ExecuteAdd : public Executor {
 private:
@@ -19,11 +20,5 @@ public:
 
 	string execute(Storage&, ExtDataBase);
 	string undo();
-
-	string getIndex(string, Storage);
-	bool isSpecialDetail(string);
-	bool isPriority(string);
-	bool isTime(string);
-	bool isBuffer(string);
 };
 

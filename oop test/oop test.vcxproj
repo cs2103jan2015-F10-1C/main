@@ -16,7 +16,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -69,10 +69,13 @@
     <ClCompile Include="ExecuteDelete.cpp" />
     <ClCompile Include="ExecuteDirectory.cpp" />
     <ClCompile Include="ExecuteDisplay.cpp" />
+    <ClCompile Include="ExecuteDropDown.cpp" />
     <ClCompile Include="ExecuteEdit.cpp" />
     <ClCompile Include="ExecuteHelp.cpp" />
+    <ClCompile Include="ExecuteMark.cpp" />
     <ClCompile Include="ExecuteSearch.cpp" />
     <ClCompile Include="ExtDataBase.cpp" />
+    <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -87,12 +90,15 @@
     <ClInclude Include="ExecuteDelete.h" />
     <ClInclude Include="ExecuteDirectory.h" />
     <ClInclude Include="ExecuteDisplay.h" />
+    <ClInclude Include="ExecuteDropDown.h" />
     <ClInclude Include="ExecuteEdit.h" />
     <ClInclude Include="ExecuteHelp.h" />
+    <ClInclude Include="ExecuteMark.h" />
     <ClInclude Include="ExecuteSearch.h" />
     <ClInclude Include="Executor.h" />
     <ClInclude Include="ExtDataBase.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="HandleInput.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Standardise.h" />

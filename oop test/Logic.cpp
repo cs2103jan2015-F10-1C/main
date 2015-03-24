@@ -12,7 +12,7 @@ Logic::~Logic() {
 }
 
 string Logic::handleInput(string userInput) {
-
+	
 	UserTask* task = _parser->parse(userInput);
 	string result;
 	Executor* executor;
@@ -46,8 +46,8 @@ string Logic::handleInput(string userInput) {
 			 if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
 				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY) {
 				 _inputHistory.push(executor);
-				 _extdb.autoSave(_storage);
 			 }
+			 _extdb.autoSave(_storage);
 		 }
 
 	return result;
@@ -66,8 +66,12 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteSearch(task);
 	case DISPLAY:
 		return new ExecuteDisplay(task);
+	case DISPLAYDROPDOWN:
+		return new ExecuteDropDown(task);
 	case HELP:
 		return new ExecuteHelp(task);
+	case MARK:
+		return new ExecuteMark(task);
 	case DIRECTORY:
 		return new ExecuteDirectory(task);
 	};
@@ -85,4 +89,14 @@ void Logic::initialise() {
 		execute->execute(_storage, _extdb);
 	}
 	
+}
+
+string Logic::getCurrentDirectory(){
+	ifstream in;
+	in.open("DirectoryStorage.txt");
+	assert(in.is_open() == true);
+	string _currentDirectory;
+	getline(in, _currentDirectory);
+
+	return _currentDirectory;
 }

@@ -63,6 +63,16 @@
     <ClCompile Include="ExecuteDirectory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HandleInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="ExecuteDropDown.cpp">
+=======
+    <ClCompile Include="ExecuteMark.cpp">
+>>>>>>> origin/oop_test
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logic.h">
@@ -114,6 +124,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExecuteDirectory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="ExecuteDropDown.h">
+=======
+    <ClInclude Include="ExecuteMark.h">
+>>>>>>> origin/oop_test
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

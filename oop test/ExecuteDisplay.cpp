@@ -13,6 +13,7 @@ ExecuteDisplay::~ExecuteDisplay()
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string displayType = _task->getRemaining();
+	displayType = displayType.substr(0, displayType.size() - 2);
 	ostringstream oss;
 	int counter = 1;
 	char buffer[100];
@@ -31,7 +32,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 	else if (displayType == "today" || displayType == "") {
 		string currentDate = checkDate.getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getDate() == currentDate) {
 				oss << counter << ". " << iter->getDetails()
@@ -54,7 +55,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 		extract = displayType.substr(0, endOfPrior);
 
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), displayType.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getPriority() == extract) {
 				oss << counter << ". " << iter->getDetails()
@@ -72,7 +73,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 		Standardise standard;
 		string inputDate = standard.standardiseDate(displayType);
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), inputDate.c_str());
-		oss << buffer;
+		oss << buffer << "\r\n";
 		for (size_t i = 0; i < _size; i++, iter++) {
 			if (iter->getDate() == inputDate) {
 				oss << counter << ". " << iter->getDetails()
@@ -90,8 +91,9 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 	}
 	else if (displayType == "all") {
 		for (size_t i = 0; i < _size; i++, iter++){
-			oss << "[" << iter->getIndex() << "]" << ". Details: " << iter->getDetails() << "\r\n" << "Date: " << iter->getDate() << "\r\n" <<
-				"Time: " << iter->getTime() << "\r\n" << "Priority: " << iter->getPriority() << "\r\n" << "\r\n";
+			oss << "[" << iter->getIndex() << "]" << " [" << iter->getCategory() << "]" << "\r\n" 
+				<< "Details: " << iter->getDetails() << "\r\n" << "Date: " << iter->getDate() << "\r\n" 
+				<< "Time: " << iter->getTime() << "\r\n" << "Priority: " << iter->getPriority() << "\r\n" << "\r\n";
 		}
 	}
 	else{

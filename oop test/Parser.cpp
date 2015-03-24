@@ -67,11 +67,17 @@ UserTask* Parser::parse(string command) {
 	else if (command == "directory") {
 		_task->setCommand(COMMAND::DIRECTORY);
 	}
+	else if (command == "displaydropdown") {
+		_task->setCommand(COMMAND::DISPLAYDROPDOWN);
+	}
 	else if (command == "help") {
 		_task->setCommand(COMMAND::HELP);
 	}
 	else if (command == "undo") {
 		_task->setCommand(COMMAND::UNDO);
+	}
+	else if (command == "mark") {
+		_task->setCommand(COMMAND::MARK);
 	}
 	else
 		_task->setCommand(COMMAND::ERROR);

@@ -6,6 +6,7 @@
 class ExtDataBase {
 private:
 	string _currentLocation;
+	string _name;
 
 public:
 	ExtDataBase();
@@ -15,5 +16,6 @@ public:
 	string setLocation(Storage&, string);
 	void autoSave(Storage&);
 	vector<string>* getContent();
+	void archive(string);
 
 };
