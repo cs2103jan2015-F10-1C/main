@@ -12,7 +12,7 @@ ExecuteDropDown::~ExecuteDropDown()
 
 string ExecuteDropDown::execute(Storage& _storage, ExtDataBase extdb) {
 
-	string userInput = _task->getRemaining(); cout << userInput << endl;
+	string userInput = _task->getRemaining();
 	assert(checkingOption(userInput) == true);
 
 	if (userInput == "Display All Tasks"){

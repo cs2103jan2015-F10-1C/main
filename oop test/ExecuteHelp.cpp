@@ -117,6 +117,9 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 			<< "1. directory D:\\savefile.txt"
 			<< "\r\n";
 	}
+	else{
+		return MESSAGE_INVALID_HELP;
+	}
 
 	return oss.str();
 }

@@ -74,6 +74,7 @@
     <ClCompile Include="ExecuteHelp.cpp" />
     <ClCompile Include="ExecuteMark.cpp" />
     <ClCompile Include="ExecuteSearch.cpp" />
+    <ClCompile Include="ExecuteSort.cpp" />
     <ClCompile Include="ExtDataBase.cpp" />
     <ClCompile Include="HandleInput.cpp" />
     <ClCompile Include="Logic.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="ExecuteHelp.h" />
     <ClInclude Include="ExecuteMark.h" />
     <ClInclude Include="ExecuteSearch.h" />
+    <ClInclude Include="ExecuteSort.h" />
     <ClInclude Include="Executor.h" />
     <ClInclude Include="ExtDataBase.h" />
     <ClInclude Include="Global.h" />
