@@ -54,7 +54,7 @@ namespace WiseUI {
 			string temp = logic->getCurrentDirectory();
 			String^ directory = gcnew String(temp.c_str());
 			SavingDirectoryBox->Text = directory;
-
+/*
 			testCases = autoTest->getTestCases();
 			for (int i = 0; i < testCases.size(); i++){
 				test = testCases[i]+"\r\n";
@@ -62,7 +62,7 @@ namespace WiseUI {
 				CmdLineBox->Text = testMStr;
 				test = "";
 			}
-
+*/
 			//
 			//TODO: Add the constructor code here
 			//
