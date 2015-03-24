@@ -11,7 +11,7 @@ Logic::~Logic() {
 	delete _parser;
 }
 
-string Logic::handleInput(string userInput) {
+string Logic::handleInput(string userInput, bool& edited) {
 	
 	UserTask* task = _parser->parse(userInput);
 	string result;
@@ -50,6 +50,13 @@ string Logic::handleInput(string userInput) {
 			 _extdb.autoSave(_storage);
 		 }
 
+	if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
+		|| task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::UNDO) {
+		edited = true;
+	}
+	else{
+		edited = false;;
+	}
 	return result;
 }
 

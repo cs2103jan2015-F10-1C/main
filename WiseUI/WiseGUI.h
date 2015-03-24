@@ -250,21 +250,24 @@ namespace WiseUI {
 				 }
 	}
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
+				 bool edited = false;
 
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 string result = logic->handleInput(input);
+					 string result = logic->handleInput(input, edited);
 					 String^ feedback = gcnew String(result.c_str());
 					 feedbackBox->Text = feedback;
 				 }
 
-				 string temp = logic->handleInput("displaydropdown Display All Tasks");
-				 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-				 dropdownBox->SelectedItem = "Display All Tasks";
-				 displayBox->Text = tasksToBeDisplayed;
+				 if (edited){
+					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
+					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+					 dropdownBox->SelectedItem = "Display All Tasks";
+					 displayBox->Text = tasksToBeDisplayed;
+				 }
 				
 				 string temp2 = logic->getCurrentDirectory();
 				 String^ directory = gcnew String(temp2.c_str());
@@ -272,36 +275,38 @@ namespace WiseUI {
 				 return;
 	}
 	private: System::Void dropdownBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+				 bool edited = false;
 				 Object^ selection = dropdownBox->SelectedItem;
 				 if (selection == "Display All Tasks"){
-					 string temp = logic->handleInput("displaydropdown Display All Tasks");
+					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				 else if (selection == "Tasks to be done today"){
-					 string temp = logic->handleInput("displaydropdown Tasks to be done today");
+					 string temp = logic->handleInput("displaydropdown Tasks to be done today", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				 else if (selection == "Sort by Date"){
-					 string temp = logic->handleInput("displaydropdown Sort by Date");
+					 string temp = logic->handleInput("displaydropdown Sort by Date", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				 else if (selection == "Sort by Priority"){
-					 string temp = logic->handleInput("displaydropdown Sort by Priority");
+					 string temp = logic->handleInput("displaydropdown Sort by Priority", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				 else if (selection == "Display Unbounded Tasks"){
-					 string temp = logic->handleInput("displaydropdown Display Unbounded Tasks");
+					 string temp = logic->handleInput("displaydropdown Display Unbounded Tasks", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 
 	}
 	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
-				 logic->handleInput("exit");
+				 bool edited = false;
+				 logic->handleInput("exit", edited);
 	}
 
 	private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
