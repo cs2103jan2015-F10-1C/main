@@ -123,6 +123,14 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 			<< "2. sort by priority"
 			<< "\r\n";
 	}
+	else if (desireCommand == "mark"){
+		oss << "To use MARK, it should be input in the following format: " << "\r\n"
+			<< "mark <index number>" << "\r\n"
+			<< "Exampe of using this command: " << "\r\n"
+			<< "1. mark 020300" << "\r\n"
+			<< "Executing this command will change the status of the task to done." << "\r\n"
+			<< "\r\n";
+	}
 	else{
 		return MESSAGE_INVALID_HELP;
 	}
