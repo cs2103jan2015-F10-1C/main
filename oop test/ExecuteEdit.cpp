@@ -60,6 +60,13 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 
 			HandleInput handleInput;
 
+			details = iter->getDetails();
+			date = iter->getDate();
+			time = iter->getTime();
+			priority = iter->getPriority();
+			index = iter->getIndex();
+			category = iter->getCategory();
+
 			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
 
 			bool changeOccur = false;
