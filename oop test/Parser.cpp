@@ -44,6 +44,12 @@ UserTask* Parser::parse(string command) {
 		}
 	}
 
+	if (remainingCommand.size() > 0) {
+		if (remainingCommand[remainingCommand.length() - 2] == '\r' && remainingCommand[remainingCommand.length() - 1] == '\n'){
+			size_t commandSize = remainingCommand.length() - 2;  // Ignore the "/r/n" of the string.
+			remainingCommand = remainingCommand.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
+		}
+	}
 	_task->setRemaining(remainingCommand);
 
 	if (command == "add") {

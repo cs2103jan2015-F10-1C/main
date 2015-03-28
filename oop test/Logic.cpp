@@ -42,11 +42,11 @@ string Logic::handleInput(string userInput, bool& edited) {
 	} 
 	else {
 			 executor = dispatch(task);
-			 result = executor->execute(_storage, _extdb);
 			 if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
 				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY) {
 				 _inputHistory.push(executor);
 			 }
+			 result = executor->execute(_storage, _extdb);
 			 _extdb.autoSave(_storage);
 		 }
 
@@ -54,9 +54,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 		|| task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::UNDO) {
 		edited = true;
 	}
-	else{
-		edited = false;;
-	}
+	
 	return result;
 }
 
@@ -101,11 +99,6 @@ void Logic::initialise() {
 }
 
 string Logic::getCurrentDirectory(){
-	ifstream in;
-	in.open("DirectoryStorage.txt");
-	assert(in.is_open() == true);
-	string _currentDirectory;
-	getline(in, _currentDirectory);
-
-	return _currentDirectory;
+	
+	return _extdb.getLocation();
 }

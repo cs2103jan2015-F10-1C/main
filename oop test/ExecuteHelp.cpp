@@ -20,7 +20,6 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
 		return MESSAGE_INVALID_HELP;
 	}
 
-	desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
 	if (desireCommand == "add"){
 
 		oss << "To use ADD, it should be input in the following format: " << "\r\n"

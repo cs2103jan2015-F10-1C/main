@@ -14,7 +14,6 @@ ExecuteDelete::~ExecuteDelete() {
 string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string indexToBeDeleted = _task->getRemaining();
-	indexToBeDeleted = indexToBeDeleted.substr(0, indexToBeDeleted.size() - 2);
 
 	if (indexToBeDeleted.size() != 6){
 		return MESSAGE_NOT_DELETED;
@@ -26,7 +25,6 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb) {
 		}
 	}
 
-		//indexToBeDeleted = indexToBeDeleted.substr(0, indexToBeDeleted.size() - 2);
 		size_t size = _storage.getSize();
 		list<StickyNote>::iterator iter;
 		iter = _storage.getIter();

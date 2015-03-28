@@ -14,7 +14,6 @@ ExecuteDisplay::~ExecuteDisplay()
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 
 	string displayType = _task->getRemaining();
-	displayType = displayType.substr(0, displayType.size() - 2);
 	ostringstream oss;
 	int counter = 1;
 	char buffer[100];
@@ -24,7 +23,6 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
 	Date checkDate;
 	string result = "";
 
-	//displayType = displayType.substr(0, displayType.size() - 2);
 
 	if (_size == 0) {
 		oss << MESSAGE_NO_TASK_FOUND;

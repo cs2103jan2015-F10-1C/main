@@ -60,13 +60,6 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 
 			HandleInput handleInput;
 
-			details = iter->getDetails();
-			date = iter->getDate();
-			time = iter->getTime();
-			priority = iter->getPriority();
-			index = iter->getIndex();
-			category = iter->getCategory();
-
 			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
 
 			bool changeOccur = false;
@@ -95,7 +88,6 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 					_undoEdit.push(undo);
 					isUndoRec = true;
 				}
-				
 				changeOccur = true;
 			}
 
@@ -138,14 +130,3 @@ string ExecuteEdit::undo() {
 	_undoEdit.pop();
 	return undoEdit;
 }
-
-/*
-bool ExecuteEdit::isKeyWord(string extract) {
-
-	if (extract == "des" || extract == "date" || extract == "time" || extract == "prior") {
-		return true;
-	}
-	return false;
-
-}
-*/

@@ -18,7 +18,6 @@ string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb) {
 	ostringstream oss;
 	string desireCommand = _task->getRemaining();
 
-	desireCommand = desireCommand.substr(0, desireCommand.size() - 2);
 	if (desireCommand == ""){
 		return MESSAGE_INVALID_SORT;
 	}
