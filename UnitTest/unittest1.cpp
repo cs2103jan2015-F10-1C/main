@@ -19,7 +19,7 @@ namespace UnitTest
 				string input2 = "display today\r\n";
 				string result = logic->handleInput(input2, edited2);
 
-				string expectedResult = "Displaying 26/3 task(s)\n\r\n1. meet zann [20:00-21:00] [high]\r\n";
+				string expectedResult = "Displaying 27/3 task(s)\n\r\n1. meet zann [20:00-21:00] [high]\r\n";
 
 				Assert::AreEqual(expectedResult, result);
 			}
@@ -29,7 +29,7 @@ namespace UnitTest
 				bool edited2 = false;
 				bool edited3 = false;
 				Logic* logic = new Logic;
-				string input2 = "delete 260300\r\n";
+				string input2 = "delete 270300\r\n";
 				logic->handleInput(input2, edited2);
 				string input3 = "display today\r\n";
 				string result = logic->handleInput(input3, edited3);
@@ -47,12 +47,12 @@ namespace UnitTest
 				Logic* logic = new Logic;
 				string input = "add meet zann today 8pm -high\r\n";
 				logic->handleInput(input, edited);
-				string input2 = "edit 260300 meet ruyan tomorrow 7pm -mid\r\n";
+				string input2 = "edit 270300 meet ruyan tomorrow 7pm -mid\r\n";
 				logic->handleInput(input2, edited2);
 				string input3 = "display all\r\n";
 				string result = logic->handleInput(input3, edited3);
 
-				string expectedResult = "[270301] [normal]\r\nDetails: meet ruyan\r\nDate: 27/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
+				string expectedResult = "[280301] [normal]\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
 
 				Assert::AreEqual(expectedResult, result);
 			}
@@ -64,7 +64,7 @@ namespace UnitTest
 				string input2 = "search ruyan\r\n";
 				string result = logic->handleInput(input2, edited2);
 				 
-				string expectedResult = "1.Index: 270300\r\nDetails: meet ruyan\r\nDate: 27/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
+				string expectedResult = "1.Index: 280300\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
 
 				Assert::AreEqual(expectedResult, result);
 			}
