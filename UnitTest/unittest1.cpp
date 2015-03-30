@@ -54,6 +54,9 @@ namespace UnitTest
 
 				string expectedResult = "[280301] [normal]\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 
 =======
 				//error in the edit class
