@@ -10,10 +10,9 @@ ExecuteSearch::~ExecuteSearch()
 {
 }
 
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string infoToBeSearched = _task->getRemaining();
-	infoToBeSearched = infoToBeSearched.substr(0, infoToBeSearched.size() - 2);
 	list<StickyNote>::iterator iter;
 	iter = _storage.getIter();
 	int _size = _storage.getSize();
@@ -74,8 +73,7 @@ bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iter
 	else{
 		priority = iter->getPriority();
 	}
-	infoToBeSearched = infoToBeSearched.substr(0, infoToBeSearched.size() - 2); //take note need to include the -2 of the string length to run in UI
-
+	
 	return (compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
 		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
 }

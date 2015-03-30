@@ -11,26 +11,21 @@
 class ExecuteDropDown : public Executor {
 private:
 	UserTask* _task;
+	
 public:
 	ExecuteDropDown(UserTask*);
 	~ExecuteDropDown();
 
-	string execute(Storage&, ExtDataBase);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 	bool checkingOption(string);
-	string displayAllTask(Storage&);
-	string getTodayTask(Storage&);
-	string getTodayDate();
-	string getAllInfoOfOneTask(list<StickyNote>::iterator);
-	string sortTasksByDate(Storage&);
-	void getFutureTasks(vector<list<StickyNote>::iterator>&, Storage&);
-	string sortTasksPriority(Storage&);
-	string getUnboundedTasks(Storage&);
 
-	struct compareTwoTasksByDay{
-		inline bool operator()(const list<StickyNote>::iterator lhs, const list<StickyNote>::iterator rhs) {
-			return lhs->getDay() < rhs->getDay();
-		}
-	};
+	string displayAllTask(Storage&, vector<list<StickyNote>::iterator>&);
+
+	void getTodayTasks(vector<list<StickyNote>::iterator>&, Storage&);
+	void getTomorrowTasks(vector<list<StickyNote>::iterator>&, Storage&);
+	void getUnboundedTasks(vector<list<StickyNote>::iterator>&, Storage&);
+
+
 };
 

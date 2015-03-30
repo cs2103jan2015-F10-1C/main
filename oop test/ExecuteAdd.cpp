@@ -10,7 +10,7 @@ ExecuteAdd::~ExecuteAdd()
 {
 }
 
-string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string userInput = _task->getRemaining();
 

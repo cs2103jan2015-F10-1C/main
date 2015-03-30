@@ -12,5 +12,6 @@ public:
 	bool isDate1(string);
 	bool isDate2(string);
 	string getTodayDate();
+	string getTomorrowDate();
 };
 
