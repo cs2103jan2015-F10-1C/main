@@ -18,15 +18,21 @@
 #include<sstream>
 #include<iostream>
 #include<vector>
+#include <time.h>
 #include <cassert>
 #include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
+#include "CurrentDate.h"
 
 AutomatedTesting* autoTest = new AutomatedTesting;
 vector<string> testCases;
 string test = "";
 
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
+
+CurrentDate todayDate;
+string date = "Today is " + todayDate.getCurrentDate() + ".\r\n";
+
 
 namespace WiseUI {
 
@@ -48,12 +54,14 @@ namespace WiseUI {
 			logic = new Logic;
 
 			InitializeComponent();
-			String^ feedback = gcnew String(MESSAGE_WELCOME.c_str());
-			feedbackBox->Text = feedback;
+			String^ dateDisplayed = gcnew String(date.c_str());
+			dateBox->Text = dateDisplayed;
 
-			string temp = logic->getCurrentDirectory();
-			String^ directory = gcnew String(temp.c_str());
-			SavingDirectoryBox->Text = directory;
+			bool edited = false;
+			string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
+			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+			displayBox->Text = tasksToBeDisplayed;
+
 /*
 			testCases = autoTest->getTestCases();
 			for (int i = 0; i < testCases.size(); i++){
@@ -82,26 +90,37 @@ namespace WiseUI {
 	private: System::Windows::Forms::TextBox^  CmdLineBox;
 	protected:
 
-	private: System::Windows::Forms::Button^  Enter;
+
 
 	protected: Logic* logic;
-			   
-
-
-	private: System::Windows::Forms::ComboBox^  dropdownBox;
-	private: System::Windows::Forms::TextBox^  feedbackBox;
-
-
-	private: System::Windows::Forms::Button^  Exit;
-
 	private: System::Windows::Forms::TextBox^  displayBox;
+	protected:
 
 
 
-	private: System::Windows::Forms::TextBox^  SavingDirectoryBox;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
+
+
+
+
+
+
+
+
+
+
+
+
 	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::TextBox^  dateBox;
+
+
+	private: System::Windows::Forms::TextBox^  displayBox2;
+	private: System::Windows::Forms::PictureBox^  pictureBox;
+
+
+
+
+
 
 
 
@@ -116,137 +135,93 @@ namespace WiseUI {
 			 /// </summary>
 			 void InitializeComponent(void)
 			 {
+				 System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(WiseGUI::typeid));
 				 this->CmdLineBox = (gcnew System::Windows::Forms::TextBox());
-				 this->Enter = (gcnew System::Windows::Forms::Button());
-				 this->dropdownBox = (gcnew System::Windows::Forms::ComboBox());
-				 this->feedbackBox = (gcnew System::Windows::Forms::TextBox());
-				 this->Exit = (gcnew System::Windows::Forms::Button());
 				 this->displayBox = (gcnew System::Windows::Forms::TextBox());
-				 this->SavingDirectoryBox = (gcnew System::Windows::Forms::TextBox());
-				 this->label1 = (gcnew System::Windows::Forms::Label());
-				 this->label2 = (gcnew System::Windows::Forms::Label());
 				 this->label3 = (gcnew System::Windows::Forms::Label());
+				 this->dateBox = (gcnew System::Windows::Forms::TextBox());
+				 this->displayBox2 = (gcnew System::Windows::Forms::TextBox());
+				 this->pictureBox = (gcnew System::Windows::Forms::PictureBox());
+				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
 				 this->SuspendLayout();
 				 // 
 				 // CmdLineBox
 				 // 
-				 this->CmdLineBox->Location = System::Drawing::Point(81, 453);
+				 this->CmdLineBox->Location = System::Drawing::Point(117, 416);
 				 this->CmdLineBox->Multiline = true;
 				 this->CmdLineBox->Name = L"CmdLineBox";
-				 this->CmdLineBox->Size = System::Drawing::Size(696, 22);
+				 this->CmdLineBox->Size = System::Drawing::Size(325, 29);
 				 this->CmdLineBox->TabIndex = 0;
 				 this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 				 // 
-				 // Enter
-				 // 
-				 this->Enter->Location = System::Drawing::Point(783, 454);
-				 this->Enter->Name = L"Enter";
-				 this->Enter->Size = System::Drawing::Size(75, 23);
-				 this->Enter->TabIndex = 2;
-				 this->Enter->Text = L"Enter";
-				 this->Enter->UseVisualStyleBackColor = true;
-				 this->Enter->Click += gcnew System::EventHandler(this, &WiseGUI::Enter_Click);
-				 // 
-				 // dropdownBox
-				 // 
-				 this->dropdownBox->FormattingEnabled = true;
-				 this->dropdownBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
-					 L"Display All Tasks", L"Tasks to be done today",
-						 L"Sort by Date", L"Sort by Priority", L"Display Unbounded Tasks"
-				 });
-				 this->dropdownBox->Location = System::Drawing::Point(12, 12);
-				 this->dropdownBox->Name = L"dropdownBox";
-				 this->dropdownBox->Size = System::Drawing::Size(376, 21);
-				 this->dropdownBox->TabIndex = 3;
-				 this->dropdownBox->SelectedIndexChanged += gcnew System::EventHandler(this, &WiseGUI::dropdownBox_SelectedIndexChanged);
-				 // 
-				 // feedbackBox
-				 // 
-				 this->feedbackBox->Location = System::Drawing::Point(408, 41);
-				 this->feedbackBox->Multiline = true;
-				 this->feedbackBox->Name = L"feedbackBox";
-				 this->feedbackBox->ReadOnly = true;
-				 this->feedbackBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->feedbackBox->Size = System::Drawing::Size(531, 324);
-				 this->feedbackBox->TabIndex = 4;
-				 this->feedbackBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::feedbackBox_TextChanged);
-				 // 
-				 // Exit
-				 // 
-				 this->Exit->AllowDrop = true;
-				 this->Exit->Location = System::Drawing::Point(864, 454);
-				 this->Exit->Name = L"Exit";
-				 this->Exit->Size = System::Drawing::Size(75, 23);
-				 this->Exit->TabIndex = 6;
-				 this->Exit->Text = L"E&xit";
-				 this->Exit->UseVisualStyleBackColor = true;
-				 this->Exit->Click += gcnew System::EventHandler(this, &WiseGUI::Exit_Click);
-				 // 
 				 // displayBox
 				 // 
-				 this->displayBox->Location = System::Drawing::Point(12, 41);
+				 this->displayBox->BackColor = System::Drawing::SystemColors::Control;
+				 this->displayBox->Location = System::Drawing::Point(12, 47);
 				 this->displayBox->Multiline = true;
 				 this->displayBox->Name = L"displayBox";
 				 this->displayBox->ReadOnly = true;
 				 this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox->Size = System::Drawing::Size(376, 405);
+				 this->displayBox->Size = System::Drawing::Size(430, 224);
 				 this->displayBox->TabIndex = 7;
-				 // 
-				 // SavingDirectoryBox
-				 // 
-				 this->SavingDirectoryBox->Location = System::Drawing::Point(408, 401);
-				 this->SavingDirectoryBox->Multiline = true;
-				 this->SavingDirectoryBox->Name = L"SavingDirectoryBox";
-				 this->SavingDirectoryBox->ReadOnly = true;
-				 this->SavingDirectoryBox->Size = System::Drawing::Size(531, 45);
-				 this->SavingDirectoryBox->TabIndex = 11;
-				 // 
-				 // label1
-				 // 
-				 this->label1->AutoSize = true;
-				 this->label1->Location = System::Drawing::Point(406, 385);
-				 this->label1->Name = L"label1";
-				 this->label1->Size = System::Drawing::Size(122, 13);
-				 this->label1->TabIndex = 12;
-				 this->label1->Text = L"Current Saving Directory";
-				 // 
-				 // label2
-				 // 
-				 this->label2->AutoSize = true;
-				 this->label2->Location = System::Drawing::Point(406, 21);
-				 this->label2->Name = L"label2";
-				 this->label2->Size = System::Drawing::Size(76, 13);
-				 this->label2->TabIndex = 13;
-				 this->label2->Text = L"Feedback Box";
 				 // 
 				 // label3
 				 // 
 				 this->label3->AutoSize = true;
-				 this->label3->Location = System::Drawing::Point(12, 459);
+				 this->label3->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->label3->Location = System::Drawing::Point(8, 416);
 				 this->label3->Name = L"label3";
-				 this->label3->Size = System::Drawing::Size(67, 13);
+				 this->label3->Size = System::Drawing::Size(109, 22);
 				 this->label3->TabIndex = 14;
 				 this->label3->Text = L"Command://";
 				 // 
+				 // dateBox
+				 // 
+				 this->dateBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->dateBox->Location = System::Drawing::Point(12, 12);
+				 this->dateBox->Name = L"dateBox";
+				 this->dateBox->ReadOnly = true;
+				 this->dateBox->Size = System::Drawing::Size(430, 29);
+				 this->dateBox->TabIndex = 15;
+				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				 // 
+				 // displayBox2
+				 // 
+				 this->displayBox2->Location = System::Drawing::Point(12, 277);
+				 this->displayBox2->Multiline = true;
+				 this->displayBox2->Name = L"displayBox2";
+				 this->displayBox2->ReadOnly = true;
+				 this->displayBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+				 this->displayBox2->Size = System::Drawing::Size(430, 124);
+				 this->displayBox2->TabIndex = 19;
+				 // 
+				 // pictureBox
+				 // 
+				 this->pictureBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox.Image")));
+				 this->pictureBox->Location = System::Drawing::Point(12, 451);
+				 this->pictureBox->Name = L"pictureBox";
+				 this->pictureBox->Size = System::Drawing::Size(437, 65);
+				 this->pictureBox->TabIndex = 20;
+				 this->pictureBox->TabStop = false;
+				 // 
 				 // WiseGUI
 				 // 
-				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				 this->ClientSize = System::Drawing::Size(951, 489);
+				 this->ClientSize = System::Drawing::Size(454, 518);
+				 this->Controls->Add(this->pictureBox);
+				 this->Controls->Add(this->displayBox2);
+				 this->Controls->Add(this->dateBox);
 				 this->Controls->Add(this->label3);
-				 this->Controls->Add(this->label2);
-				 this->Controls->Add(this->label1);
-				 this->Controls->Add(this->SavingDirectoryBox);
 				 this->Controls->Add(this->displayBox);
-				 this->Controls->Add(this->Exit);
-				 this->Controls->Add(this->feedbackBox);
-				 this->Controls->Add(this->dropdownBox);
-				 this->Controls->Add(this->Enter);
 				 this->Controls->Add(this->CmdLineBox);
 				 this->MaximizeBox = false;
 				 this->Name = L"WiseGUI";
 				 this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
 				 this->Text = L"WiseGUI";
+				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
 
@@ -274,57 +249,24 @@ namespace WiseUI {
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
 					 string result = logic->handleInput(input, edited);
 					 String^ feedback = gcnew String(result.c_str());
-					 feedbackBox->Text = feedback;
+					 if (edited){
+						 displayBox2->ForeColor = System::Drawing::Color::Red;
+					 }
+					 else{
+						 displayBox2->ForeColor = System::Drawing::Color::Black;
+					 }
+
+					 displayBox2->Text = feedback;
 				 }
 
 				 if (edited){
 					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 dropdownBox->SelectedItem = "Display All Tasks";
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				
-				 string temp2 = logic->getCurrentDirectory();
-				 String^ directory = gcnew String(temp2.c_str());
-				 SavingDirectoryBox->Text = directory;
+		
 				 return;
-	}
-	private: System::Void dropdownBox_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-				 bool edited = false;
-				 Object^ selection = dropdownBox->SelectedItem;
-				 if (selection == "Display All Tasks"){
-					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
-					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
-				 }
-				 else if (selection == "Tasks to be done today"){
-					 string temp = logic->handleInput("displaydropdown Tasks to be done today", edited);
-					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
-				 }
-				 else if (selection == "Sort by Date"){
-					 string temp = logic->handleInput("displaydropdown Sort by Date", edited);
-					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
-				 }
-				 else if (selection == "Sort by Priority"){
-					 string temp = logic->handleInput("displaydropdown Sort by Priority", edited);
-					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
-				 }
-				 else if (selection == "Display Unbounded Tasks"){
-					 string temp = logic->handleInput("displaydropdown Display Unbounded Tasks", edited);
-					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-					 displayBox->Text = tasksToBeDisplayed;
-				 }
-
-	}
-	private: System::Void Exit_Click(System::Object^  sender, System::EventArgs^  e) {
-				 bool edited = false;
-				 logic->handleInput("exit", edited);
-	}
-
-	private: System::Void feedbackBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 	}
 
 };

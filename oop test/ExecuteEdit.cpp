@@ -1,4 +1,5 @@
 #include "ExecuteEdit.h"
+#include <sstream>
 
 
 
@@ -119,7 +120,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			}
 
 			if (changeOccur) {
-				return _storage.oneTaskInfoTypeOne(iter);
+				return "The Task have been edited successfully to\r\n" +_storage.oneTaskInfoTypeOne(iter);
 			}
 			else {
 				return MESSAGE_ERROR;
