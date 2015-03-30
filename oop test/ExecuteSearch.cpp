@@ -10,7 +10,7 @@ ExecuteSearch::~ExecuteSearch()
 {
 }
 
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string infoToBeSearched = _task->getRemaining();
 	list<StickyNote>::iterator iter;

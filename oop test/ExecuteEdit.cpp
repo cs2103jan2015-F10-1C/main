@@ -11,35 +11,55 @@ ExecuteEdit::~ExecuteEdit()
 {
 }
 
-string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 	
 	string toEdit = _task->getRemaining();
-	string editIndex;
 	if (toEdit == ""){
 		return MESSAGE_WRONG_INDEX;
 	}
-	if (toEdit.size() > 6) {
-		 editIndex = toEdit.substr(0, 6);
-		for (size_t i = 0; i < editIndex.size(); i++) {
-			if (editIndex[i] < '0' || editIndex[i] > '9') {
-				return MESSAGE_WRONG_INDEX;
-			}
-		}
-	}
-	else {
-		return MESSAGE_NO_INFO_GIVEN;
-	}
 
-	toEdit = toEdit.substr(7);
 	bool isUndo = false;
-	string type = toEdit.substr(0, 4); 
+	string type = toEdit.substr(0, 4);
 	if (type == "undo") {
 		isUndo = true;
 		toEdit = toEdit.substr(5);
 	}
 
-	size_t _size = _storage.getSize();
-	list<StickyNote>::iterator iter = _storage.getIter();
+	string editIndex;
+
+	int pos = toEdit.find_first_of(" ", 0);
+	editIndex = toEdit.substr(0, pos);
+
+	for (size_t i = 0; i < editIndex.size(); i++) {
+		if (editIndex[i] < '0' || editIndex[i] > '9') {
+			return MESSAGE_WRONG_INDEX;
+		}
+	}
+
+	list<StickyNote>::iterator iter;
+	
+	if (editIndex.size() == 6) {
+		
+		iter = _storage.getIter();
+		for (size_t i = 0; i < _storage.getSize(); i++, iter++) {
+			if (iter->getIndex() == editIndex) {
+				break;
+			}
+		}
+	}
+	else {
+		int forEdit = atoi(editIndex.c_str());
+		forEdit--;
+
+		if (forEdit < 0 || forEdit > _allItems.size()) {
+			return MESSAGE_WRONG_INDEX;
+		}
+
+		iter = _allItems[forEdit];
+	}
+
+	toEdit = toEdit.substr(pos+1);
+
 	string details = "";
 	string date = "";
 	string time = "";
@@ -47,13 +67,9 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 	string index = "";
 	string category = "";
 	bool isADeadline = false;
-	bool indexChange = false;
-	bool isUndoRec = false;
 	Date checkDate;
 	Standardise item;
 
-	for (size_t i = 0; i < _size; i++, iter++) {
-		if (iter->getIndex() == editIndex) {
 
 			string undo;
 			undo = _storage.oneTaskInfoTypeTwo(iter);
@@ -81,13 +97,6 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 			if (date != "" && date != "unbounded event" && date != iter->getDate()) {
 				date = item.standardiseDate(date);
 				iter->setDate(date);
-				index = handleInput.getIndex(date, _storage);
-				iter->setIndex(index);
-				if (!isUndo) {
-					undo = "edit " + index + " undo " + undo;
-					_undoEdit.push(undo);
-					isUndoRec = true;
-				}
 				changeOccur = true;
 			}
 
@@ -102,13 +111,13 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 				changeOccur = true;
 			}
 
-			if (!isUndoRec) {
-				if (!isUndo) {
-					undo = "edit " + editIndex + " undo " + undo;
-					_undoEdit.push(undo);
-				}
+			index = iter->getIndex();
+
+			if (!isUndo) {
+				undo = "edit undo " + index + " " + undo;
+				_undoEdit.push(undo);
 			}
-			
+
 			if (changeOccur) {
 				return _storage.oneTaskInfoTypeOne(iter);
 			}
@@ -116,9 +125,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb) {
 				return MESSAGE_ERROR;
 			}
 			
-		}
 
-	}
 	return MESSAGE_WRONG_INDEX;
 
 }

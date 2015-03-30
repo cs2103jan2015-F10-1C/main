@@ -11,7 +11,7 @@ ExecuteHelp::~ExecuteHelp()
 }
 
 
-string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	ostringstream oss;
 	string desireCommand = _task->getRemaining(); 

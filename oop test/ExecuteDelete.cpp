@@ -11,13 +11,10 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 ExecuteDelete::~ExecuteDelete() {
 }
 
-string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string indexToBeDeleted = _task->getRemaining();
 
-	if (indexToBeDeleted.size() != 6){
-		return MESSAGE_NOT_DELETED;
-	}
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
 		if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
@@ -25,24 +22,38 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb) {
 		}
 	}
 
-		size_t size = _storage.getSize();
-		list<StickyNote>::iterator iter;
+	list<StickyNote>::iterator iter;
+
+	if (indexToBeDeleted.size() == 6) {
+
 		iter = _storage.getIter();
-
-		for (size_t i = 0; i < size; i++, iter++){
-
-			if (indexToBeDeleted == iter->getIndex()){
-				string undo;
-				undo = _storage.oneTaskInfoTypeTwo(iter);
-				undo = "add " + undo;
-				_undoDelete.push(undo);
-				bool erased = false;
-				erased = _storage.erase(iter);
-				assert(erased == true);
-				_deleted = true;
+		for (size_t i = 0; i < _storage.getSize(); i++, iter++) {
+			if (iter->getIndex() == indexToBeDeleted) {
 				break;
 			}
 		}
+	}
+	else {
+		int forEdit = atoi(indexToBeDeleted.c_str());
+		forEdit--;
+
+		if (forEdit < 0 || forEdit > _allItems.size()) {
+			return MESSAGE_WRONG_INDEX;
+		}
+
+		iter = _allItems[forEdit];
+	}
+
+
+		string undo;
+		undo = _storage.oneTaskInfoTypeTwo(iter);
+		undo = "add " + undo;
+		_undoDelete.push(undo);
+		bool erased = false;
+		erased = _storage.erase(iter);
+		assert(erased == true);
+		_deleted = true;
+
 
 		if (_deleted){
 			return MESSAGE_DELETED;

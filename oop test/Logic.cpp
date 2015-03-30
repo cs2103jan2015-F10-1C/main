@@ -32,7 +32,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 			string conduct = executor->undo();
 			task = _parser->parse(conduct);
 			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb);
+			result = executor->execute(_storage, _extdb, _allItems);
 			_extdb.autoSave(_storage);
 		}
 		else {
@@ -46,7 +46,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY) {
 				 _inputHistory.push(executor);
 			 }
-			 result = executor->execute(_storage, _extdb);
+			 result = executor->execute(_storage, _extdb, _allItems);
 			 _extdb.autoSave(_storage);
 		 }
 
@@ -93,7 +93,7 @@ void Logic::initialise() {
 	for (int i = 0; i < vec->size(); i++) {
 		UserTask* task = _parser->parse((*vec)[i]);
 		Executor* execute = dispatch(task);
-		execute->execute(_storage, _extdb);
+		execute->execute(_storage, _extdb, _allItems);
 	}
 	
 }

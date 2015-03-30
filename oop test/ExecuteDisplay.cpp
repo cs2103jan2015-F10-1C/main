@@ -11,7 +11,7 @@ ExecuteDisplay::~ExecuteDisplay()
 {
 }
 
-string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb) {
+string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string displayType = _task->getRemaining();
 	ostringstream oss;

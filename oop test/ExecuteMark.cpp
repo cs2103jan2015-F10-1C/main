@@ -10,7 +10,7 @@ ExecuteMark::~ExecuteMark()
 {
 }
 
-string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb) {
+string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string index = _task->getRemaining();
 

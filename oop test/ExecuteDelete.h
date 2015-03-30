@@ -14,7 +14,7 @@ private:
 public:
 	ExecuteDelete(UserTask*);
 	~ExecuteDelete();
-	string execute(Storage&, ExtDataBase);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 };
 
