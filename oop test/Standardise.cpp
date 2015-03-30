@@ -15,8 +15,9 @@ string Standardise::standardiseDate(string date) {
 	string standardisedDate;
 	string extract;
 	istringstream iss(date);
-	string day_extract = " ";
-	string month_extract = " ";
+	string day_extract = "";
+	string month_extract = "";
+	
 
 	// get current date
 
@@ -55,68 +56,91 @@ string Standardise::standardiseDate(string date) {
 
 	while (iss) {
 
+		bool identified = false;
 		iss >> extract;
 
 		if (!iss){
 			break;
 		}
 
-		// case already in standardised form
-		int found = -1;
-		found = extract.find('/');
-		if (found > 0) {
-			return date;
-		}
-
-		// case today or tomorrow
-		for (size_t case1 = 0; case1 < 2; case1++) {
-			if (extract == others[case1]) {
-				day = day + case1;
-				standardisedDate = to_string(day) + "/" + to_string(month);
-				return standardisedDate;
-			}
-		}
-
-		// case next / this
-		for (size_t case2 = 0; case2 < 2; case2++) {
-			if (extract == controls[case2]) {
-				if (case2 == 0) { // if next
-					day = day + 7;
-				}
-				// if this, do nothing
-			}
-		}
-
-		// case day of week
-		for (size_t case3 = 0; case3 < 7; case3++) {
-			if (extract == dayInWeek[case3]) {
-				int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
-				int diff; // used to calculate the number of days difference between current day and input day.
-				if (inputDay <= wDay) {
-					inputDay = inputDay + 7;
-				}
-				diff = inputDay - wDay;
-				day = day + diff;
-			}
-		}
-
-		// case specific date e.g. 3rd march, this function extracts the numerical day.
-		for (size_t case4 = 0; case4 < extract.length(); case4++) {
-			if (extract[case4] >= '0' && extract[case4] <= '9') {
-				day_extract = day_extract + extract[case4];
-			}
-		}
-
-		// case month
-		extract[0] = tolower(extract[0]); // to change Month to month
-		for (size_t case5 = 0; case5 < 12; case5++) {
+		if (!identified) {
+			// case already in standardised form
 			int found = -1;
-			found = extract.find(mthsInYr[case5]);
-			if (found >= 0) {
-				month_extract = to_string(case5 + 1);
-				break;
+			found = extract.find('/');
+			if (found > 0) {
+				int posOfSlash = extract.find_first_of('/', 0);
+				string sday = extract.substr(0, posOfSlash);
+				string smonth = extract.substr(posOfSlash + 1);
+				day = atoi(sday.c_str());
+				month = atoi(smonth.c_str());
+				identified = true;
 			}
 		}
+
+		if (!identified) {
+			// case today or tomorrow
+			for (size_t case1 = 0; case1 < 2; case1++) {
+				if (extract == others[case1]) {
+					day = day + case1;
+					identified = true;
+				}
+			}
+		}
+
+		if (!identified) {
+			// case next / this
+			for (size_t case2 = 0; case2 < 2; case2++) {
+				if (extract == controls[case2]) {
+					if (case2 == 0) { // if next
+						day = day + 7;
+						identified = true;
+					}
+					// if this, do nothing
+					identified = true;
+				}
+			}
+		}
+
+		if (!identified) {
+			// case day of week
+			for (size_t case3 = 0; case3 < 7; case3++) {
+				if (extract == dayInWeek[case3]) {
+					int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
+					int diff; // used to calculate the number of days difference between current day and input day.
+					if (inputDay <= wDay) {
+						inputDay = inputDay + 7;
+					}
+					diff = inputDay - wDay;
+					day = day + diff;
+					identified = true;
+				}
+			}
+		}
+
+		if (!identified) {
+			// case specific date e.g. 3rd march, this function extracts the numerical day.
+			for (size_t case4 = 0; case4 < extract.length(); case4++) {
+				if (extract[case4] >= '0' && extract[case4] <= '9') {
+					day_extract = day_extract + extract[case4];
+					identified = true;
+				}
+			}
+		}
+
+		if (!identified) {
+			// case month
+			extract[0] = tolower(extract[0]); // to change Month to month
+			for (size_t case5 = 0; case5 < 12; case5++) {
+				int found = -1;
+				found = extract.find(mthsInYr[case5]);
+				if (found >= 0) {
+					month_extract = to_string(case5 + 1);
+					identified = true;
+					break;
+				}
+			}
+		}
+
 
 	}// end while (iss)
 
@@ -126,10 +150,10 @@ string Standardise::standardiseDate(string date) {
 		month++;
 	}
 
-	if (day_extract == " ") {
+	if (day_extract == "") {
 		day_extract = to_string(day);
 	}
-	if (month_extract == " ") {
+	if (month_extract == "") {
 		month_extract = to_string(month);
 	}
 

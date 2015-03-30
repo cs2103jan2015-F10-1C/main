@@ -1,7 +1,0 @@
-Index: 140400
-Details: swim
-Date: 14/4
-Time: 13:00-15:00
-Priority: low
-Status: cleared
-

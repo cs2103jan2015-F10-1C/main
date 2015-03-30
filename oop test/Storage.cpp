@@ -53,12 +53,9 @@ int Storage::getSameDateCount(string date) {
 string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 
 	ostringstream oss;
-	oss << "Index: " << iter->getIndex() << "\r\n"
-		<< "Details: " << iter->getDetails() << "\r\n"
-		<< "Date: " << iter->getDate() << "\r\n"
-		<< "Time: " << iter->getTime() << "\r\n"
-		<< "Priority: " << iter->getPriority() << "\r\n"
-		<< "Status: " << iter->getStatus() << "\r\n";
+	oss << "[ " << iter->getTime() << " ] "
+		<< iter->getDetails()
+		<< " [Status: " << iter->getStatus() << "]" << "\r\n";
 	return oss.str();
 
 }

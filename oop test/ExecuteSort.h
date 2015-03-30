@@ -13,7 +13,7 @@ public:
 	ExecuteSort(UserTask*);
 	~ExecuteSort();
 
-	string execute(Storage&, ExtDataBase);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 	string getTodayDate();
 	string getAllInfoOfOneTask(list<StickyNote>::iterator);

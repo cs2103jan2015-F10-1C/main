@@ -2,20 +2,7 @@
 
 
 ExtDataBase::ExtDataBase() {
-	ifstream ifs;
-	ofstream ofs;
-	ifs.open("DirectoryStorage.txt");
-
-	if (ifs.is_open()) {
-		getline(ifs, _currentLocation);
-	}
-	else {
-		ofs.open("DirectoryStorage.txt");
-		ofs << DEFAULT_SAVE_LOCATION;
-		_currentLocation = DEFAULT_SAVE_LOCATION;
-	}
-	ifs.close();
-	ofs.close();
+	getLocation();
 }
 
 ExtDataBase::~ExtDataBase()
@@ -23,26 +10,44 @@ ExtDataBase::~ExtDataBase()
 }
 
 string ExtDataBase::getLocation() {
+
+	ifstream ifs;
+	ofstream ofs;
+	ifs.open("../DirectoryStorage.txt");
+
+	if (ifs.is_open()) {
+		getline(ifs, _currentLocation);
+	}
+	else {
+		ofs.open("../DirectoryStorage.txt");
+		ofs << DEFAULT_SAVE_LOCATION;
+		_currentLocation = DEFAULT_SAVE_LOCATION;
+	}
+	ifs.close();
+	ofs.close();
+
 	return _currentLocation;
 }
 
 string ExtDataBase::setLocation(Storage& _storage, string newDirectory) {
 
-	newDirectory = newDirectory.substr(0, newDirectory.size() - 2);
 	ofstream ofs;
 	ofs.open(newDirectory);
 	bool isOpen = false;
 	isOpen = ofs.is_open();
 	if (isOpen) {
 		ofstream out;
-		out.open("DirectoryStorage.txt");
+
+		getLocation();
+		int ensure = remove(_currentLocation.c_str());
+		assert(ensure == 0);
+
+		out.open("../DirectoryStorage.txt");
+		out.clear();
 		out << newDirectory;
 		out.close();
 		ofs.close();
-		int ensure = remove(_currentLocation.c_str()); 
-		assert(ensure == 0);
-		_currentLocation = newDirectory;
-		autoSave(_storage);
+		getLocation();
 		return MESSAGE_DIRECTORY_CHANGED;
 	}
 	else{
@@ -58,6 +63,7 @@ void ExtDataBase::autoSave(Storage& _storage) {
 	list<StickyNote>::iterator iter;
 	iter = _storage.getIter();
 
+	getLocation();
 	ofs.open(_currentLocation);
 	assert(ofs.is_open() == true);
 	for (size_t i = 0; i < _size; i++, iter++){

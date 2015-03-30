@@ -17,10 +17,8 @@ public:
 	ExecuteEdit(UserTask*);
 	~ExecuteEdit();
 
-	string execute(Storage&, ExtDataBase);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 
-	//void identifyChange(string*, string*);
-	//bool isKeyWord(string);
 };
 

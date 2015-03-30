@@ -23,7 +23,7 @@ private:
 	stack<Executor*> _inputHistory;
 	Executor* dispatch(UserTask*);
 	ExtDataBase _extdb;
-
+	vector<list<StickyNote>::iterator> _allItems;
 
 
 public:
