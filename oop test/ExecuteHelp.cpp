@@ -11,7 +11,7 @@ ExecuteHelp::~ExecuteHelp()
 }
 
 
-string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	ostringstream oss;
 	string desireCommand = _task->getRemaining(); 
@@ -133,7 +133,7 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	else{
 		return MESSAGE_INVALID_HELP;
 	}
-
+	successful = true;
 	return oss.str();
 }
 

@@ -10,12 +10,13 @@ ExecuteDropDown::~ExecuteDropDown()
 {
 }
 
-string ExecuteDropDown::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteDropDown::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string userInput = _task->getRemaining();
 	assert(checkingOption(userInput) == true);
 
 	if (checkingOption(userInput)){
+		successful = true;
 		return displayAllTask(_storage, _allItems);
 	}
 	else{

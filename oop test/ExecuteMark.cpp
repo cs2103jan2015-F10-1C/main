@@ -10,7 +10,7 @@ ExecuteMark::~ExecuteMark()
 {
 }
 
-string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string index = _task->getRemaining();
 
@@ -47,6 +47,7 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 	}
 
 	if (isFound) {
+		successful = true;
 		return MESSAGE_MARKED;
 	}
 	else {

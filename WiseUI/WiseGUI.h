@@ -58,7 +58,8 @@ namespace WiseUI {
 			dateBox->Text = dateDisplayed;
 
 			bool edited = false;
-			string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
+			bool successful = false;
+			string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
 
@@ -241,31 +242,32 @@ namespace WiseUI {
 	}
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
+				 bool successful = false;
 
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 string result = logic->handleInput(input, edited);
+					 string result = logic->handleInput(input, edited, successful);
 					 String^ feedback = gcnew String(result.c_str());
-					 if (edited){
-						 displayBox2->ForeColor = System::Drawing::Color::Red;
+
+					 if (!successful){
+						 displayBox2->Text = feedback;
 					 }
 					 else{
-						 displayBox2->ForeColor = System::Drawing::Color::Black;
+						 displayBox->Text = feedback;
+						 displayBox2->Text = "The command is carried out successfully.";
 					 }
-
-					 displayBox2->Text = feedback;
 				 }
-
+				 /*
 				 if (edited){
-					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited);
+					 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful);
 					 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 					 displayBox->Text = tasksToBeDisplayed;
 				 }
 				
-		
+		*/
 				 return;
 	}
 

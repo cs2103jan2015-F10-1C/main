@@ -12,7 +12,7 @@ ExecuteEdit::~ExecuteEdit()
 {
 }
 
-string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 	
 	string toEdit = _task->getRemaining();
 	if (toEdit == ""){
@@ -120,6 +120,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			}
 
 			if (changeOccur) {
+				successful = true;
 				return "The Task have been edited successfully to\r\n" +_storage.oneTaskInfoTypeOne(iter);
 			}
 			else {

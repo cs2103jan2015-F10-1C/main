@@ -11,7 +11,7 @@ Logic::~Logic() {
 	delete _parser;
 }
 
-string Logic::handleInput(string userInput, bool& edited) {
+string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	
 	UserTask* task = _parser->parse(userInput);
 	string result;
@@ -32,7 +32,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 			string conduct = executor->undo();
 			task = _parser->parse(conduct);
 			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb, _allItems);
+			result = executor->execute(_storage, _extdb, _allItems, successful);
 			_extdb.autoSave(_storage);
 		}
 		else {
@@ -46,7 +46,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY) {
 				 _inputHistory.push(executor);
 			 }
-			 result = executor->execute(_storage, _extdb, _allItems);
+			 result = executor->execute(_storage, _extdb, _allItems, successful);
 			 _extdb.autoSave(_storage);
 		 }
 
@@ -87,13 +87,14 @@ Executor* Logic::dispatch(UserTask* task) {
 void Logic::initialise() {
 
 	vector<string>* vec;
+	bool successful = true;
 
 	vec = _extdb.getContent();
 
 	for (int i = 0; i < vec->size(); i++) {
 		UserTask* task = _parser->parse((*vec)[i]);
 		Executor* execute = dispatch(task);
-		execute->execute(_storage, _extdb, _allItems);
+		execute->execute(_storage, _extdb, _allItems, successful);
 	}
 	
 }

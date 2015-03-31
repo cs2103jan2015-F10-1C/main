@@ -10,7 +10,7 @@ ExecuteDirectory::~ExecuteDirectory()
 {
 }
 
-string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string undo = "directory " + extdb.getLocation();
 	_undoDirectory.push(undo);
@@ -20,6 +20,7 @@ string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<li
 
 	result = extdb.setLocation(_storage, newDirectory);
 
+	successful = true;
 	return result;
 }
 

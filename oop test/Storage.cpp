@@ -10,7 +10,9 @@ Storage::~Storage()
 {
 }
 
-string Storage::addNewNote(StickyNote note) {
+string Storage::addNewNote(StickyNote note, bool& successful) {
+
+	successful = true;
 	_noteBook.push_back(note);
 	return MESSAGE_ADD;
 }

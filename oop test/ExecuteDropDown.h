@@ -16,7 +16,7 @@ public:
 	ExecuteDropDown(UserTask*);
 	~ExecuteDropDown();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
 	string undo();
 	bool checkingOption(string);
 
