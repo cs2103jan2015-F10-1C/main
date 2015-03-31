@@ -149,59 +149,59 @@ namespace WiseUI {
 				 // 
 				 // CmdLineBox
 				 // 
-				 this->CmdLineBox->Location = System::Drawing::Point(12, 376);
+				 this->CmdLineBox->Location = System::Drawing::Point(12, 347);
 				 this->CmdLineBox->Multiline = true;
 				 this->CmdLineBox->Name = L"CmdLineBox";
-				 this->CmdLineBox->Size = System::Drawing::Size(430, 20);
+				 this->CmdLineBox->Size = System::Drawing::Size(435, 19);
 				 this->CmdLineBox->TabIndex = 0;
 				 this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 				 // 
 				 // displayBox
 				 // 
 				 this->displayBox->BackColor = System::Drawing::SystemColors::Control;
-				 this->displayBox->Location = System::Drawing::Point(12, 51);
+				 this->displayBox->Location = System::Drawing::Point(12, 47);
 				 this->displayBox->Multiline = true;
 				 this->displayBox->Name = L"displayBox";
 				 this->displayBox->ReadOnly = true;
 				 this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox->Size = System::Drawing::Size(430, 242);
+				 this->displayBox->Size = System::Drawing::Size(435, 224);
 				 this->displayBox->TabIndex = 7;
 				 // 
 				 // dateBox
 				 // 
 				 this->dateBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->dateBox->Location = System::Drawing::Point(12, 13);
+				 this->dateBox->Location = System::Drawing::Point(12, 12);
 				 this->dateBox->Name = L"dateBox";
 				 this->dateBox->ReadOnly = true;
-				 this->dateBox->Size = System::Drawing::Size(430, 29);
+				 this->dateBox->Size = System::Drawing::Size(435, 29);
 				 this->dateBox->TabIndex = 15;
 				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 				 // 
 				 // displayBox2
 				 // 
-				 this->displayBox2->Location = System::Drawing::Point(12, 300);
+				 this->displayBox2->Location = System::Drawing::Point(12, 277);
 				 this->displayBox2->Multiline = true;
 				 this->displayBox2->Name = L"displayBox2";
 				 this->displayBox2->ReadOnly = true;
 				 this->displayBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox2->Size = System::Drawing::Size(430, 70);
+				 this->displayBox2->Size = System::Drawing::Size(435, 65);
 				 this->displayBox2->TabIndex = 19;
 				 // 
 				 // pictureBox
 				 // 
 				 this->pictureBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox.Image")));
-				 this->pictureBox->Location = System::Drawing::Point(12, 402);
+				 this->pictureBox->Location = System::Drawing::Point(12, 371);
 				 this->pictureBox->Name = L"pictureBox";
-				 this->pictureBox->Size = System::Drawing::Size(430, 66);
+				 this->pictureBox->Size = System::Drawing::Size(435, 61);
 				 this->pictureBox->TabIndex = 20;
 				 this->pictureBox->TabStop = false;
 				 // 
 				 // WiseGUI
 				 // 
-				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				 this->ClientSize = System::Drawing::Size(454, 473);
+				 this->ClientSize = System::Drawing::Size(459, 437);
 				 this->Controls->Add(this->pictureBox);
 				 this->Controls->Add(this->displayBox2);
 				 this->Controls->Add(this->dateBox);
