@@ -45,8 +45,9 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 	}
 
 
-		string undo;
+		string undo, taskDeleted;
 		undo = _storage.oneTaskInfoTypeTwo(iter);
+		taskDeleted = _storage.oneTaskInfoTypeOne(iter);
 		undo = "add " + undo;
 		_undoDelete.push(undo);
 		bool erased = false;
@@ -57,7 +58,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 		if (_deleted){
 			successful = true;
-			return MESSAGE_DELETED;
+			return MESSAGE_DELETED + taskDeleted;
 		}
 		else{
 			return MESSAGE_NOT_DELETED;
