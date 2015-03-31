@@ -13,7 +13,7 @@ public:
 	ExecuteSearch(UserTask*);
 	~ExecuteSearch();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 
 	bool haveThisInfo(string, list<StickyNote>::iterator);

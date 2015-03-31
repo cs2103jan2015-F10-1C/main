@@ -29,9 +29,10 @@ private:
 public:
 	Logic();
 	~Logic();
-	string handleInput(string, bool&, bool&);
+	string handleInput(string, bool&);
 	void initialise();
 	string getCurrentDirectory();
+	void archive();
 
 };
 

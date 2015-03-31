@@ -11,7 +11,7 @@ ExecuteDisplay::~ExecuteDisplay()
 {
 }
 
-string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string displayType = _task->getRemaining();
 	ostringstream oss;
@@ -29,7 +29,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 		return oss.str();
 	}
 	
-	else if (displayType == "today") {
+	else if (displayType == "today" || displayType == "") {
 		string currentDate = checkDate.getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
 		oss << buffer << "\r\n";
@@ -94,15 +94,12 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 	}
 	else if (displayType == "all") {
 		for (size_t i = 0; i < _size; i++, iter++){
-			oss << "[" << iter->getIndex() << "]" << " [" << iter->getCategory() << "]" << "\r\n" 
-				<< "Details: " << iter->getDetails() << "\r\n" << "Date: " << iter->getDate() << "\r\n" 
-				<< "Time: " << iter->getTime() << "\r\n" << "Priority: " << iter->getPriority() << "\r\n" << "\r\n";
+			oss << iter->getIndex() << " " << _storage.oneTaskInfoTypeOne(iter) << "\r\n";
 		}
 	}
 	else{
 		return MESSAGE_UNRECOGNISED_DISPLAY_TYPE;
 	}
-	successful = true;
 	return oss.str();
 }
 

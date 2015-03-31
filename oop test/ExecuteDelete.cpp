@@ -11,14 +11,15 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 ExecuteDelete::~ExecuteDelete() {
 }
 
-string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string indexToBeDeleted = _task->getRemaining();
+	bool isFound = false;
 
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
 		if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
-			return MESSAGE_NO_INFO_GIVEN;
+			return MESSAGE_WRONG_INDEX;
 		}
 	}
 
@@ -29,6 +30,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		iter = _storage.getIter();
 		for (size_t i = 0; i < _storage.getSize(); i++, iter++) {
 			if (iter->getIndex() == indexToBeDeleted) {
+				isFound = true;
 				break;
 			}
 		}
@@ -37,28 +39,30 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		int forEdit = atoi(indexToBeDeleted.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit > _allItems.size()) {
+		if (forEdit < 0 || forEdit >= _allItems.size()) {
 			return MESSAGE_WRONG_INDEX;
 		}
-
+		isFound = true;
 		iter = _allItems[forEdit];
 	}
 
+	if (!isFound) {
+		return MESSAGE_WRONG_INDEX;
+	}
 
-		string undo, taskDeleted;
+		string undo;
 		undo = _storage.oneTaskInfoTypeTwo(iter);
-		taskDeleted = _storage.oneTaskInfoTypeOne(iter);
 		undo = "add " + undo;
 		_undoDelete.push(undo);
 		bool erased = false;
 		erased = _storage.erase(iter);
 		assert(erased == true);
 		_deleted = true;
+		_storage.findClashes();
 
 
 		if (_deleted){
-			successful = true;
-			return MESSAGE_DELETED + taskDeleted;
+			return MESSAGE_DELETED;
 		}
 		else{
 			return MESSAGE_NOT_DELETED;

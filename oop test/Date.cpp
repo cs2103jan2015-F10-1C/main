@@ -101,3 +101,31 @@ string Date::getDay() {
 	return wDays[wDay-1];
 
 }
+
+void Date::setTaskTime(int& st, int& et, string time, string category) {
+
+	
+	int posCol; 
+	int posDas;
+
+	posCol = time.find_first_of(":", 0);
+	posDas = time.find_first_of("-", 0);
+
+	if (posCol == -1 || posDas == -1) {
+		st = 0;
+		et = 0;
+		return;
+	}
+
+
+	string start = time.substr(0, posCol) + time.substr(posCol + 1, posDas - (posCol + 1));
+	st = atoi(start.c_str());
+
+	posCol = time.find_first_of(":", posDas);
+	string end = time.substr(posDas + 1, posCol - (posDas + 1)) + time.substr(posCol + 1);
+	et = atoi(end.c_str());
+	
+	if (category == "Deadline") {
+		et = 0;
+	}
+}

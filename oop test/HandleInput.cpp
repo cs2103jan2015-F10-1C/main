@@ -234,7 +234,7 @@ bool HandleInput::isSpecialDetail(string str) {
 
 bool HandleInput::isPriority(string str) {
 
-	if (str == "-high" || str == "-mid" || str == "-low") {
+	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
 		return true;
 	}
 	return false;

@@ -9,7 +9,7 @@ private:
 public:
 	Storage();
 	~Storage();
-	string addNewNote(StickyNote, bool&);
+	string addNewNote(StickyNote);
 	list<StickyNote>::iterator getIter();
 	bool erase(list<StickyNote>::iterator);
 	int getSize();
@@ -17,6 +17,8 @@ public:
 	bool noRepeatIndexCount(string);
 	string oneTaskInfoTypeOne(list<StickyNote>::iterator);
 	string oneTaskInfoTypeTwo(list<StickyNote>::iterator);
-
+	void findClashes();
+	void findClashes(StickyNote&);
+	void findClashes(list<StickyNote>::iterator);
 };
 

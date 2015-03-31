@@ -13,7 +13,7 @@ string ExecuteSort::undo() {
 	return "";
 }
 
-string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	ostringstream oss;
 	string desireCommand = _task->getRemaining();
@@ -32,7 +32,6 @@ string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		return MESSAGE_INVALID_SORT;
 	}
 
-	successful = true;
 	return oss.str();
 }
 

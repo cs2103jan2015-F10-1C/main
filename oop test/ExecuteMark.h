@@ -8,11 +8,12 @@
 class ExecuteMark : public Executor {
 private:
 	UserTask* _task;
+	stack<string> _undoMark;
 public:
 	ExecuteMark(UserTask*);
 	~ExecuteMark();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
 	string undo();
 };
 

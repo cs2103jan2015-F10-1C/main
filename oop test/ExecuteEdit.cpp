@@ -12,7 +12,7 @@ ExecuteEdit::~ExecuteEdit()
 {
 }
 
-string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 	
 	string toEdit = _task->getRemaining();
 	if (toEdit == ""){
@@ -27,6 +27,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	}
 
 	string editIndex;
+	bool isFound = false;
 
 	int pos = toEdit.find_first_of(" ", 0);
 	editIndex = toEdit.substr(0, pos);
@@ -44,6 +45,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		iter = _storage.getIter();
 		for (size_t i = 0; i < _storage.getSize(); i++, iter++) {
 			if (iter->getIndex() == editIndex) {
+				isFound = true;
 				break;
 			}
 		}
@@ -52,10 +54,10 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		int forEdit = atoi(editIndex.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit > _allItems.size()) {
+		if (forEdit < 0 || forEdit >= _allItems.size()) {
 			return MESSAGE_WRONG_INDEX;
 		}
-
+		isFound = true;
 		iter = _allItems[forEdit];
 	}
 
@@ -71,66 +73,78 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	Date checkDate;
 	Standardise item;
 
+	if (isFound){
+		string undo;
+		undo = _storage.oneTaskInfoTypeTwo(iter);
 
-			string undo, taskEdited;
-			undo = _storage.oneTaskInfoTypeTwo(iter);
+		HandleInput handleInput;
 
-			HandleInput handleInput;
+		handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
 
-			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
+		bool changeOccur = false;
 
-			bool changeOccur = false;
-			
-			if (details != "" && details != iter->getDetails()) {
-				iter->setDetails(details);
-				changeOccur = true;
-			}
+		if (details != "" && details != iter->getDetails()) {
+			iter->setDetails(details);
+			changeOccur = true;
+		}
 
-			if (time != "" && time != "All day event" && time != iter->getTime()) {
-				time = item.standardiseTime(time);
-				if (date == "" && time != "All day event") {
+		if (time != "" && time != "All day event" && time != iter->getTime()) {
+			time = item.standardiseTime(time);
+			if (date == "" && time != "All day event") {
+				if (iter->getDate() == "unbounded event")
 					date = checkDate.getTodayDate();
-				}
-				iter->setTime(time);
-				changeOccur = true;
 			}
+			iter->setTime(time);
+			int st;
+			int et;
+			checkDate.setTaskTime(st, et, time, category);
+			iter->setStartTime(st);
+			iter->setEndTime(et);
+			changeOccur = true;
+		}
 
-			if (date != "" && date != "unbounded event" && date != iter->getDate()) {
-				date = item.standardiseDate(date);
-				iter->setDate(date);
-				changeOccur = true;
+		if (date != "" && date != "unbounded event" && date != iter->getDate()) {
+			date = item.standardiseDate(date);
+			iter->setDate(date);
+			changeOccur = true;
+		}
+
+		if (priority != "" && priority != iter->getPriority()) {
+			if (priority == "none"){
+				priority == "";
 			}
+			iter->setPriority(priority);
+			changeOccur = true;
+		}
 
-			if (priority != "" && priority != iter->getPriority()) {
-				iter->setPriority(priority);
-				changeOccur = true;
-			}
+		category = item.standardiseCategory(isADeadline, time);
+		if (category != iter->getCategory()) {
+			iter->setCategory(category);
+			changeOccur = true;
+		}
 
-			category = item.standardiseCategory(isADeadline, time);
-			if (category != iter->getCategory()) {
-				iter->setCategory(category);
-				changeOccur = true;
-			}
+		_storage.findClashes(iter);
 
-			index = iter->getIndex();
 
-			if (!isUndo) {
-				undo = "edit undo " + index + " " + undo;
-				_undoEdit.push(undo);
-			}
+		index = iter->getIndex();
 
-			if (changeOccur) {
-				successful = true;
-				taskEdited = _storage.oneTaskInfoTypeOne(iter);
-				return MESSAGE_EDIT + taskEdited;
-			}
-			else {
-				return MESSAGE_ERROR;
-			}
-			
+		if (!isUndo) {
+			undo = "edit undo " + index + " " + undo;
+			_undoEdit.push(undo);
+		}
 
-	return MESSAGE_WRONG_INDEX;
 
+
+		if (changeOccur) {
+			return "The Task have been edited successfully to\r\n" + _storage.oneTaskInfoTypeOne(iter);
+		}
+		else {
+			return MESSAGE_ERROR;
+		}
+	}
+	else {
+		return MESSAGE_WRONG_INDEX;
+	}
 }
 
 string ExecuteEdit::undo() {

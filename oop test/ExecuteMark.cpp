@@ -10,45 +10,60 @@ ExecuteMark::~ExecuteMark()
 {
 }
 
-string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string index = _task->getRemaining();
-
-	if (index.size() != 6) {
-		return MESSAGE_ERROR;
+	bool isFound = false;
+	bool isUndo = false;
+	string type = index.substr(0, 4);
+	if (type == "undo") {
+		isUndo = true;
+		index = index.substr(5);
 	}
 
-	for (int i = 0; i < index.size(); i++) {
+	for (size_t i = 0; i < index.size(); i++) {
 		if (index[i] < '0' || index[i] > '9') {
 			return MESSAGE_WRONG_INDEX;
 		}
 	}
 
 	list<StickyNote>::iterator iter;
-	iter = _storage.getIter();
-	int size = _storage.getSize();
-	bool isFound = false;
-	vector<list<StickyNote>::iterator> vec;
-	string old;
 
-	for (int i = 0; i < size; i++, iter++) {
-		if (iter->getIndex() == index) {
-			iter->setStatus("cleared");
-			isFound = true;
-			vec.push_back(iter);
-			old = _storage.oneTaskInfoTypeOne(iter);
-			_extdb.archive(old);
+	if (index.size() == 6) {
+
+		iter = _storage.getIter();
+		for (size_t i = 0; i < _storage.getSize(); i++, iter++) {
+			if (iter->getIndex() == index) {
+				isFound = true;
+				break;
+			}
 		}
 	}
+	else {
+		int forEdit = atoi(index.c_str());
+		forEdit--;
 
-	while (!vec.empty()) {
-		_storage.erase(vec.back());
-		vec.pop_back();
+		if (forEdit < 0 || forEdit >= _allItems.size()) {
+			return MESSAGE_WRONG_INDEX;
+		}
+
+		isFound = true;
+		iter = _allItems[forEdit];
 	}
 
-	if (isFound) {
-		successful = true;
-		return MESSAGE_MARKED + old;
+	if (isUndo) {
+		iter->setStatus("incomplete");
+		_storage.findClashes();
+		return MESSAGE_MARKED;
+
+	}
+
+	if (isFound && !isUndo) {
+		string undo = "mark undo " + iter->getIndex();
+		_undoMark.push(undo);
+		iter->setStatus("cleared");
+		_storage.findClashes();
+		return MESSAGE_MARKED;
 	}
 	else {
 		return MESSAGE_WRONG_INDEX;
@@ -56,5 +71,9 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 }
 
 string ExecuteMark::undo() {
-	return "";
+
+	string undoMark;
+	undoMark = _undoMark.top();
+	_undoMark.pop();
+	return undoMark;
 }

@@ -14,5 +14,6 @@ public:
 	string getTodayDate();
 	string getTomorrowDate();
 	string getDay();
+	void setTaskTime(int&, int&, string, string);
 };
 

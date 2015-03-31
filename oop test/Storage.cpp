@@ -10,9 +10,9 @@ Storage::~Storage()
 {
 }
 
-string Storage::addNewNote(StickyNote note, bool& successful) {
-
-	successful = true;
+string Storage::addNewNote(StickyNote note) {
+	
+	findClashes(note);
 	_noteBook.push_back(note);
 	return MESSAGE_ADD;
 }
@@ -55,9 +55,29 @@ int Storage::getSameDateCount(string date) {
 string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 
 	ostringstream oss;
-	oss << "[ " << iter->getTime() << " ] "
-		<< iter->getDetails()
-		<< " [Status: " << iter->getStatus() << "]" << "\r\n";
+	oss << "[ ";
+
+	if (iter->getPriority() == "high") {
+		oss << "high priority, ";
+	}
+	
+	if (iter->getCategory() == "Deadline") {
+		oss << "Before ";
+	}
+	if (iter->getStartTime() == 0) {
+		oss << iter->getTime();
+	}
+	else {
+		oss << iter->getSStartTime();
+		if (iter->getCategory() != "Deadline") {
+			oss << "-" << iter->getSEndTime();
+		}
+	}
+	oss << " ] " << iter->getDetails(); 
+	if (iter->getStatus() == "Clash" || iter->getStatus() == "cleared") {
+		oss << " [" << iter->getStatus() << "] ";
+	}
+	oss << "\r\n";
 	return oss.str();
 
 }
@@ -85,6 +105,9 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 	if (iter->getPriority() != "") {
 		oss << "-" << iter->getPriority(); 
 	}
+	else {
+		oss << "-none";
+	}
 		oss << "\n";
 		//<< "\r\n";
 	return oss.str();
@@ -102,4 +125,74 @@ bool Storage::noRepeatIndexCount(string index) {
 	}
 	return true;
 
+}
+
+void Storage::findClashes() {
+
+	int _size = getSize();
+	list<StickyNote>::iterator iter;
+	iter = getIter();
+
+	for (int i = 0; i < _size; i++, iter++) {
+		bool isClashExist = false;
+		if (iter->getStatus() == "Clash") {
+			list<StickyNote>::iterator find;
+			find = iter; // i do not want to increment iter.
+			find++;
+			int j = i + 1;
+			if (j <= _size) {
+				for (j; j < _size - (i + 1); j++, find++) {
+					if (find->getStatus() == "Clash") {
+						if ((iter->getDate() == find->getDate()) && find->getStartTime() != 0 && find->getEndTime() != 0) {
+							if ( !(iter->getStartTime() > find->getStartTime() && iter->getStartTime() >= find->getEndTime())
+								&& !(iter->getEndTime() <= find->getStartTime() && iter->getEndTime() < find->getEndTime())) {
+								isClashExist = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if (!isClashExist) {
+				iter->setStatus("incomplete");
+			}
+		}
+	}
+
+
+}
+
+void Storage::findClashes(StickyNote& note) {
+
+	int _size = getSize();
+	list<StickyNote>::iterator iter;
+	iter = getIter();
+
+	for (int i = 0; i < _size; i++, iter++) {
+		if ((note.getDate() == iter->getDate()) && iter->getStartTime() != 0 && iter->getEndTime() != 0 && iter->getStatus() != "cleared") {
+				if (!(note.getStartTime() > iter->getStartTime() && note.getStartTime() >= iter->getEndTime())
+					&& !(note.getEndTime() <= iter->getStartTime() && note.getEndTime() < iter->getEndTime())) {
+					note.setStatus("Clash");
+					iter->setStatus("Clash");
+				}
+		}
+	}
+
+}
+
+void Storage::findClashes(list<StickyNote>::iterator iter) {
+
+	int _size = getSize();
+	list<StickyNote>::iterator S_iter;
+	S_iter = getIter();
+
+	for (int i = 0; i < _size; i++, S_iter++) {
+		if ((iter->getDate() == S_iter->getDate()) && S_iter->getStartTime() != 0 && S_iter->getEndTime() != 0 && S_iter->getStatus() != "cleared") {
+				if (!(iter->getStartTime() > S_iter->getStartTime() && iter->getStartTime() >= S_iter->getEndTime())
+					&& !(iter->getEndTime() <= S_iter->getStartTime() && iter->getEndTime() < S_iter->getEndTime())) {
+					iter->setStatus("Clash");
+					S_iter->setStatus("Clash");
+				}
+		}
+	}
 }

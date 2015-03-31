@@ -10,7 +10,7 @@ ExecuteSearch::~ExecuteSearch()
 {
 }
 
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string infoToBeSearched = _task->getRemaining();
 	list<StickyNote>::iterator iter;
@@ -36,7 +36,6 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		for (size_t j = 0; j < tasksHaveThisInfo.size(); j++){
 			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << "\r\n";
 		}
-		successful = true;
 		return "The following tasks are found with the specified key words:\r\n" + oss.str();
 	}
 	else{

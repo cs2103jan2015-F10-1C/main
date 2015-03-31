@@ -12,7 +12,11 @@ private:
 		string _time = "";
 		string _priority = "";
 		string _index = "";
+		string _sStartTime = "";
+		string _sEndTime = "";
 
+		int _startTime = 0;
+		int _endTime = 0;
 		int _day = 0;
 		int _month = 0;
 
@@ -29,10 +33,14 @@ public:
 	string getPriority();
 	string getIndex();
 	string getCategory();
-
+	string getStatus();
 	int getDay();
 	int getMonth();
-	string getStatus();
+	int getStartTime();
+	int getEndTime();
+	string getSStartTime();
+	string getSEndTime();
+
 
 	void setCategory(string);
 	void setDetails(string);
@@ -40,11 +48,13 @@ public:
 	void setTime(string);
 	void setPriority(string);
 	void setIndex(string);
-
+	void setStatus(string);
 	void setDay(int);
 	void setMonth(int);
+	void setStartTime(int);
+	void setEndTime(int);
 
-	void setStatus(string);
+	
 
 };
 

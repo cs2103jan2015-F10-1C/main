@@ -10,13 +10,12 @@ ExecuteDropDown::~ExecuteDropDown()
 {
 }
 
-string ExecuteDropDown::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteDropDown::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string userInput = _task->getRemaining();
 	assert(checkingOption(userInput) == true);
 
 	if (checkingOption(userInput)){
-		successful = true;
 		return displayAllTask(_storage, _allItems);
 	}
 	else{
@@ -46,68 +45,106 @@ string ExecuteDropDown::displayAllTask(Storage& _storage, vector<list<StickyNote
 	getTomorrowTasks(taskTmr, _storage);
 	getUnboundedTasks(unbounded, _storage);
 
-	vector < list<StickyNote>::iterator>::iterator iter;
-	iter = taskToday.begin();
+	vector<list<StickyNote>::iterator>::iterator iter;
 
-	for (size_t i = 0; i < taskToday.size(); i++, iter++) {
-		if (taskToday[i]->getPriority() == "high") {
-			_allItems.push_back(taskToday[i]);
-			taskToday.erase(iter);
+	// today tasks
+		iter = taskToday.begin();
+		int size = taskToday.size();
+		vector<vector<list<StickyNote>::iterator>::iterator> toDelete;
+
+		for (size_t i = 0; i < size; i++, iter++) {
+			if (taskToday[i]->getPriority() == "high" && taskToday[i]->getStatus() != "cleared") {
+				_allItems.push_back(taskToday[i]);
+				toDelete.push_back(iter);
+			}
 		}
-	}
+		while (!toDelete.empty()) {
+				taskToday.erase(toDelete.back());
+				toDelete.pop_back();
+		}
+
 	while (!taskToday.empty()) {
-		_allItems.push_back(taskToday.back());
-		taskToday.pop_back();
-	}
-
-	iter = taskTmr.begin();
-
-	for (size_t i = 0; i < taskTmr.size(); i++, iter++) {
-		if (taskTmr[i]->getPriority() == "high") {
-			_allItems.push_back(taskToday[i]);
-			taskToday.erase(iter);
-			iter--;
-			i--;
+		if (taskToday.back()->getStatus() != "cleared") {
+			_allItems.push_back(taskToday.back());
+			taskToday.pop_back();
+		}
+		else {
+			taskToday.pop_back();
 		}
 	}
+
+	// tomorrow tasks
+		iter = taskTmr.begin();
+		size = taskTmr.size();
+
+		for (size_t i = 0; i < size; i++, iter++) {
+			if (taskTmr[i]->getPriority() == "high" && taskTmr[i]->getStatus() != "cleared") {
+				if (taskTmr.back()->getStatus() != "cleared") {
+					_allItems.push_back(taskTmr[i]);
+					toDelete.push_back(iter);
+				}
+				else {
+					taskTmr.pop_back();
+				}
+			}
+		}
+		while (!toDelete.empty()) {
+			taskTmr.erase(toDelete.back());
+			toDelete.pop_back();
+		}
+
 	while (!taskTmr.empty()) {
-		_allItems.push_back(taskTmr.back());
-		taskTmr.pop_back();
+		if (taskTmr.back()->getStatus() != "cleared") {
+			_allItems.push_back(taskTmr.back());
+			taskTmr.pop_back();
+		}
+		else {
+			taskTmr.pop_back();
+		}
 	}
 
+	// unbounded tasks
 	while (!unbounded.empty()) {
-		_allItems.push_back(unbounded.back());
-		unbounded.pop_back();
+		if (unbounded.back()->getStatus() != "cleared") {
+			_allItems.push_back(unbounded.back());
+			unbounded.pop_back();
+		}
+		else {
+			unbounded.pop_back();
+		}
+	
 	}
 
 	Date date;
 	int counter = 1;
-	oss << "TODAY: " << "\r\n";
 
-	for (size_t i = 0; i < _allItems.size(); i++) {
-		if (_allItems[i]->getDate() == date.getTodayDate()) {
-			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-			counter++;
+		oss << "TODAY: " << "\r\n";
+
+		for (size_t i = 0; i < _allItems.size(); i++) {
+			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
+				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+				counter++;
+			}
 		}
-	}
 
-	oss << "\r\n" << "TOMORROW: " << "\r\n";
 
-	for (size_t i = 0; i < _allItems.size(); i++) {
-		if (_allItems[i]->getDate() == date.getTomorrowDate()) {
-			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-			counter++;
+		oss << "\r\n" << "TOMORROW: " << "\r\n";
+
+		for (size_t i = 0; i < _allItems.size(); i++) {
+			if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
+				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+				counter++;
+			}
 		}
-	}
 
-	oss << "\r\n" << "UNBOUNDED: " << "\r\n";
+		oss << "\r\n" << "UNBOUNDED: " << "\r\n";
 
-	for (size_t i = 0; i < _allItems.size(); i++) {
-		if (_allItems[i]->getDate() == "unbounded event") {
-			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-			counter++;
+		for (size_t i = 0; i < _allItems.size(); i++) {
+			if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
+				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+				counter++;
+			}
 		}
-	}
 	
 	
 
