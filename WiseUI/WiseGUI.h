@@ -23,6 +23,7 @@
 #include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
 #include "CurrentDate.h"
+#include <sstream>
 
 AutomatedTesting* autoTest = new AutomatedTesting;
 vector<string> testCases;
@@ -230,22 +231,37 @@ namespace WiseUI {
 	}
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
-
+				
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 string result = logic->handleInput(input, edited);
-					 String^ feedback = gcnew String(result.c_str());
-					 if (edited){
-						 displayBox2->ForeColor = System::Drawing::Color::Red;
+					 istringstream iss(input);
+					 bool isHelp = false;
+					 string commandType = "";
+					 if (input.size() > 0){
+						 iss >> commandType;
 					 }
-					 else{
-						 displayBox2->ForeColor = System::Drawing::Color::Black;
+					 if (commandType[commandType.size() - 2] == '\r' && commandType[commandType.size() - 1] == '\n'){
+						 commandType = commandType.substr(0, commandType.size() - 2);
+					 }
+					 for (size_t i = 0; i < commandType.size(); i++){
+						 commandType[i] = tolower(commandType[i]);
+					 }
+					 if (commandType == "help"){
+						 isHelp = true;
 					 }
 
-					 displayBox2->Text = feedback;
+					 string result = logic->handleInput(input, edited);
+					 String^ feedback = gcnew String(result.c_str());
+					
+					 if (isHelp){
+						 MessageBox::Show(feedback);
+					 }
+					 else{
+						 displayBox2->Text = feedback;
+					 }
 				 }
 
 				 if (edited){
