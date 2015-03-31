@@ -30,8 +30,9 @@ string test = "";
 
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
 
-CurrentDate todayDate;
-string date = "Today is " + todayDate.getCurrentDate() + ".\r\n";
+Date attainDate;
+string date = attainDate.getDay() + " "  + attainDate.getTodayDate() + "\r\n";
+
 
 
 namespace WiseUI {
