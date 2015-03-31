@@ -232,28 +232,14 @@ namespace WiseUI {
 	}
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
-<<<<<<< HEAD
-				 bool successful = false;
 
-=======
-				
->>>>>>> f1f3445d0a394d7c03f4c4f8d8ccba60af0dd366
+				 bool successful = false;
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-<<<<<<< HEAD
-					 string result = logic->handleInput(input, edited, successful);
-					 String^ feedback = gcnew String(result.c_str());
 
-					 if (!successful){
-						 displayBox2->Text = feedback;
-					 }
-					 else{
-						 displayBox->Text = feedback;
-						 displayBox2->Text = "The command is carried out successfully.";
-=======
 					 istringstream iss(input);
 					 bool isHelp = false;
 					 string commandType = "";
@@ -269,16 +255,26 @@ namespace WiseUI {
 					 if (commandType == "help"){
 						 isHelp = true;
 					 }
+					 if (commandType == "display"){
+						 bool successful2 = false;
+						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
+						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+						 displayBox->Text = tasksToBeDisplayed;
+						 return;
+					 }
 
-					 string result = logic->handleInput(input, edited);
+					 string result = logic->handleInput(input, edited, successful);
 					 String^ feedback = gcnew String(result.c_str());
 					
-					 if (isHelp){
+					 if (isHelp && successful){
 						 MessageBox::Show(feedback);
 					 }
-					 else{
+					 else if(successful){
+							 displayBox->Text = feedback;
+							 displayBox2->Text = "The command is carried out successfully.";
+					 }
+					 else if (!successful){
 						 displayBox2->Text = feedback;
->>>>>>> f1f3445d0a394d7c03f4c4f8d8ccba60af0dd366
 					 }
 				 }
 				 /*
