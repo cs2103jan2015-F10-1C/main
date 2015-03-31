@@ -5,7 +5,8 @@ class UserTask
 {
 private:
 	COMMAND _command;
-	string _remaining;
+	string _remaining;			   
+
 public:
 	UserTask();
 	~UserTask();

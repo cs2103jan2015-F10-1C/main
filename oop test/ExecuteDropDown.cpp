@@ -28,8 +28,7 @@ string ExecuteDropDown::undo() {
 }
 
 bool ExecuteDropDown::checkingOption(string userInput) {
-	return userInput == "Display All Tasks" || userInput == "Tasks to be done today" ||
-		userInput == "Sort by Date" || userInput == "Sort by Priority" || userInput == "Display Unbounded Tasks";
+	return userInput == "Display All Tasks";
 }
 
 string ExecuteDropDown::displayAllTask(Storage& _storage, vector<list<StickyNote>::iterator>& _allItems){
@@ -82,9 +81,6 @@ string ExecuteDropDown::displayAllTask(Storage& _storage, vector<list<StickyNote
 
 	Date date;
 	int counter = 1;
-
-	oss << "Displaying tasks for " << date.getTodayDate() << " and " << date.getTomorrowDate() << "\r\n" << "\r\n";
-
 	oss << "TODAY: " << "\r\n";
 
 	for (size_t i = 0; i < _allItems.size(); i++) {
@@ -94,7 +90,7 @@ string ExecuteDropDown::displayAllTask(Storage& _storage, vector<list<StickyNote
 		}
 	}
 
-	oss << "TOMORROW: " << "\r\n";
+	oss << "\r\n" << "TOMORROW: " << "\r\n";
 
 	for (size_t i = 0; i < _allItems.size(); i++) {
 		if (_allItems[i]->getDate() == date.getTomorrowDate()) {
@@ -103,7 +99,7 @@ string ExecuteDropDown::displayAllTask(Storage& _storage, vector<list<StickyNote
 		}
 	}
 
-	oss << "UNBOUNDED: " << "\r\n";
+	oss << "\r\n" << "UNBOUNDED: " << "\r\n";
 
 	for (size_t i = 0; i < _allItems.size(); i++) {
 		if (_allItems[i]->getDate() == "unbounded event") {

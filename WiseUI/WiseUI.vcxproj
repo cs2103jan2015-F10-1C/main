@@ -85,10 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutomatedTesting.cpp" />
+    <ClCompile Include="CurrentDate.cpp" />
     <ClCompile Include="WiseGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomatedTesting.h" />
+    <ClInclude Include="CurrentDate.h" />
     <ClInclude Include="WiseGUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>

@@ -36,7 +36,7 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		for (size_t j = 0; j < tasksHaveThisInfo.size(); j++){
 			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << "\r\n";
 		}
-		return oss.str();
+		return "The following tasks are found with the specified key words:\r\n" + oss.str();
 	}
 	else{
 		return MESSAGE_INFO_UNFOUND;

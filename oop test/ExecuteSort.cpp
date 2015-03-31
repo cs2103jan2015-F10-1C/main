@@ -114,6 +114,7 @@ string ExecuteSort::sortTasksByDate(Storage& _storage){
 		}
 	}
 
+
 	vector<list<StickyNote>::iterator> sortedFutureTasks;
 	if (jan.size() > 0){
 		std::sort(jan.begin(), jan.end(), compareTwoTasksByDay());

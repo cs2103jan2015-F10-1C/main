@@ -53,8 +53,15 @@ namespace UnitTest
 				string result = logic->handleInput(input3, edited3);
 
 				string expectedResult = "[280301] [normal]\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+
+=======
 				//error in the edit class
 				//code suppose to be displaying meet ruyan instead of meet zann meet ruyan
+>>>>>>> origin/oop_test
 				Assert::AreEqual(expectedResult, result);
 			}
 		
