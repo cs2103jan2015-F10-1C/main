@@ -99,35 +99,11 @@ namespace WiseUI {
 	private: System::Windows::Forms::TextBox^  displayBox;
 	protected:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::TextBox^  dateBox;
 
 
 	private: System::Windows::Forms::TextBox^  displayBox2;
 	private: System::Windows::Forms::PictureBox^  pictureBox;
-
-
-
-
-
-
-
-
-
 
 			 System::ComponentModel::Container ^components;
 
@@ -158,7 +134,6 @@ namespace WiseUI {
 				 // 
 				 // displayBox
 				 // 
-				 this->displayBox->BackColor = System::Drawing::SystemColors::Control;
 				 this->displayBox->Location = System::Drawing::Point(12, 47);
 				 this->displayBox->Multiline = true;
 				 this->displayBox->Name = L"displayBox";
@@ -201,17 +176,19 @@ namespace WiseUI {
 				 // 
 				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+				 this->BackColor = System::Drawing::SystemColors::Menu;
 				 this->ClientSize = System::Drawing::Size(459, 437);
 				 this->Controls->Add(this->pictureBox);
 				 this->Controls->Add(this->displayBox2);
 				 this->Controls->Add(this->dateBox);
 				 this->Controls->Add(this->displayBox);
 				 this->Controls->Add(this->CmdLineBox);
+				 this->ForeColor = System::Drawing::SystemColors::ControlText;
 				 this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 				 this->MaximizeBox = false;
 				 this->Name = L"WiseGUI";
 				 this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-				 this->Text = L"WiseGUI";
+				 this->Text = L"WiseManger";
 				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
