@@ -270,14 +270,14 @@ namespace WiseUI {
 					 string result = logic->handleInput(input, edited, successful);
 					 String^ feedback = gcnew String(result.c_str());
 					
-					 if (isHelp && successful){
+					 if (isHelp){
 						 MessageBox::Show(feedback);
 					 }
-					 else if(successful){
+					 else if(!isHelp && successful){
 							 displayBox->Text = feedback;
 							 displayBox2->Text = "The command is carried out successfully.";
 					 }
-					 else if (!successful){
+					 else if (!isHelp && !successful){
 						 displayBox2->Text = feedback;
 					 }
 				 }
