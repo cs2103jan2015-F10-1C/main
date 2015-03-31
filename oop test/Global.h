@@ -32,7 +32,7 @@ const string MESSAGE_DIRECTORY_NOT_CHANGED = "The new directory is not found. Pl
 const string MESSAGE_INVALID_HELP = "Help is available for the following functions: \nadd, display, delete, edit, search, directory, sort and mark. \nPlease key in, for example: \"help add\" to learn more about the add function.\r\n";
 const string MESSAGE_INVALID_UNDO = "There is nothing to undo. \r\n";
 const string MESSAGE_INVALID_SORT = "The sort criteria is invalid. \r\n";
-const string MESSAGE_MARKED = "Task has been marked as cleared. \r\n";
+const string MESSAGE_MARKED = "The following task has been marked as cleared. \r\n";
 
 
 const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";

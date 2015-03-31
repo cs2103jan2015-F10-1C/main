@@ -48,7 +48,7 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 
 	if (isFound) {
 		successful = true;
-		return MESSAGE_MARKED;
+		return MESSAGE_MARKED + old;
 	}
 	else {
 		return MESSAGE_WRONG_INDEX;
