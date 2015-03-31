@@ -17,7 +17,7 @@ using namespace std;
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.3! \r\n";
 const string MESSAGE_ADD = "The following new task has been added successfully.\r\n";
 const string MESSAGE_ERROR = "Invalid input. \r\n";
-
+const string MESSAGE_EDIT = "The Task have been edited successfully to \r\n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \r\n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched. \r\n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please re-input. \r\n";

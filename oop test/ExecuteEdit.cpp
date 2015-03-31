@@ -72,7 +72,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	Standardise item;
 
 
-			string undo;
+			string undo, taskEdited;
 			undo = _storage.oneTaskInfoTypeTwo(iter);
 
 			HandleInput handleInput;
@@ -121,7 +121,8 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 
 			if (changeOccur) {
 				successful = true;
-				return "The Task have been edited successfully to\r\n" +_storage.oneTaskInfoTypeOne(iter);
+				taskEdited = _storage.oneTaskInfoTypeOne(iter);
+				return MESSAGE_EDIT + taskEdited;
 			}
 			else {
 				return MESSAGE_ERROR;
