@@ -18,10 +18,15 @@ string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<li
 	string newDirectory = _task->getRemaining();
 	string result;
 
-	result = extdb.setLocation(_storage, newDirectory);
+	result = extdb.setLocation(_storage, newDirectory, successful);
 
-	successful = true;
-	return result;
+	if (successful){
+		result = result + newDirectory + "\r\n";
+		return result;
+	}
+	else{
+		return result;
+	}
 }
 
 string ExecuteDirectory::undo() {
