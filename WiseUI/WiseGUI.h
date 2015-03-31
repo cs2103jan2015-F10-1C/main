@@ -243,19 +243,23 @@ namespace WiseUI {
 					 istringstream iss(input);
 					 bool isHelp = false;
 					 string commandType = "";
+
 					 if (input.size() > 0){
 						 iss >> commandType;
 					 }
+
 					 if (commandType[commandType.size() - 2] == '\r' && commandType[commandType.size() - 1] == '\n'){
 						 commandType = commandType.substr(0, commandType.size() - 2);
 					 }
+
 					 for (size_t i = 0; i < commandType.size(); i++){
 						 commandType[i] = tolower(commandType[i]);
 					 }
+
 					 if (commandType == "help"){
 						 isHelp = true;
 					 }
-					 if (commandType == "display"){
+					 else if (commandType == "display"){
 						 bool successful2 = false;
 						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
 						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());

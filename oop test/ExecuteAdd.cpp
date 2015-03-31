@@ -45,7 +45,16 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	undo = "delete " + index;
 	_undoAdd.push(undo);
 
-	return result;
+	if (successful){
+		ostringstream oss;
+		oss << "[ " << note.getTime() << " ] "
+			<< note.getDetails()
+			<< " [Status: " << note.getStatus() << "]" << "\r\n";
+		return result + oss.str();
+	}
+	else{
+		return result;
+	}
 }
 
 
