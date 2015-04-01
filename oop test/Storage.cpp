@@ -188,7 +188,7 @@ void Storage::findClashes(list<StickyNote>::iterator iter) {
 	S_iter = getIter();
 
 	for (int i = 0; i < _size; i++, S_iter++) {
-		if ((iter->getDate() == S_iter->getDate()) && S_iter->getStartTime() != 0 && S_iter->getEndTime() != 0 && S_iter->getStatus() != "cleared") {
+		if ((iter->getDate() == S_iter->getDate()) && S_iter->getStartTime() != 0 && S_iter->getEndTime() != 0 && S_iter->getStatus() != "cleared" && (iter->getIndex() != S_iter->getIndex())) {
 				if (!(iter->getStartTime() > S_iter->getStartTime() && iter->getStartTime() >= S_iter->getEndTime())
 					&& !(iter->getEndTime() <= S_iter->getStartTime() && iter->getEndTime() < S_iter->getEndTime())) {
 					iter->setStatus("Clash");
