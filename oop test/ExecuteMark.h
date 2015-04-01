@@ -13,7 +13,7 @@ public:
 	ExecuteMark(UserTask*);
 	~ExecuteMark();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>& );
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
 	string undo();
 };
 

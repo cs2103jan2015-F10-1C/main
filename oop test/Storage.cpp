@@ -10,10 +10,11 @@ Storage::~Storage()
 {
 }
 
-string Storage::addNewNote(StickyNote note) {
+string Storage::addNewNote(StickyNote note, bool& successful) {
 	
 	findClashes(note);
 	_noteBook.push_back(note);
+	successful = true;
 	return MESSAGE_ADD;
 }
 

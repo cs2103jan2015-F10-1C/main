@@ -13,9 +13,8 @@ string ExecuteSort::undo() {
 	return "";
 }
 
-string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
-	ostringstream oss;
 	string desireCommand = _task->getRemaining();
 
 	if (desireCommand == ""){
@@ -23,16 +22,17 @@ string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	}
 
 	if (desireCommand == "by date"){
-		return sortTasksByDate(_storage);
+		successful = true;
+		return MESSAGE_SORTED + sortTasksByDate(_storage);
 	}
 	else if (desireCommand == "by priority"){
-		return sortTasksPriority(_storage);
+		successful = true;
+		return MESSAGE_SORTED + sortTasksPriority(_storage);
 	}
 	else{
 		return MESSAGE_INVALID_SORT;
 	}
 
-	return oss.str();
 }
 
 string ExecuteSort::getTodayDate(){

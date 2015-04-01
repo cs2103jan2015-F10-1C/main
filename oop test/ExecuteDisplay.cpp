@@ -11,7 +11,7 @@ ExecuteDisplay::~ExecuteDisplay()
 {
 }
 
-string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string displayType = _task->getRemaining();
 	ostringstream oss;
@@ -100,6 +100,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 	else{
 		return MESSAGE_UNRECOGNISED_DISPLAY_TYPE;
 	}
+	successful = true;
 	return oss.str();
 }
 

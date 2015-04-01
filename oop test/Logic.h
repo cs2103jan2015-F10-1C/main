@@ -29,7 +29,7 @@ private:
 public:
 	Logic();
 	~Logic();
-	string handleInput(string, bool&);
+	string handleInput(string, bool&, bool&);
 	void initialise();
 	string getCurrentDirectory();
 	void archive();

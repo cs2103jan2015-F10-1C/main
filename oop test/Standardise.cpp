@@ -1,13 +1,13 @@
 #include "Standardise.h"
 
 
-Standardise::Standardise() 
+Standardise::Standardise()
 {
 
 }
 
 
-Standardise::~Standardise() 
+Standardise::~Standardise()
 {
 }
 
@@ -18,7 +18,7 @@ string Standardise::standardiseDate(string date) {
 	istringstream iss(date);
 	string day_extract = "";
 	string month_extract = "";
-	
+
 
 	// get current date
 
