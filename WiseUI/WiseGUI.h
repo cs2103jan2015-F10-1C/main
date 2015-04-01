@@ -246,15 +246,28 @@ namespace WiseUI {
 						 isHelp = true;
 					 }
 					 else if (commandType == "display" && input2 == "display"){
+						 String^ dateDisplayed = gcnew String(date.c_str());
+						 dateBox->Text = dateDisplayed;
 						 bool successful2 = false;
 						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
 						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 						 displayBox->Text = tasksToBeDisplayed;
 						 return;
 					 }
+					 else if (commandType == "add" || commandType == "delete" || commandType == "edit" || commandType == "mark"){
+						 string result = logic->handleInput(input, edited, successful);
+						 String^ feedback = gcnew String(result.c_str());
+						 bool successful2 = false;
+						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
+						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+						 displayBox->Text = tasksToBeDisplayed;
+						 displayBox2->Text = feedback;
+						 return;
+					 }
 
-					 string result = logic->handleInput(input, edited, successful);
-					 String^ feedback = gcnew String(result.c_str());
+						 dateBox->Text = gcnew String(commandType.c_str());
+						 string result = logic->handleInput(input, edited, successful);
+						 String^ feedback = gcnew String(result.c_str());
 
 					 if (isHelp){
 						 MessageBox::Show(feedback);
@@ -267,14 +280,13 @@ namespace WiseUI {
 						 displayBox2->Text = feedback;
 					 }
 				 }
-				 /*
+				
 				 if (edited){
 				 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful);
 				 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 				 displayBox->Text = tasksToBeDisplayed;
 				 }
 
-				 */
 				 return;
 	}
 
