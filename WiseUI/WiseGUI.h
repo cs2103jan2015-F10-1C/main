@@ -216,6 +216,7 @@ namespace WiseUI {
 				 }
 				 else{
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
+					 string input2;
 
 					 istringstream iss(input);
 					 bool isHelp = false;
@@ -229,14 +230,22 @@ namespace WiseUI {
 						 commandType = commandType.substr(0, commandType.size() - 2);
 					 }
 
+					 if (input[input.size() - 2] == '\r' && input[input.size() - 1] == '\n'){
+						 input2 = input.substr(0, input.size() - 2);
+					 }
+
 					 for (size_t i = 0; i < commandType.size(); i++){
 						 commandType[i] = tolower(commandType[i]);
+					 }
+
+					 for (size_t i = 0; i < input2.size(); i++){
+						 input2[i] = tolower(input2[i]);
 					 }
 
 					 if (commandType == "help"){
 						 isHelp = true;
 					 }
-					 else if (commandType == "display"){
+					 else if (commandType == "display" && input2 == "display"){
 						 bool successful2 = false;
 						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
 						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());

@@ -29,7 +29,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 		return oss.str();
 	}
 	
-	else if (displayType == "today" || displayType == "") {
+	else if (displayType == "today") {
 		string currentDate = checkDate.getTodayDate();
 		sprintf_s(buffer, MESSAGE_DISPLAY.c_str(), currentDate.c_str());
 		oss << buffer << "\r\n";
