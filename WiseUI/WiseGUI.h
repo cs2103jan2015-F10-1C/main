@@ -255,6 +255,7 @@ namespace WiseUI {
 						 return;
 					 }
 					 else if (commandType == "add" || commandType == "delete" || commandType == "edit" || commandType == "mark"){
+						 dateBox->Text = gcnew String(commandType.c_str());
 						 string result = logic->handleInput(input, edited, successful);
 						 String^ feedback = gcnew String(result.c_str());
 						 bool successful2 = false;
