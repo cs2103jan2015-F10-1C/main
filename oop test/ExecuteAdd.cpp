@@ -10,7 +10,7 @@ ExecuteAdd::~ExecuteAdd()
 {
 }
 
-string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string userInput = _task->getRemaining();
 
@@ -48,22 +48,13 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	checkDate.setTaskTime(st, et, time, category);
 	note.setStartTime(st);
 	note.setEndTime(et);
-	string result = _storage.addNewNote(note, successful);
+	string result = _storage.addNewNote(note);
 
 	string undo;
 	undo = "delete " + index;
 	_undoAdd.push(undo);
 
-	if (successful){
-		ostringstream oss;
-		oss << "[ " << note.getTime() << " ] "
-			<< note.getDetails()
-			<< " [Status: " << note.getStatus() << "]" << "\r\n";
-		return result + oss.str();
-	}
-	else{
-		return result;
-	}
+	return result;
 }
 
 

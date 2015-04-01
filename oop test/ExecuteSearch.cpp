@@ -10,7 +10,9 @@ ExecuteSearch::~ExecuteSearch()
 {
 }
 
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+
+	_allItems.clear();
 
 	string infoToBeSearched = _task->getRemaining();
 	list<StickyNote>::iterator iter;
@@ -23,21 +25,17 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 	bool infoIsFound = false;
 	int i = 0;
-	vector<list<StickyNote>::iterator> tasksHaveThisInfo;
 	for (iter; i < _size; i++, iter++){
 		if (haveThisInfo(infoToBeSearched, iter)){
 			infoIsFound = true;
-			tasksHaveThisInfo.push_back(iter);
+			_allItems.push_back(iter);
 		}
 	}
 
 	if (infoIsFound){
-		ostringstream oss;
-		for (size_t j = 0; j < tasksHaveThisInfo.size(); j++){
-			oss << j + 1 << "." << getAllInfoOfOneTask(tasksHaveThisInfo[j]) << "\r\n";
-		}
-		successful = true;
-		return MESSAGE_FOUND + oss.str();
+		string returnMsg;
+		returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
+		return returnMsg;
 	}
 	else{
 		return MESSAGE_INFO_UNFOUND;
@@ -101,16 +99,6 @@ bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeCheck
 		}
 		return false;
 	}
-}
-
-string ExecuteSearch::getAllInfoOfOneTask(list<StickyNote>::iterator iter) {
-	ostringstream oss;
-	oss << "Index: " << iter->getIndex() << "\r\n"
-		<< "Details: " << iter->getDetails() << "\r\n"
-		<< "Date: " << iter->getDate() << "\r\n"
-		<< "Time: " << iter->getTime() << "\r\n"
-		<< "Priority: " << iter->getPriority() << "\r\n";
-	return oss.str();
 }
 
 string ExecuteSearch::undo() {

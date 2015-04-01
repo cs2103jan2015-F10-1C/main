@@ -8,7 +8,6 @@
 #include "ExecuteEdit.h"
 #include "ExecuteSearch.h"
 #include "ExecuteDisplay.h"
-#include "ExecuteDropDown.h"
 #include "ExecuteSort.h"
 #include "ExecuteHelp.h"
 #include "ExtDataBase.h"
@@ -29,7 +28,7 @@ private:
 public:
 	Logic();
 	~Logic();
-	string handleInput(string, bool&, bool&);
+	string handleInput(string, bool&);
 	void initialise();
 	string getCurrentDirectory();
 	void archive();

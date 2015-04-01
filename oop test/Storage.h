@@ -9,7 +9,7 @@ private:
 public:
 	Storage();
 	~Storage();
-	string addNewNote(StickyNote, bool&);
+	string addNewNote(StickyNote);
 	list<StickyNote>::iterator getIter();
 	bool erase(list<StickyNote>::iterator);
 	int getSize();

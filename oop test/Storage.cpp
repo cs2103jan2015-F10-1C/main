@@ -10,11 +10,10 @@ Storage::~Storage()
 {
 }
 
-string Storage::addNewNote(StickyNote note, bool& successful) {
+string Storage::addNewNote(StickyNote note) {
 	
 	findClashes(note);
 	_noteBook.push_back(note);
-	successful = true;
 	return MESSAGE_ADD;
 }
 
@@ -138,21 +137,15 @@ void Storage::findClashes() {
 		bool isClashExist = false;
 		if (iter->getStatus() == "Clash") {
 			list<StickyNote>::iterator find;
-			find = iter; // i do not want to increment iter.
-			find++;
-			int j = i + 1;
-			if (j <= _size) {
-				for (j; j < _size - (i + 1); j++, find++) {
-					if (find->getStatus() == "Clash") {
-						if ((iter->getDate() == find->getDate()) && find->getStartTime() != 0 && find->getEndTime() != 0) {
+			find = getIter(); // i do not want to increment iter.
+				for (int j = 0; j < _size; j++, find++) {
+					if ((iter->getDate() == find->getDate()) && find->getStartTime() != 0 && find->getEndTime() != 0 && find->getStatus() == "Clash" && (find->getIndex() != iter->getIndex())) {
 							if ( !(iter->getStartTime() > find->getStartTime() && iter->getStartTime() >= find->getEndTime())
 								&& !(iter->getEndTime() <= find->getStartTime() && iter->getEndTime() < find->getEndTime())) {
 								isClashExist = true;
 								break;
 							}
 						}
-					}
-				}
 			}
 			if (!isClashExist) {
 				iter->setStatus("incomplete");

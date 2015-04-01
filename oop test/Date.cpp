@@ -83,12 +83,13 @@ string Date::getTomorrowDate() {
 
 }
 
-string Date::getDay() {
+string Date::getXDaysLaterDate(int add) {
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
 
 	time(&rawTime);
+	rawTime = rawTime + 24 * 60 * 60;
 	localtime_s(timeInfo, &rawTime);
 
 	int day = timeInfo->tm_mday;
@@ -96,11 +97,14 @@ string Date::getDay() {
 	int year = timeInfo->tm_year + 1900;
 	int wDay = timeInfo->tm_wday;
 
-	string wDays[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-
-	return wDays[wDay-1];
+	day = day + add - 1;
+	string xDays = to_string(day) + "/" + to_string(month);
+	Standardise standard;
+	standard.standardiseDate(xDays);
+	return xDays;
 
 }
+
 
 void Date::setTaskTime(int& st, int& et, string time, string category) {
 
@@ -128,4 +132,47 @@ void Date::setTaskTime(int& st, int& et, string time, string category) {
 	if (category == "Deadline") {
 		et = 0;
 	}
+}
+
+string Date::getDateDetails(string date) {
+
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int currentDay = timeInfo->tm_mday;
+	int currentMonth = timeInfo->tm_mon + 1;
+	int currentYear = timeInfo->tm_year + 1900;
+	int currentWDay = timeInfo->tm_wday;
+
+	string wDays[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+	string months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+	int daysInMth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	int pos = date.find("/");
+	string sDay = date.substr(0,pos);
+	string sMth = date.substr(pos+1);
+
+	int day = atoi(sDay.c_str());
+	int mth = atoi(sMth.c_str());
+
+	int diff = mth - currentMonth;
+
+	if (diff > 0) {
+		for (int i = 0; i < diff; i++) {
+			day = day + daysInMth[(mth-1) + i];
+		}
+	}
+
+	int dayDiff = day - currentDay;
+
+
+	int weekDay = ((currentWDay - 1) + (dayDiff % 7)) % 7;
+
+	string returnItem = wDays[weekDay] + ", " + sDay + " " + months[mth - 1];
+
+	return returnItem;
+
 }

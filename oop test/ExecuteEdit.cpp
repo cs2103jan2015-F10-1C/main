@@ -12,7 +12,7 @@ ExecuteEdit::~ExecuteEdit()
 {
 }
 
-string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 	
 	string toEdit = _task->getRemaining();
 	if (toEdit == ""){
@@ -74,7 +74,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	Standardise item;
 
 	if (isFound){
-		string undo, taskEdited;
+		string undo;
 		undo = _storage.oneTaskInfoTypeTwo(iter);
 
 		HandleInput handleInput;
@@ -124,6 +124,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		}
 
 		_storage.findClashes(iter);
+		_storage.findClashes();
 
 
 		index = iter->getIndex();
@@ -136,9 +137,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 
 
 		if (changeOccur) {
-			successful = true;
-			taskEdited = _storage.oneTaskInfoTypeOne(iter);
-			return MESSAGE_EDIT + taskEdited;
+			return "The Task have been edited successfully to\r\n" + _storage.oneTaskInfoTypeOne(iter);
 		}
 		else {
 			return MESSAGE_ERROR;
