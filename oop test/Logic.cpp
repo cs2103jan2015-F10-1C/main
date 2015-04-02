@@ -11,7 +11,7 @@ Logic::~Logic() {
 	delete _parser;
 }
 
-string Logic::handleInput(string userInput, bool& edited, bool& successful) {
+string Logic::handleInput(string userInput, bool& edited) {
 	
 	UserTask* task = _parser->parse(userInput);
 	string result;
@@ -34,7 +34,7 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 			string conduct = executor->undo();
 			task = _parser->parse(conduct);
 			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb, _allItems, successful);
+			result = executor->execute(_storage, _extdb, _allItems);
 			_extdb.autoSave(_storage);
 		}
 		else {
@@ -49,13 +49,13 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 				 task->getCommand() == COMMAND::MARK) {
 				 _inputHistory.push(executor);
 			 }
-			 result = executor->execute(_storage, _extdb, _allItems, successful);
+			 result = executor->execute(_storage, _extdb, _allItems);
 			 _extdb.autoSave(_storage);
 		 }
 
 	if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
 		|| task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::UNDO
-		|| task->getCommand() == COMMAND::MARK) {
+		|| task->getCommand() == COMMAND::MARK || task->getCommand() == COMMAND::SEARCH) {
 		edited = true;
 	}
 	
@@ -77,8 +77,6 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteSort(task);
 	case DISPLAY:
 		return new ExecuteDisplay(task);
-	case DISPLAYDROPDOWN:
-		return new ExecuteDropDown(task);
 	case HELP:
 		return new ExecuteHelp(task);
 	case MARK:
@@ -91,13 +89,13 @@ Executor* Logic::dispatch(UserTask* task) {
 void Logic::initialise() {
 
 	vector<string>* vec;
-	bool successful = true;
+
 	vec = _extdb.getContent();
 
 	for (int i = 0; i < vec->size(); i++) {
 		UserTask* task = _parser->parse((*vec)[i]);
 		Executor* execute = dispatch(task);
-		execute->execute(_storage, _extdb, _allItems, successful);
+		execute->execute(_storage, _extdb, _allItems);
 	}
 	
 }

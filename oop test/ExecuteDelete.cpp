@@ -11,7 +11,7 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 ExecuteDelete::~ExecuteDelete() {
 }
 
-string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful	) {
+string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string indexToBeDeleted = _task->getRemaining();
 	bool isFound = false;
@@ -50,9 +50,8 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		return MESSAGE_WRONG_INDEX;
 	}
 
-		string undo, taskDeleted;
+		string undo;
 		undo = _storage.oneTaskInfoTypeTwo(iter);
-		taskDeleted = _storage.oneTaskInfoTypeOne(iter);
 		undo = "add " + undo;
 		_undoDelete.push(undo);
 		bool erased = false;
@@ -63,8 +62,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 
 		if (_deleted){
-			successful = true;
-			return MESSAGE_DELETED + taskDeleted;
+			return MESSAGE_DELETED;
 		}
 		else{
 			return MESSAGE_NOT_DELETED;

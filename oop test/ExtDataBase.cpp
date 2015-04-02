@@ -29,7 +29,7 @@ string ExtDataBase::getLocation() {
 	return _currentLocation;
 }
 
-string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
+string ExtDataBase::setLocation(Storage& _storage, string newDirectory) {
 
 	ofstream ofs;
 	ofs.open(newDirectory);
@@ -48,7 +48,6 @@ string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& su
 		out.close();
 		ofs.close();
 		getLocation();
-		successful = true;
 		return MESSAGE_DIRECTORY_CHANGED;
 	}
 	else{

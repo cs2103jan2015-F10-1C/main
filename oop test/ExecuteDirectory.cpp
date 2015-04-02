@@ -10,7 +10,7 @@ ExecuteDirectory::~ExecuteDirectory()
 {
 }
 
-string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
 
 	string undo = "directory " + extdb.getLocation();
 	_undoDirectory.push(undo);
@@ -18,15 +18,9 @@ string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<li
 	string newDirectory = _task->getRemaining();
 	string result;
 
-	result = extdb.setLocation(_storage, newDirectory, successful);
+	result = extdb.setLocation(_storage, newDirectory);
 
-	if (successful){
-		result = result + newDirectory + "\r\n";
-		return result;
-	}
-	else{
-		return result;
-	}
+	return result;
 }
 
 string ExecuteDirectory::undo() {

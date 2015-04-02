@@ -13,7 +13,8 @@ public:
 	bool isDate2(string);
 	string getTodayDate();
 	string getTomorrowDate();
-	string getDay();
+	string getXDaysLaterDate(int);
+	string getDateDetails(string);
 	void setTaskTime(int&, int&, string, string);
 };
 

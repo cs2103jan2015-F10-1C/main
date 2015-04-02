@@ -9,8 +9,6 @@
 #include "ExecuteEdit.h"
 #include "ExecuteSearch.h"
 #include "ExecuteDisplay.h"
-#include "ExecuteDropDown.h"
-#include "ExecuteDropDown.h"
 #include "ExecuteHelp.h"
 #include "ExtDataBase.h"
 #include "ExecuteDirectory.h"
@@ -23,7 +21,6 @@
 #include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
 #include "CurrentDate.h"
-#include <sstream>
 
 AutomatedTesting* autoTest = new AutomatedTesting;
 vector<string> testCases;
@@ -32,8 +29,9 @@ string test = "";
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
 
 Date attainDate;
-string date = attainDate.getDay() + " " + attainDate.getTodayDate() + "\r\n";
 
+string date = attainDate.getDateDetails(attainDate.getTodayDate());
+string date7daysLater = attainDate.getDateDetails(attainDate.getXDaysLaterDate(6));
 
 
 namespace WiseUI {
@@ -60,20 +58,19 @@ namespace WiseUI {
 			dateBox->Text = dateDisplayed;
 
 			bool edited = false;
-			bool successful = false;
-			string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful);
+			string temp = logic->handleInput("display", edited);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
 
-			/*
+/*
 			testCases = autoTest->getTestCases();
 			for (int i = 0; i < testCases.size(); i++){
-			test = testCases[i]+"\r\n";
-			String^ testMStr = gcnew String(test.c_str());
-			CmdLineBox->Text = testMStr;
-			test = "";
+				test = testCases[i]+"\r\n";
+				String^ testMStr = gcnew String(test.c_str());
+				CmdLineBox->Text = testMStr;
+				test = "";
 			}
-			*/
+*/
 			//
 			//TODO: Add the constructor code here
 			//
@@ -93,12 +90,11 @@ namespace WiseUI {
 	private: System::Windows::Forms::TextBox^  CmdLineBox;
 	protected:
 
-
-
 	protected: Logic* logic;
 	private: System::Windows::Forms::TextBox^  displayBox;
 	protected:
 
+	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::TextBox^  dateBox;
 
 
@@ -210,86 +206,66 @@ namespace WiseUI {
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
 
-				 bool successful = false;
 				 if (CmdLineBox->Text == "\r\n"){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				 else{
+
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 string input2;
+
+
+					 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
+						 input = input.substr(0, input.length() - 2);
+					 }
+
+					 
+					 string result = logic->handleInput(input, edited);
+					 String^ feedback = gcnew String(result.c_str());
+
+
+					 for (size_t i = 0; i < input.size(); i++){
+						 input[i] = tolower(input[i]);
+					 }
 
 					 istringstream iss(input);
-					 bool isHelp = false;
-					 string commandType = "";
+					 string cmd = "";
 
 					 if (input.size() > 0){
-						 iss >> commandType;
+						 iss >> cmd;
 					 }
 
-					 if (commandType[commandType.size() - 2] == '\r' && commandType[commandType.size() - 1] == '\n'){
-						 commandType = commandType.substr(0, commandType.size() - 2);
-					 }
-
-					 if (input[input.size() - 2] == '\r' && input[input.size() - 1] == '\n'){
-						 input2 = input.substr(0, input.size() - 2);
-					 }
-
-					 for (size_t i = 0; i < commandType.size(); i++){
-						 commandType[i] = tolower(commandType[i]);
-					 }
-
-					 for (size_t i = 0; i < input2.size(); i++){
-						 input2[i] = tolower(input2[i]);
-					 }
-
-					 if (commandType == "help"){
-						 isHelp = true;
-					 }
-					 else if (commandType == "display" && input2 == "display"){
-						 String^ dateDisplayed = gcnew String(date.c_str());
-						 dateBox->Text = dateDisplayed;
-						 bool successful2 = false;
-						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
-						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-						 displayBox->Text = tasksToBeDisplayed;
-						 return;
-					 }
-					 else if (commandType == "add" || commandType == "delete" || commandType == "edit" || commandType == "mark"){
-						 dateBox->Text = gcnew String(commandType.c_str());
-						 string result = logic->handleInput(input, edited, successful);
-						 String^ feedback = gcnew String(result.c_str());
-						 bool successful2 = false;
-						 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful2);
-						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-						 displayBox->Text = tasksToBeDisplayed;
-						 displayBox2->Text = feedback;
-						 return;
-					 }
-
-						 dateBox->Text = gcnew String(commandType.c_str());
-						 string result = logic->handleInput(input, edited, successful);
-						 String^ feedback = gcnew String(result.c_str());
-
-					 if (isHelp){
+					 if (cmd == "help") {
 						 MessageBox::Show(feedback);
 					 }
-					 else if (!isHelp && successful){
+					 else if (cmd == "display" && result != MESSAGE_ERROR) {
+						 dateBox->Text = gcnew String(date.c_str());
+						 displayBox2->Clear();
+						 if (input == "display week\r\n") {
+							 string toShow = date + " to " + date7daysLater;
+							 dateBox->Text = gcnew String(toShow.c_str());
+						 }
 						 displayBox->Text = feedback;
-						 displayBox2->Text = "The command is carried out successfully.";
 					 }
-					 else if (!isHelp && !successful){
+					 else {
 						 displayBox2->Text = feedback;
+					 }
+
+					 if (edited){
+						 dateBox->Text = gcnew String(date.c_str());
+						 string temp;
+						 if (cmd == "search") {
+							 temp = logic->handleInput("display search", edited);
+						 }
+						 else {
+							 temp = logic->handleInput("display", edited);
+						 }
+						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+						 displayBox->Text = tasksToBeDisplayed;
 					 }
 				 }
 				
-				 if (edited){
-				 string temp = logic->handleInput("displaydropdown Display All Tasks", edited, successful);
-				 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-				 displayBox->Text = tasksToBeDisplayed;
-				 }
-
 				 return;
 	}
 
-	};
+};
 }
