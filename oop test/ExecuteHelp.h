@@ -11,7 +11,7 @@ public:
 	ExecuteHelp(UserTask*);
 	~ExecuteHelp();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&);
 	string undo();
 };
 
