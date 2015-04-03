@@ -16,7 +16,7 @@ namespace UnitTest
 				Logic* logic = new Logic;
 				string input = "add meet zann today 8pm -high\r\n";
 				logic->handleInput(input, edited);
-				string input2 = "display today\r\n";
+				string input2 = "display\r\n";
 				string result = logic->handleInput(input2, edited2);
 
 				string expectedResult = "Displaying 27/3 task(s)\n\r\n1. meet zann [20:00-21:00] [high]\r\n";
@@ -31,7 +31,7 @@ namespace UnitTest
 				Logic* logic = new Logic;
 				string input2 = "delete 270300\r\n";
 				logic->handleInput(input2, edited2);
-				string input3 = "display today\r\n";
+				string input3 = "display\r\n";
 				string result = logic->handleInput(input3, edited3);
 
 				string expectedResult = "No task found. \n";
@@ -49,7 +49,7 @@ namespace UnitTest
 				logic->handleInput(input, edited);
 				string input2 = "edit 270300 meet ruyan tomorrow 7pm -mid\r\n";
 				logic->handleInput(input2, edited2);
-				string input3 = "display all\r\n";
+				string input3 = "display\r\n";
 				string result = logic->handleInput(input3, edited3);
 
 				string expectedResult = "[280301] [normal]\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
