@@ -118,5 +118,21 @@ namespace UnitTest
 
 				Assert::AreEqual(expectedResult, result);
 			}
+
+			TEST_METHOD(TestMethodMARK)
+			{
+				bool edited1 = false;
+				Logic* logic = new Logic;
+				string input1 = "add meet zann today 8pm -high\r\n";
+				logic->handleInput(input1, edited1);
+
+				bool edited2 = false;
+				string input2 = "mark 1\r\n";
+				string result = logic->handleInput(input2, edited2);
+
+				string expectedResult = "Task cleared. \n";
+
+				Assert::AreEqual(expectedResult, result);
+			}
 	};
 }
