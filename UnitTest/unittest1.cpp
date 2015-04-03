@@ -130,7 +130,19 @@ namespace UnitTest
 				string input2 = "mark 1\r\n";
 				string result = logic->handleInput(input2, edited2);
 
-				string expectedResult = "Task cleared. \n";
+				string expectedResult = "task has been marked as cleared. \n";
+
+				Assert::AreEqual(expectedResult, result);
+			}
+
+			TEST_METHOD(TestMethodDIRECTORY)
+			{
+				bool edited1 = false;
+				Logic* logic = new Logic;
+				string input1 = "directory D:\\savefile.txt\r\n";
+				
+				string result = logic->handleInput(input1, edited1);
+				string expectedResult = "The saving file directory has been changed. \n";
 
 				Assert::AreEqual(expectedResult, result);
 			}
