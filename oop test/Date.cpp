@@ -147,6 +147,10 @@ string Date::getDateDetails(string date) {
 	int currentYear = timeInfo->tm_year + 1900;
 	int currentWDay = timeInfo->tm_wday;
 
+	if (currentWDay == 0){
+		currentWDay = 7;
+	}
+
 	string wDays[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 	string months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 	int daysInMth[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
