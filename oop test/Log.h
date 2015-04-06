@@ -11,7 +11,7 @@ private:
 public:
 	Log();
 	~Log();
-
+	 
 	void logInfo(string);
 
 };
