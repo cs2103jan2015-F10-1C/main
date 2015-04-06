@@ -20,6 +20,7 @@
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="UserTask.cpp" />
     <ClCompile Include="ExecuteSort.cpp" />
+    <ClCompile Include="Log.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Date.h" />
@@ -42,5 +43,6 @@
     <ClInclude Include="Storage.h" />
     <ClInclude Include="UserTask.h" />
     <ClInclude Include="ExecuteSort.h" />
+    <ClInclude Include="Log.h" />
   </ItemGroup>
 </Project>

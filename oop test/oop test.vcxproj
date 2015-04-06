@@ -76,6 +76,7 @@
     <ClCompile Include="ExecuteSort.cpp" />
     <ClCompile Include="ExtDataBase.cpp" />
     <ClCompile Include="HandleInput.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="ExtDataBase.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="HandleInput.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Standardise.h" />
