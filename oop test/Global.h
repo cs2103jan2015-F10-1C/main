@@ -38,9 +38,8 @@ const string MESSAGE_MARKED = "task has been marked as cleared\n";
 const string MESSAGE_SUCCESSFUL_SEARCH = "The following tasks are found with the specified key words: ";
 const string MESSAGE_HOME_RETURN = "Please enter \"display\" or enter any valid operations to return to home screen. \r\n";
 const string MESSAGE_EMPTY_SEARCH = "There are no tasks found containing the search term \r\n";
-
-
-const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";
+const string SUCCESSFUL_LOG = "Continue...";
+const string DEFAULT_SAVE_LOCATION = "D:/Storage.";
 
 enum COMMAND {
 

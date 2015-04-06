@@ -14,6 +14,7 @@
 #include "ExecuteDirectory.h"
 #include "ExecuteMark.h"
 
+
 class Logic
 {
 private:
@@ -23,6 +24,7 @@ private:
 	Executor* dispatch(UserTask*);
 	ExtDataBase _extdb;
 	vector<list<StickyNote>::iterator> _allItems;
+
 
 
 public:

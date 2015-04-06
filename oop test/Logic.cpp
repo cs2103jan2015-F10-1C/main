@@ -3,6 +3,7 @@
 
 Logic::Logic() {
 	_parser = new Parser;
+	
 	initialise();
 }
 
@@ -59,6 +60,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 		edited = true;
 	}
 	
+
 	return result;
 }
 

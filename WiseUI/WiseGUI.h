@@ -21,13 +21,13 @@
 #include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
 #include "CurrentDate.h"
+#include "Log.h"
 
 AutomatedTesting* autoTest = new AutomatedTesting;
 vector<string> testCases;
 string test = "";
-
+Log* _log;
 string fileDirectory;  // Need to be modified later, it's better not put it as a global variable.
-
 Date attainDate;
 
 string date = attainDate.getDateDetails(attainDate.getTodayDate());
@@ -52,7 +52,7 @@ namespace WiseUI {
 		WiseGUI(void)
 		{
 			logic = new Logic;
-
+			_log = new Log;
 			InitializeComponent();
 			String^ dateDisplayed = gcnew String(date.c_str());
 			dateBox->Text = dateDisplayed;
@@ -212,7 +212,7 @@ namespace WiseUI {
 				 else{
 
 					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-
+					 _log->logInfo(input);
 
 					 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
 						 input = input.substr(0, input.length() - 2);
@@ -220,6 +220,10 @@ namespace WiseUI {
 
 					 
 					 string result = logic->handleInput(input, edited);
+					 ostringstream message;
+					 message << SUCCESSFUL_LOG << endl;
+					 _log->logInfo(message.str());
+
 					 String^ feedback = gcnew String(result.c_str());
 
 
