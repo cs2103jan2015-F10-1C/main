@@ -93,7 +93,8 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 				buffer.clear();
 			}
 			if (!buffer.empty()) {
-				if (buffer == "this" || buffer == "coming" || buffer == "this coming") {
+
+				if (isComing(buffer)) {
 					date = "this " + extract;
 				}
 				else if (buffer == "next") {
@@ -126,10 +127,9 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 			else if ((extract == "by" && deadline.empty()) || (extract == "before" && deadline.empty())) {
 				deadline = extract;
 			}
-			else if (extract == "by" || extract == "on" || extract == "is" || extract == "before") {
-				if (deadline != "due" || deadline != "end" || deadline != "finish" || deadline != "ready" || deadline != "deadline"
-					|| deadline != "prepare" || deadline != "complete" || deadline != "done" || deadline != "finished"
-					|| deadline != "prepared" || deadline != "completed") {
+			else if (isDeadlineProposition(extract)){
+
+				if (isNotDeadlineKeyword(deadline)) {
 					buffer = buffer + " " + extract;
 				}
 			}
@@ -166,20 +166,20 @@ string HandleInput::getIndex(string date, Storage _storage) {
 
 	string defaultIndex = "0000";
 	string returnIndex = "";
-	int counter = 0;
+	int numberOfTask = 0;
 	bool noRepeats = false;
 
 
-	counter = _storage.getSameDateCount(date);
+	numberOfTask = _storage.getSameDateCount(date);
 
 	while (noRepeats == false) {
 		// if task is unbounded, i.e. no date
 		if (date == "unbounded event") {
-			if (counter < 10) {
-				returnIndex = defaultIndex + "0" + to_string(counter);
+			if (numberOfTask < 10) {
+				returnIndex = defaultIndex + "0" + to_string(numberOfTask);
 			}
 			else {
-				returnIndex = defaultIndex + to_string(counter);
+				returnIndex = defaultIndex + to_string(numberOfTask);
 			}
 		}
 		else { // a date exists and should be in standard form i.e. 3/3
@@ -204,18 +204,18 @@ string HandleInput::getIndex(string date, Storage _storage) {
 				returnIndex = returnIndex + temp;
 
 				// add in counter
-				if (counter < 10) {
-					returnIndex = returnIndex + "0" + to_string(counter);
+				if (numberOfTask < 10) {
+					returnIndex = returnIndex + "0" + to_string(numberOfTask);
 				}
 				else {
-					returnIndex = returnIndex + to_string(counter);
+					returnIndex = returnIndex + to_string(numberOfTask);
 				}
 			}
 		}
 		noRepeats = _storage.noRepeatIndexCount(returnIndex);
 
 		if (noRepeats == false) {
-			counter++;
+			numberOfTask++;
 			returnIndex == "";
 		}
 	} // end noRepeat while loop
@@ -284,4 +284,36 @@ bool HandleInput::isDeadline(string str) {
 		}
 	}
 	return false;
+}
+
+bool HandleInput::isComing(string buffer){
+
+	bool isComing = false;
+	if (buffer == "this" || buffer == "coming" || buffer == "this coming"){
+		isComing = true;
+	}
+	return isComing;
+}
+
+bool HandleInput::isDeadlineProposition(string extract){
+
+	bool checkWord = false;
+	if (extract == "by" || extract == "on" || extract == "is" || extract == "before"){
+		checkWord = true;
+	}
+	return checkWord;
+}
+
+bool HandleInput::isNotDeadlineKeyword(string deadline){
+
+	bool isNotDone = false;
+	if (deadline != "due"		|| deadline != "end"		|| deadline != "finish"		||
+		deadline != "ready"		|| deadline != "deadline"	|| deadline != "prepare"	||
+		deadline != "complete"	|| deadline != "done"		|| deadline != "finished"	||
+		deadline != "prepared"	|| deadline != "completed"){
+
+		isNotDone = true;
+	}
+
+	return isNotDone;
 }
