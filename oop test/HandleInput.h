@@ -12,6 +12,9 @@ private:
 	bool isTime(string);
 	bool isBuffer(string);
 	bool isDeadline(string);
+	bool isComing(string);
+	bool isDeadlineProposition(string);
+	bool isNotDeadlineKeyword(string);
 
 public:
 	HandleInput(void);
@@ -19,6 +22,7 @@ public:
 
 	void handle(string input, string&, string&, string&, string&, string&, string&, bool&, Storage&);
 	string getIndex(string, Storage);
+	
 
 
 };
