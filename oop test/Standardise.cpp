@@ -79,8 +79,8 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case today or tomorrow
-			for (size_t case1 = 0; case1 < 2; case1++) {
+			int numberOfDays = 2; 			// case today or tomorrow
+			for (size_t case1 = 0; case1 < numberOfDays; case1++) {
 				if (extract == others[case1]) {
 					day = day + case1;
 					identified = true;
@@ -89,8 +89,8 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case next / this
-			for (size_t case2 = 0; case2 < 2; case2++) {
+			int numberOfDays = 2; // case next / this
+			for (size_t case2 = 0; case2 < numberOfDays; case2++) {
 				if (extract == controls[case2]) {
 					if (case2 == 0) { // if next
 						day = day + 7;
@@ -103,13 +103,13 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case day of week
-			for (size_t case3 = 0; case3 < 7; case3++) {
+			int numberOfDays = 7; // case day of week
+			for (size_t case3 = 0; case3 < numberOfDays; case3++) {
 				if (extract == dayInWeek[case3]) {
 					int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
 					int diff; // used to calculate the number of days difference between current day and input day.
 					if (inputDay <= wDay) {
-						inputDay = inputDay + 7;
+						inputDay = inputDay + numberOfDays;
 					}
 					diff = inputDay - wDay;
 					day = day + diff;
@@ -129,9 +129,9 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case month
+			int numberOfMonth = 12; // case month
 			extract[0] = tolower(extract[0]); // to change Month to month
-			for (size_t case5 = 0; case5 < 12; case5++) {
+			for (size_t case5 = 0; case5 < numberOfMonth; case5++) {
 				int found = -1;
 				found = extract.find(mthsInYr[case5]);
 				if (found >= 0) {
@@ -200,15 +200,17 @@ string Standardise::standardiseTime(string inputTime) {
 
 	// check for any am / pm attached to start time
 	if (inputTime.find("am") == 0) {
+		int midnight = 12;
 		inputTime = inputTime.substr(2); // remove am
-		if (hour_s == 12) {
+		if (hour_s == midnight) {
 			hour_s = 0; // midnight = 00:00
 		}
 	}
 	else if (inputTime.find("pm") == 0) {
+		int numberOfHours = 12;
 		inputTime = inputTime.substr(2); // remove pm
 		if (hour_s < 12) {
-			hour_s = hour_s + 12;
+			hour_s = hour_s + numberOfHours;
 		}
 	}
 
@@ -216,7 +218,7 @@ string Standardise::standardiseTime(string inputTime) {
 		inputTime = inputTime.substr(1);
 		hour_e = stoi(inputTime, &sz);
 		inputTime = inputTime.substr(sz);
-		if (inputTime[0] == '.' || inputTime[0] == ':') { // there exists some miniutes
+		if (inputTime[0] == '.' || inputTime[0] == ':') { // there exists some minutes
 			inputTime = inputTime.substr(1);
 			min_e = stoi(inputTime, &sz);
 			inputTime = inputTime.substr(sz);
@@ -224,15 +226,17 @@ string Standardise::standardiseTime(string inputTime) {
 
 		// check for any am / pm attached to end time
 		if (inputTime.find("am") == 0) {
+			int midnight = 12;
 			inputTime = inputTime.substr(2); // remove am
-			if (hour_e == 12) {
+			if (hour_e == midnight) {
 				hour_e = 0; // midnight = 00:00
 			}
 		}
 		else if (inputTime.find("pm") == 0) {
+			int numberOfHours = 12;
 			inputTime = inputTime.substr(2); // remove pm
 			if (hour_e < 12) {
-				hour_e = hour_e + 12;
+				hour_e = hour_e + numberOfHours;
 			}
 		}
 	}
