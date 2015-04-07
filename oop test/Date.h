@@ -15,6 +15,9 @@ public:
 	string getTomorrowDate();
 	string getXDaysLaterDate(int);
 	string getDateDetails(string);
+	bool verifyValidDate(string, bool&);
+	string standardizeMonth(string);
+	bool seperateDateNMonth(string&, string&, string);
 	void setTaskTime(int&, int&, string, string);
 };
 

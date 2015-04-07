@@ -159,6 +159,7 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 	if (startingPos >= 0){
 		details = details.substr(startingPos);
 	}
+
 }
 
 

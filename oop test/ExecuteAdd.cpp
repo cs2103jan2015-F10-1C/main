@@ -26,12 +26,24 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	string category = "";
 	HandleInput handleInput;
 	bool isADeadline = false;
+	bool isConventionalDate;
+	bool validDate;
 	Date checkDate;
 
 	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
 
 	Standardise item;
+
 	time = item.standardiseTime(time);
+
+	if (date != ""){
+		validDate = checkDate.verifyValidDate(date, isConventionalDate);
+	}
+
+	if (isConventionalDate && !validDate){
+		return MESSAGE_INVALID_DATE;
+	}
+
 	date = item.standardiseDate(date);
 	if (date == "unbounded event" && time != "All day event") {
 		date = checkDate.getTodayDate();

@@ -19,7 +19,7 @@ public:
 
 	void handle(string input, string&, string&, string&, string&, string&, string&, bool&, Storage&);
 	string getIndex(string, Storage);
-	
+
 
 };
 
