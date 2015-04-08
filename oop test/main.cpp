@@ -11,8 +11,9 @@ int main() {
 
 		string input;
 		string result;
+		bool successful = false;
 		getline(cin, input);
-		result = logic->handleInput(input, edited);
+		result = logic->handleInput(input, edited, successful);
 		cout << result;
 
 	}

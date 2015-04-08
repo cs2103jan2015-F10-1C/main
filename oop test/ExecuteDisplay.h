@@ -14,7 +14,7 @@ public:
 	ExecuteDisplay(UserTask*);
 	~ExecuteDisplay();
 
-	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&);
+	string execute(Storage&, ExtDataBase, vector<list<StickyNote>::iterator>&, bool&);
 	string undo();
 
 	void getTodayTasks(vector<list<StickyNote>::iterator>&, Storage&);

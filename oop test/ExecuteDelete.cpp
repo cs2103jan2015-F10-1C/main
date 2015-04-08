@@ -11,7 +11,7 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 ExecuteDelete::~ExecuteDelete() {
 }
 
-string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string indexToBeDeleted = _task->getRemaining();
 	bool isFound = false;
@@ -19,6 +19,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
 		if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
+			successful = false;
 			return MESSAGE_WRONG_INDEX;
 		}
 	}
@@ -40,6 +41,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		forEdit--;
 
 		if (forEdit < 0 || forEdit >= _allItems.size()) {
+			successful = false;
 			return MESSAGE_WRONG_INDEX;
 		}
 		isFound = true;
@@ -47,6 +49,7 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 	}
 
 	if (!isFound) {
+		successful = false;
 		return MESSAGE_WRONG_INDEX;
 	}
 
@@ -62,9 +65,11 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 
 		if (_deleted){
+			successful = true;
 			return MESSAGE_DELETED;
 		}
 		else{
+			successful = false;
 			return MESSAGE_NOT_DELETED;
 		}
 }

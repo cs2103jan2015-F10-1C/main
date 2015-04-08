@@ -10,11 +10,12 @@ ExecuteAdd::~ExecuteAdd()
 {
 }
 
-string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string userInput = _task->getRemaining();
 
 	if (userInput.empty()) {
+		successful = false;
 		return MESSAGE_ERROR;
 	}
 
@@ -26,8 +27,8 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	string category = "";
 	HandleInput handleInput;
 	bool isADeadline = false;
-	bool isConventionalDate;
-	bool validDate;
+	bool isConventionalDate = false;
+	bool validDate = false;
 	Date checkDate;
 
 	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
@@ -36,11 +37,17 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 
 	time = item.standardiseTime(time);
 
+	if (!item.verifyValidTime(time)){
+		successful = false;
+		return MESSAGE_INVALID_TIME;
+	}
+
 	if (date != ""){
 		validDate = checkDate.verifyValidDate(date, isConventionalDate);
 	}
 
 	if (isConventionalDate && !validDate){
+		successful = false;
 		return MESSAGE_INVALID_DATE;
 	}
 
@@ -66,6 +73,7 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	undo = "delete " + index;
 	_undoAdd.push(undo);
 
+	successful = true;
 	return result;
 }
 

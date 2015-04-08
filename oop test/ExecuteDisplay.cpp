@@ -11,7 +11,7 @@ ExecuteDisplay::~ExecuteDisplay()
 {
 }
 
-string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string type = _task->getRemaining();
 	
@@ -66,7 +66,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 			}
 		}
 
-
+		successful = true;
 		return oss.str();
 	} // end if no specification.
 
@@ -75,6 +75,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 		int counter = 1;
 
 		if (_allItems.size() == 0) {
+			successful = false;
 			return MESSAGE_EMPTY_SEARCH;
 		}
 		else {
@@ -82,6 +83,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
 				counter++;
 			}
+			successful = true;
 			return oss.str();
 		}
 	} // end search if
@@ -192,11 +194,12 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 				counter++;
 			}
 		}
-
+		successful = true;
 		return oss.str();
 
 	} // end week if
 	else {
+		successful = false;
 		return MESSAGE_ERROR;
 	}
 

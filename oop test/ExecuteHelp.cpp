@@ -11,18 +11,22 @@ ExecuteHelp::~ExecuteHelp()
 }
 
 
-string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	ostringstream oss;
 	string desireCommand = _task->getRemaining(); 
 
 	if (desireCommand == ""){
+		successful = false;
 		return MESSAGE_INVALID_HELP;
 	}
 
 	if (desireCommand == "add"){
 
-		oss << "To use ADD, it should be input in the following format: " << "\r\n"
+		oss << "Please notice that WiseManager does not support a task between more than 1 days." << "\r\n"
+			<< "In other words, the starting time and ending time should be within the same day." << "\r\n"
+			
+			<< "To use ADD, it should be input in the following format: " << "\r\n"
 			<< "\r\n"
 			<< "1. add <details of the task> date time -priority				or" << "\r\n"
 			<< "2. add <details of the task> time date -priority				or" << "\r\n" << "\r\n"
@@ -152,15 +156,14 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			<< "1. directory D:\\\savefile.txt"
 			<< "\r\n";
 	}
-	/* else if (desireCommand == "sort"){
+	else if (desireCommand == "sort"){
 		oss << "To use SORT, it should be input in the following format: " << "\r\n"
 			<< "sort by <criteria>" << "\r\n"
 			<< "1. sort by date" << "\r\n"
 			<< "2. sort by priority"
 			<< "\r\n";
-	} */
+	}
 
-	//sort is still undercontruction, the user will already be seeing the sorted form of the tasks.
 	else if (desireCommand == "mark"){
 		oss << "To use MARK, it should be input in the following format: " << "\r\n"
 			<< "\r\n"
@@ -200,8 +203,10 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			<< "\r\n";
 	}
 	else{
+		successful = false;
 		return MESSAGE_INVALID_HELP;
 	}
+	successful = true;
 	return oss.str();
 }
 

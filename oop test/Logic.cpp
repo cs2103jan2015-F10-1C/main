@@ -12,7 +12,7 @@ Logic::~Logic() {
 	delete _parser;
 }
 
-string Logic::handleInput(string userInput, bool& edited) {
+string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	
 	UserTask* task = _parser->parse(userInput);
 	string result;
@@ -24,6 +24,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 		exit(0);
 	}
 	else if (task->getCommand() == COMMAND::ERROR) {
+		successful = false;
 		result = MESSAGE_UNRECOGNISED_COMMAND_TYPE;
 	}
 	
@@ -35,10 +36,11 @@ string Logic::handleInput(string userInput, bool& edited) {
 			string conduct = executor->undo();
 			task = _parser->parse(conduct);
 			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb, _allItems);
+			result = executor->execute(_storage, _extdb, _allItems, successful);
 			_extdb.autoSave(_storage);
 		}
 		else {
+			successful = false;
 			result = MESSAGE_INVALID_UNDO;
 		}
 
@@ -50,7 +52,7 @@ string Logic::handleInput(string userInput, bool& edited) {
 				 task->getCommand() == COMMAND::MARK) {
 				 _inputHistory.push(executor);
 			 }
-			 result = executor->execute(_storage, _extdb, _allItems);
+			 result = executor->execute(_storage, _extdb, _allItems, successful);
 			 _extdb.autoSave(_storage);
 		 }
 
@@ -93,11 +95,12 @@ void Logic::initialise() {
 	vector<string>* vec;
 
 	vec = _extdb.getContent();
+	bool successful = false;
 
 	for (int i = 0; i < vec->size(); i++) {
 		UserTask* task = _parser->parse((*vec)[i]);
 		Executor* execute = dispatch(task);
-		execute->execute(_storage, _extdb, _allItems);
+		execute->execute(_storage, _extdb, _allItems, successful);
 	}
 	
 }

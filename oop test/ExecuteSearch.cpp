@@ -10,7 +10,7 @@ ExecuteSearch::~ExecuteSearch()
 {
 }
 
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	_allItems.clear();
 
@@ -20,6 +20,7 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 	int _size = _storage.getSize();
 
 	if (infoToBeSearched == ""){
+		successful = false;
 		return MESSAGE_NO_INFO_GIVEN;
 	}
 
@@ -35,9 +36,11 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 	if (infoIsFound){
 		string returnMsg;
 		returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
+		successful = true;
 		return returnMsg;
 	}
 	else{
+		successful = false;
 		return MESSAGE_INFO_UNFOUND;
 	}
 }

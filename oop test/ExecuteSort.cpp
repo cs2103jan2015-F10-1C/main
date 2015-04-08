@@ -13,25 +13,29 @@ string ExecuteSort::undo() {
 	return "";
 }
 
-string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	ostringstream oss;
 	string desireCommand = _task->getRemaining();
 
 	if (desireCommand == ""){
+		successful = false;
 		return MESSAGE_INVALID_SORT;
 	}
 
 	if (desireCommand == "by date"){
+		successful = true;
 		return sortTasksByDate(_storage);
 	}
 	else if (desireCommand == "by priority"){
+		successful = true;
 		return sortTasksPriority(_storage);
 	}
 	else{
+		successful = false;
 		return MESSAGE_INVALID_SORT;
 	}
-
+	successful = true;
 	return oss.str();
 }
 

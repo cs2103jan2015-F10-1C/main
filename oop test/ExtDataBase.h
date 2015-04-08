@@ -13,7 +13,7 @@ public:
 	~ExtDataBase();
 
 	string getLocation();
-	string setLocation(Storage&, string);
+	string setLocation(Storage&, string, bool&);
 	void autoSave(Storage&);
 	vector<string>* getContent();
 	void archive(string);

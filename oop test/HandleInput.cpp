@@ -6,7 +6,8 @@ HandleInput::HandleInput(){}
 
 HandleInput::~HandleInput(){}
 
-void HandleInput::handle(string userInput, string& details, string& date, string& time, string& priority, string& index, string& category, bool& isADeadline, Storage& _storage) {
+void HandleInput::handle(string userInput, string& details, string& date, string& time, string& priority, 
+	string& index, string& category, bool& isADeadline, Storage& _storage) {
 
 	istringstream iss(userInput);
 	string extract;
@@ -307,10 +308,10 @@ bool HandleInput::isDeadlineProposition(string extract){
 bool HandleInput::isNotDeadlineKeyword(string deadline){
 
 	bool isNotDone = false;
-	if (deadline != "due"		|| deadline != "end"		|| deadline != "finish"		||
-		deadline != "ready"		|| deadline != "deadline"	|| deadline != "prepare"	||
-		deadline != "complete"	|| deadline != "done"		|| deadline != "finished"	||
-		deadline != "prepared"	|| deadline != "completed"){
+	if (deadline != "due" || deadline != "end" || deadline != "finish" ||
+		deadline != "ready" || deadline != "deadline" || deadline != "prepare" ||
+		deadline != "complete" || deadline != "done" || deadline != "finished" ||
+		deadline != "prepared" || deadline != "completed"){
 
 		isNotDone = true;
 	}

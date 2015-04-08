@@ -10,7 +10,7 @@ ExecuteMark::~ExecuteMark()
 {
 }
 
-string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems) {
+string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string index = _task->getRemaining();
 	bool isFound = false;
@@ -23,6 +23,7 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 
 	for (size_t i = 0; i < index.size(); i++) {
 		if (index[i] < '0' || index[i] > '9') {
+			successful = false;
 			return MESSAGE_WRONG_INDEX;
 		}
 	}
@@ -44,6 +45,7 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 		forEdit--;
 
 		if (forEdit < 0 || forEdit >= _allItems.size()) {
+			successful = false;
 			return MESSAGE_WRONG_INDEX;
 		}
 
@@ -54,6 +56,7 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 	if (isUndo) {
 		iter->setStatus("incomplete");
 		_storage.findClashes();
+		successful = true;
 		return MESSAGE_MARKED;
 
 	}
@@ -63,9 +66,11 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 		_undoMark.push(undo);
 		iter->setStatus("cleared");
 		_storage.findClashes();
+		successful = true;
 		return MESSAGE_MARKED;
 	}
 	else {
+		successful = false;
 		return MESSAGE_WRONG_INDEX;
 	}
 }
