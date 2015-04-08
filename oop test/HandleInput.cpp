@@ -316,4 +316,8 @@ bool HandleInput::isNotDeadlineKeyword(string deadline){
 	}
 
 	return isNotDone;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7a6b1cd2b16f4e035f82740ec61dee006f649285
