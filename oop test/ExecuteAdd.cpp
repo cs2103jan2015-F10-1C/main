@@ -26,8 +26,8 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	string category = "";
 	HandleInput handleInput;
 	bool isADeadline = false;
-	bool isConventionalDate;
-	bool validDate;
+	bool isConventionalDate = false;
+	bool validDate = false;
 	Date checkDate;
 
 	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
@@ -35,6 +35,10 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	Standardise item;
 
 	time = item.standardiseTime(time);
+
+	if (!item.verifyValidTime(time)){
+		return MESSAGE_INVALID_TIME;
+	}
 
 	if (date != ""){
 		validDate = checkDate.verifyValidDate(date, isConventionalDate);

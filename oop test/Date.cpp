@@ -51,14 +51,17 @@ string Date::standardizeMonth(string month){
 		"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 	int pos = -1;
 	for (size_t i = 0; i < 36; i++) {
-		pos = month.find(monthKey[i]);
-		if (pos == 0) {
-			ss << (i+1)%12;
+		if (month == monthKey[i]) {
+			int value = (i+1)%12;
+			if (value == 0){
+				value = 12;
+			}
+			ss << value;
 			return ss.str();
 		}
 	}
 	
-	return "";
+	return month;
 }
 
 bool Date::seperateDateNMonth(string& date, string& month, string all){
@@ -106,10 +109,17 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 
 		int intDate = atoi(date.c_str());
 		int intMonth = atoi(month.c_str());
-		if (intMonth < 1 && intMonth > MONTH_PER_YEAR){
+		if (intMonth < 1 || (intMonth > MONTH_PER_YEAR && intMonth!=99)){
 			return false;
 		}
 		switch (intMonth){
+		case 99:
+			if (intDate == 99){
+				return true;
+			}
+			else{
+				return false;
+			}
 		case 1:
 		case 3:
 		case 5:
