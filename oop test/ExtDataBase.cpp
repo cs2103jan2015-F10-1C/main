@@ -69,7 +69,9 @@ void ExtDataBase::autoSave(Storage& _storage) {
 	ofs.open(_currentLocation);
 	assert(ofs.is_open() == true);
 	for (size_t i = 0; i < _size; i++, iter++){
-		ofs << _storage.oneTaskInfoTypeTwo(iter);
+		if (iter->getStatus() != "cleared"){
+			ofs << _storage.oneTaskInfoTypeTwo(iter);
+		}
 	}
 	ofs.close();
 	return;

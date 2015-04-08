@@ -218,9 +218,11 @@ namespace WiseUI {
 				 this->ForeColor = System::Drawing::SystemColors::ControlText;
 				 this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 				 this->KeyPreview = true;
+				 this->MaximizeBox = false;
 				 this->Name = L"WiseGUI";
 				 this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
 				 this->Text = L"WiseManger";
+				 this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &WiseGUI::WiseGUI_FormClosing);
 				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &WiseGUI::WiseGUI_KeyDown);
 				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 				 this->contextMenuStrip->ResumeLayout(false);
@@ -320,7 +322,10 @@ namespace WiseUI {
 			 this->Hide();
 	}
 	private: System::Void exitToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-			 this->Close();
+				 bool successful = false;
+				 bool edited = false;
+				 logic->handleInput("exit\r\n", edited, successful);
+				 this->Close();
 	}
 
 	private: System::Void WiseGUI_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -329,11 +334,20 @@ namespace WiseUI {
 				 WiseManager->ShowBalloonTip(1000, "Dear user:", "WiseManager now is running in system tray.", ToolTipIcon::None);
 			 }
 			 else if ((e->KeyCode == System::Windows::Forms::Keys::Escape)){
+				 bool successful = false;
+				 bool edited = false;
+				 logic->handleInput("exit\r\n", edited, successful);
 				 this->Close();
 			 }
 			 else{
 			 }
 			 return;
 	}
-	};
+private: System::Void WiseGUI_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
+			 bool successful = false;
+			 bool edited = false;
+			 logic->handleInput("exit\r\n", edited, successful);
+			 this->Close();
+}
+};
 }
