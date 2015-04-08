@@ -65,16 +65,9 @@ namespace WiseUI {
 			string temp = logic->handleInput("display", edited, successful);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
-
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~WiseGUI()
 		{
 			if (components)
@@ -106,10 +99,6 @@ namespace WiseUI {
 
 
 #pragma region Windows Form Designer generated code
-			 /// <summary>
-			 /// Required method for Designer support - do not modify
-			 /// the contents of this method with the code editor.
-			 /// </summary>
 			 void InitializeComponent(void)
 			 {
 				 this->components = (gcnew System::ComponentModel::Container());
@@ -321,23 +310,23 @@ namespace WiseUI {
 				 return;
 	}
 
-private: System::Void WiseManager_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+	private: System::Void WiseManager_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			 this->Show();
-}
-private: System::Void showWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void showWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 			 this->Show(); 
-}
-private: System::Void hideWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void hideWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 			 this->Hide();
-}
-private: System::Void exitToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void exitToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 			 this->Close();
-}
+	}
 
-private: System::Void WiseGUI_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+	private: System::Void WiseGUI_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 			 if ((e->KeyCode == System::Windows::Forms::Keys::F1)){
 				 this->Hide();
-				 WiseManager->ShowBalloonTip(2000, "Dear user:", "WiseManager is running in system tray.", ToolTipIcon::None);
+				 WiseManager->ShowBalloonTip(1000, "Dear user:", "WiseManager now is running in system tray.", ToolTipIcon::None);
 			 }
 			 else if ((e->KeyCode == System::Windows::Forms::Keys::Escape)){
 				 this->Close();
@@ -345,6 +334,6 @@ private: System::Void WiseGUI_KeyDown(System::Object^  sender, System::Windows::
 			 else{
 			 }
 			 return;
-}
-};
+	}
+	};
 }

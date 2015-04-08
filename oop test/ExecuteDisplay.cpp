@@ -42,7 +42,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 
 		for (size_t i = 0; i < _allItems.size(); i++) {
 			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
 				counter++;
 			}
 		}

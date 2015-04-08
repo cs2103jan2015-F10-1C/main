@@ -59,6 +59,7 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
+      <AdditionalLibraryDirectories>C:\Windows\System32\user32.dll</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,12 +85,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AutomatedTesting.cpp" />
     <ClCompile Include="CurrentDate.cpp" />
     <ClCompile Include="WiseGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AutomatedTesting.h" />
     <ClInclude Include="CurrentDate.h" />
     <ClInclude Include="WiseGUI.h">
       <FileType>CppForm</FileType>

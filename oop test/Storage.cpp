@@ -127,6 +127,7 @@ bool Storage::noRepeatIndexCount(string index) {
 
 }
 
+
 void Storage::findClashes() {
 
 	int _size = getSize();
@@ -135,22 +136,31 @@ void Storage::findClashes() {
 
 	for (int i = 0; i < _size; i++, iter++) {
 		bool isClashExist = false;
+
 		if (iter->getStatus() == "Clash") {
 			list<StickyNote>::iterator find;
 			find = getIter(); // i do not want to increment iter.
+
 			for (int j = 0; j < _size; j++, find++) {
-				if (checkClashExist(iter, find)){
-					isClashExist = true;
-					break;
+
+				if ((iter->getDate() == find->getDate()) && find->getStartTime() != 0 
+					&& find->getEndTime() != 0 && find->getStatus() == "Clash" 
+						&& (find->getIndex() != iter->getIndex())) {
+
+					if (!(iter->getStartTime() > find->getStartTime() && iter->getStartTime() >= find->getEndTime())
+						&& !(iter->getEndTime() <= find->getStartTime() && iter->getEndTime() < find->getEndTime())) {
+						isClashExist = true;
+						break;
+					}
 				}
 			}
-		}
-		if (!isClashExist) {
-			iter->setStatus("incomplete");
+
+			if (!isClashExist) {
+				iter->setStatus("incomplete");
+			}
 		}
 	}
 }
-
 
 void Storage::findClashes(StickyNote& note) {
 
@@ -159,14 +169,17 @@ void Storage::findClashes(StickyNote& note) {
 	iter = getIter();
 
 	for (int i = 0; i < _size; i++, iter++) {
-		if (checkNoteClashExist(iter, note)) {
-			note.setStatus("Clash");
-			iter->setStatus("Clash");
-		}
+		if ((note.getDate() == iter->getDate()) && iter->getStartTime() != 0 && 
+				iter->getEndTime() != 0 && iter->getStatus() != "cleared") {
+
+					if (!(note.getStartTime() > iter->getStartTime() && note.getStartTime() >= iter->getEndTime())
+						&& !(note.getEndTime() <= iter->getStartTime() && note.getEndTime() < iter->getEndTime())) {
+							note.setStatus("Clash");
+						iter->setStatus("Clash");
+					}
+			}
 	}
-
 }
-
 
 void Storage::findClashes(list<StickyNote>::iterator iter) {
 
@@ -175,88 +188,14 @@ void Storage::findClashes(list<StickyNote>::iterator iter) {
 	S_iter = getIter();
 
 	for (int i = 0; i < _size; i++, S_iter++) {
-		if (checkIterClashExists(iter, S_iter)) {
-			iter->setStatus("Clash");
-			S_iter->setStatus("Clash");
+		if ((iter->getDate() == S_iter->getDate()) && S_iter->getStartTime() != 0 && S_iter->getEndTime() != 0 
+			&& S_iter->getStatus() != "cleared" && (iter->getIndex() != S_iter->getIndex())) {
+
+				if (!(iter->getStartTime() > S_iter->getStartTime() && iter->getStartTime() >= S_iter->getEndTime())
+					&& !(iter->getEndTime() <= S_iter->getStartTime() && iter->getEndTime() < S_iter->getEndTime())) {
+						iter->setStatus("Clash");
+						S_iter->setStatus("Clash");
+			}
 		}
 	}
-}
-
-
-bool Storage::checkClashExist(list<StickyNote>::iterator iter, list<StickyNote>::iterator find){
-
-	bool clash = false;
-	if (checkInitialCondition(iter, find)) {
-		if (checkTimeClash(iter, find)) {
-			clash = true;
-		}
-	}
-
-	return clash;
-}
-
-bool Storage::checkInitialCondition(list<StickyNote>::iterator iter, list<StickyNote>::iterator find){
-	return ((iter->getDate() == find->getDate()) &&
-		find->getStartTime() != 0 &&
-		find->getEndTime() != 0 &&
-		find->getStatus() == "Clash" &&
-		(find->getIndex() != iter->getIndex()));
-}
-
-bool Storage::checkTimeClash(list<StickyNote>::iterator iter, list<StickyNote>::iterator find){
-	return (!(iter->getStartTime() > find->getStartTime() &&
-		iter->getStartTime() >= find->getEndTime()) &&
-		!(iter->getEndTime() <= find->getStartTime() &&
-		iter->getEndTime() < find->getEndTime()));
-}
-
-bool Storage::checkNoteClashExist(list<StickyNote>::iterator iter, StickyNote& note){
-
-	bool clash = false;
-	if (checkNoteInitialCondition(iter, note)) {
-		if (checkNoteTimeClash(iter, note)) {
-			clash = true;
-		}
-	}
-	return clash;
-}
-
-bool Storage::checkNoteInitialCondition(list<StickyNote>::iterator iter, StickyNote& note){
-	return ((note.getDate() == iter->getDate()) &&
-		iter->getStartTime() != 0 &&
-		iter->getEndTime() != 0 &&
-		iter->getStatus() != "cleared");
-}
-
-bool Storage::checkNoteTimeClash(list<StickyNote>::iterator iter, StickyNote& note){
-	return (!(note.getStartTime() > iter->getStartTime() &&
-		note.getStartTime() >= iter->getEndTime()) &&
-		!(note.getEndTime() <= iter->getStartTime() &&
-		note.getEndTime() < iter->getEndTime()));
-}
-
-bool Storage::checkIterClashExists(list<StickyNote>::iterator iter, list<StickyNote>::iterator S_iter){
-
-	bool clash = false;
-	if (checkIterInitialCondition(iter, S_iter)) {
-		if (checkIterTimeClash(iter, S_iter)){
-			clash = true;
-		}
-	}
-	return clash;
-}
-
-bool Storage::checkIterInitialCondition(list<StickyNote>::iterator iter, list<StickyNote>::iterator S_iter){
-	return ((iter->getDate() == S_iter->getDate()) &&
-		S_iter->getStartTime() != 0 &&
-		S_iter->getEndTime() != 0 &&
-		S_iter->getStatus() != "cleared" &&
-		(iter->getIndex() != S_iter->getIndex()));
-}
-
-bool Storage::checkIterTimeClash(list<StickyNote>::iterator iter, list<StickyNote>::iterator S_iter){
-	return (!(iter->getStartTime() > S_iter->getStartTime() &&
-		iter->getStartTime() >= S_iter->getEndTime()) &&
-		!(iter->getEndTime() <= S_iter->getStartTime() &&
-		iter->getEndTime() < S_iter->getEndTime()));
 }

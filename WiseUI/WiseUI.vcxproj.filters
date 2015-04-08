@@ -18,9 +18,6 @@
     <ClCompile Include="WiseGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AutomatedTesting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CurrentDate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,9 +25,6 @@
   <ItemGroup>
     <ClInclude Include="WiseGUI.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AutomatedTesting.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CurrentDate.h">
       <Filter>Source Files</Filter>
