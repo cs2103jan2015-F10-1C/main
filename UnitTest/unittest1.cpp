@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
+/*
+Due to the limitation of unit testing, tests of commands (classes) which require task index to be inputed are not available.
+It is because unit testing will skip the UI and directly test the code, as such, the runtime task index generated in UI will
+not be available. And since Coded UI testing is only vailable in VS2013 Ultimate Version, therefore, mannual testing is required.
+
+Classes affected are: DELETE, EDIT, MARK, UNDO(For valid undo).
+*/
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest
@@ -8,143 +16,296 @@ namespace UnitTest
 	TEST_CLASS(UnitTest1)
 	{
 	public:
-		
-			TEST_METHOD(TestMethodADD)
+
+//Unit test for UNDO.
+			TEST_METHOD(UNDOwithnothing)
 			{
 				bool edited = false;
-				bool edited2 = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input = "add meet zann today 8pm -high\r\n";
-				logic->handleInput(input, edited);
-				string input2 = "display\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "Displaying 27/3 task(s)\n\r\n1. meet zann [20:00-21:00] [high]\r\n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "undo\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodDELETE)
-			{
-				bool edited2 = false;
-				bool edited3 = false;
-				Logic* logic = new Logic;
-				string input2 = "delete 270300\r\n";
-				logic->handleInput(input2, edited2);
-				string input3 = "display\r\n";
-				string result = logic->handleInput(input3, edited3);
-
-				string expectedResult = "No task found. \n";
-
-				Assert::AreEqual(expectedResult, result);
-			}
-
-			TEST_METHOD(TestMethodEDIT)
+//Unit test for ADD.		
+			TEST_METHOD(ADDvalid)
 			{
 				bool edited = false;
-				bool edited2 = false;
-				bool edited3 = false;
+				bool successful = false;
 				Logic* logic = new Logic;
 				string input = "add meet zann today 8pm -high\r\n";
-				logic->handleInput(input, edited);
-				string input2 = "edit 270300 meet ruyan tomorrow 7pm -mid\r\n";
-				logic->handleInput(input2, edited2);
-				string input3 = "display\r\n";
-				string result = logic->handleInput(input3, edited3);
-
-				string expectedResult = "[280301] [normal]\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
-
-				//error in the edit class
-				//code suppose to be displaying meet ruyan instead of meet zann meet ruyan
-				Assert::AreEqual(expectedResult, result);
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
 			}
-		
-			TEST_METHOD(TestMethodSEARCH)
+
+			TEST_METHOD(ADDinvaliddate1)
 			{
-				bool edited2 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input2 = "search ruyan\r\n";
-				string result = logic->handleInput(input2, edited2);
-				 
-				string expectedResult = "1.Index: 280300\r\nDetails: meet ruyan\r\nDate: 28/3\r\nTime: 19:00-20:00\r\nPriority: mid\r\n\r\n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 43/5 -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodADDWRONGINPUT)/* This is a boundary case for the ¡®wrong command type¡¯ partition */
+			TEST_METHOD(ADDinvaliddate2)
 			{
-				bool edited2 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input2 = "addtask\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "Command not recognised. Please re-input. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann may 43 -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodDELETEWRONGINPUT)/* This is a boundary case for the ¡®not existing task index¡¯ partition */
+			TEST_METHOD(ADDinvaliddate3)
 			{
-				bool edited2 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input2 = "delete 000000\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "The Task have not been deleted. Please Check your inputs. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 43 may -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodEDITWRONGINPUT)/* This is a boundary case for the ¡®not existing task index¡¯ partition */
+			TEST_METHOD(ADDexceptiondate)
 			{
-				bool edited2 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input2 = "edit 000000 meet ruyan tomorrow 7pm -mid\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "This index is not found. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 99/99 -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
 			}
 
-			TEST_METHOD(TestMethodSEARCHWRONGINPUT)/* This is a boundary case for the ¡®not existing key word¡¯ partition */
+//Unit test for ADD.
+			TEST_METHOD(ADDinvalidtime)
 			{
-				bool edited2 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input2 = "search zann\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "This keyword is not found. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 25:00 -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodMARK)
+			TEST_METHOD(ADDinvalidtime2)
 			{
-				bool edited1 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input1 = "add meet zann today 8pm -high\r\n";
-				logic->handleInput(input1, edited1);
-
-				bool edited2 = false;
-				string input2 = "mark 1\r\n";
-				string result = logic->handleInput(input2, edited2);
-
-				string expectedResult = "task has been marked as cleared. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 25:00-23:00 -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
 
-			TEST_METHOD(TestMethodDIRECTORY)
+			TEST_METHOD(ADDinvalidtime3)
 			{
-				bool edited1 = false;
+				bool edited = false;
+				bool successful = false;
 				Logic* logic = new Logic;
-				string input1 = "directory D:\\savefile.txt\r\n";
-				
-				string result = logic->handleInput(input1, edited1);
-				string expectedResult = "The saving file directory has been changed. \n";
-
-				Assert::AreEqual(expectedResult, result);
+				string input = "add meet zann 6pm-5pm -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
 			}
+
+			TEST_METHOD(ADDnoinfo)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "add\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+//Unit test for HELP.		
+
+			TEST_METHOD(HELPvalid1)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help add\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid2)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help delete\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid3)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help edit\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid4)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help display\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid5)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help sort\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid6)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help mark\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid7)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help directory\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(HELPvalid8)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "help search\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+//Unit test for DISPLAY.
+
+			TEST_METHOD(SORTinvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+			TEST_METHOD(SORTbydate)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort by date\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(SORTbypriority)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort by priority\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+//Unit test for SEARCH.
+			TEST_METHOD(SEARCHvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "search zann\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(SEARCHinvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "search derrick\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+//Unit test for DIRECTORY.
+			TEST_METHOD(DIRECTORYvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "directory D:\\abc.txt\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(DIRECTORYinvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "directory D:\\a\\abc.txt\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+			TEST_METHOD(DIRECTORYvalid2)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "directory D:\\Storage.txt\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+//Unit test for DISPALY.
+			TEST_METHOD(DISPLAYvalid1)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "display\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(DISPLAYvalid2)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "display week\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
 	};
 }

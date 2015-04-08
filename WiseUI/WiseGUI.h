@@ -18,7 +18,6 @@
 #include<vector>
 #include <time.h>
 #include <cassert>
-#include "AutomatedTesting.h"
 #include <msclr\marshal_cppstd.h>
 #include "CurrentDate.h"
 #include "Log.h"
@@ -26,8 +25,6 @@
 #include <tchar.h>
 #include <windows.h>
 
-AutomatedTesting* autoTest = new AutomatedTesting;
-vector<string> testCases;
 string test = "";
 Log* _log;
 string fileDirectory;
@@ -63,20 +60,12 @@ namespace WiseUI {
 			String^ dateDisplayed = gcnew String(date.c_str());
 			dateBox->Text = dateDisplayed;
 
+			bool successful = false;
 			bool edited = false;
-			string temp = logic->handleInput("display", edited);
+			string temp = logic->handleInput("display", edited, successful);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
 
-/*
-			testCases = autoTest->getTestCases();
-			for (int i = 0; i < testCases.size(); i++){
-				test = testCases[i]+"\r\n";
-				String^ testMStr = gcnew String(test.c_str());
-				CmdLineBox->Text = testMStr;
-				test = "";
-			}
-*/
 			//
 			//TODO: Add the constructor code here
 			//
@@ -278,8 +267,8 @@ namespace WiseUI {
 						 input = input.substr(0, input.length() - 2);
 					 }
 
-					 
-					 string result = logic->handleInput(input, edited);
+					 bool successful = false;
+					 string result = logic->handleInput(input, edited, successful);
 					 ostringstream message;
 					 message << SUCCESSFUL_LOG << endl;
 					 _log->logInfo(message.str());
@@ -317,11 +306,12 @@ namespace WiseUI {
 					 if (edited){
 						 dateBox->Text = gcnew String(date.c_str());
 						 string temp;
+						 bool successful = false;
 						 if (cmd == "search") {
-							 temp = logic->handleInput("display search", edited);
+							 temp = logic->handleInput("display search", edited, successful);
 						 }
 						 else {
-							 temp = logic->handleInput("display", edited);
+							 temp = logic->handleInput("display", edited, successful);
 						 }
 						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 						 displayBox->Text = tasksToBeDisplayed;
