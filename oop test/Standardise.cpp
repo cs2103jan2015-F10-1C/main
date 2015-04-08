@@ -296,3 +296,65 @@ string Standardise::standardiseCategory(bool isADeadline, string time) {
 	}
 
 }
+
+bool Standardise::verifyValidTime(string time){
+	if (time != "All day event" && time != ""){
+		int pos1 = time.find_first_of(':');
+		int pos2 = time.find_first_of('-');
+		int pos3 = time.find_last_of(':');
+		int startHr = atoi((time.substr(0, pos1)).c_str());
+		int startMin = atoi((time.substr(pos1 + 1, pos2 - (pos1 + 1))).c_str());
+		int endHr = atoi((time.substr(pos2 + 1, pos3 - (pos2 + 1))).c_str());
+		int endMin = atoi((time.substr(pos3 + 1)).c_str());
+
+		if (!(checkHr(startHr) && checkHr(endHr) && checkMin(startMin) && checkMin(endMin))){
+			return false;
+		}
+		else{
+			if (checkCorrectSequence(startHr, endHr, startMin, endMin)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
+	else{
+		return true;
+	}
+}
+
+bool Standardise::checkHr(int hour){
+	if (hour<0 || hour>23){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+bool Standardise::checkMin(int min){
+	if (min<0 || min>59){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
+	if (startHr > endHr){
+		return false;
+	}
+	else if (startHr < endHr){
+		return true;
+	}
+	else{
+		if (startMin >= endMin){
+			return false;
+		}
+		else{
+			return true;
+		}	
+	}
+}

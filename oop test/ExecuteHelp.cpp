@@ -22,7 +22,10 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 
 	if (desireCommand == "add"){
 
-		oss << "To use ADD, it should be input in the following format: " << "\r\n"
+		oss << "Please notice that WiseManager does not support a task between more than 1 days." << "\r\n"
+			<< "In other words, the starting time and ending time should be within the same day." << "\r\n"
+			
+			<< "To use ADD, it should be input in the following format: " << "\r\n"
 			<< "\r\n"
 			<< "1. add <details of the task> date time -priority				or" << "\r\n"
 			<< "2. add <details of the task> time date -priority				or" << "\r\n" << "\r\n"

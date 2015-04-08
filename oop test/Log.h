@@ -5,7 +5,7 @@ using namespace std;
 
 class Log {
 private:
-	string _logFileLocation = "../Log.txt";
+	string _logFileLocation = "Log.txt";
 	ofstream _writeLog;
 
 public:

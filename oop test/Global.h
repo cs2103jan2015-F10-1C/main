@@ -16,7 +16,7 @@
 
 using namespace std;
 
-const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.2! \n";
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.4! \n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
 
@@ -28,6 +28,8 @@ const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. P
 const string MESSAGE_DELETED = "The Task have been deleted successfully. \n";
 const string MESSAGE_NOT_DELETED = "The Task have not been deleted. Please Check your inputs. \n";
 const string MESSAGE_WRONG_INDEX = "This index is not found. \n";
+const string MESSAGE_INVALID_DATE = "This is an invalid date. \n";
+const string MESSAGE_INVALID_TIME = "This is an invalid time/deadline. \n";
 const string MESSAGE_NO_TASK_FOUND = "No task found. \n";
 const string MESSAGE_DIRECTORY_CHANGED = "The saving file directory has been changed. \n";
 const string MESSAGE_DIRECTORY_NOT_CHANGED = "The new directory is not found. Please re-input. \n";
@@ -39,7 +41,16 @@ const string MESSAGE_SUCCESSFUL_SEARCH = "The following tasks are found with the
 const string MESSAGE_HOME_RETURN = "Please enter \"display\" or enter any valid operations to return to home screen. \r\n";
 const string MESSAGE_EMPTY_SEARCH = "There are no tasks found containing the search term \r\n";
 const string SUCCESSFUL_LOG = "Continue...";
-const string DEFAULT_SAVE_LOCATION = "D:/Storage.";
+const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";
+
+const int SEC_PER_DAY = 24 * 60 * 60;
+const int DAY_PER_SOLAR_MONTH_OF_31 = 31;
+const int DAY_PER_SOLAR_MONTH_OF_30 = 30;
+const int DAY_OF_FEB_IN_LEAP_YEAR = 29;
+const int DAY_OF_FEB_IN_NON_LEAP_YEAR = 28;
+const int MONTH_PER_YEAR = 12;
+const int SYSTEM_TIME_YEAR_STARTING_POINT = 1900;
+const int DAY_PER_WEEK = 7;
 
 enum COMMAND {
 
