@@ -307,17 +307,13 @@ bool HandleInput::isDeadlineProposition(string extract){
 bool HandleInput::isNotDeadlineKeyword(string deadline){
 
 	bool isNotDone = false;
-	if (deadline != "due"		|| deadline != "end"		|| deadline != "finish"		||
-		deadline != "ready"		|| deadline != "deadline"	|| deadline != "prepare"	||
-		deadline != "complete"	|| deadline != "done"		|| deadline != "finished"	||
-		deadline != "prepared"	|| deadline != "completed"){
+	if (deadline != "due" || deadline != "end" || deadline != "finish" ||
+		deadline != "ready" || deadline != "deadline" || deadline != "prepare" ||
+		deadline != "complete" || deadline != "done" || deadline != "finished" ||
+		deadline != "prepared" || deadline != "completed"){
 
 		isNotDone = true;
 	}
 
 	return isNotDone;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 7a6b1cd2b16f4e035f82740ec61dee006f649285

@@ -90,6 +90,9 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 
 		if (time != "" && time != "All day event" && time != iter->getTime()) {
 			time = item.standardiseTime(time);
+			if (!item.verifyValidTime(time)){
+				return MESSAGE_INVALID_TIME;
+			}
 			if (date == "" && time != "All day event") {
 				if (iter->getDate() == "unbounded event")
 					date = checkDate.getTodayDate();
@@ -104,6 +107,14 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		}
 
 		if (date != "" && date != "unbounded event" && date != iter->getDate()) {
+			bool isConventionalDate = false;
+			bool validDate = false;
+			validDate = checkDate.verifyValidDate(date, isConventionalDate);
+
+			if (isConventionalDate && !validDate){
+				return MESSAGE_INVALID_DATE;
+			}
+
 			date = item.standardiseDate(date);
 			iter->setDate(date);
 			changeOccur = true;
