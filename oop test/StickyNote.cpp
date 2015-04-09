@@ -9,7 +9,7 @@ StickyNote::StickyNote(void)
 StickyNote::~StickyNote(void)
 {
 }
-
+//@author A0108375A
 void StickyNote::setEverything(string details, string date, string time, string priority, string index) {
 
 	_details = details;
@@ -21,6 +21,8 @@ void StickyNote::setEverything(string details, string date, string time, string 
 }
 
 // GETTERS
+
+//@author A0108375A
 
 string StickyNote::getCategory() {
 	return _category;
@@ -50,6 +52,7 @@ string StickyNote::getIndex() {
 	return _index;
 }
 
+//@author A0110748J
 int StickyNote::getDay(){
 	return _day;
 }
@@ -80,6 +83,7 @@ string StickyNote::getSEndTime() {
 
 // SETTERS
 
+//@author A0108341R
 void StickyNote::setDay(int day){
 	_day = day;
 }
@@ -113,6 +117,7 @@ void StickyNote::setDetails(string change) {
 	_details = change;
 }
 
+//@author A0093863U
 void StickyNote::setDate(string change) {
 	_date = change;
 

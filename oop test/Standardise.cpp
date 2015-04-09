@@ -10,7 +10,7 @@ Standardise::Standardise()
 Standardise::~Standardise() 
 {
 }
-
+//@author A0110748J
 string Standardise::standardiseDate(string date) {
 
 	string standardisedDate;
@@ -162,7 +162,7 @@ string Standardise::standardiseDate(string date) {
 
 	return standardisedDate;
 }
-
+//@author A0093863U
 string Standardise::standardiseTime(string inputTime) {
 
 	if (inputTime.empty()) { // for no time input by user
@@ -280,7 +280,7 @@ string Standardise::standardiseTime(string inputTime) {
 	return changed;
 
 }
-
+//@author A0108375A
 string Standardise::standardiseCategory(bool isADeadline, string time) {
 
 	if (isADeadline) {
@@ -296,7 +296,7 @@ string Standardise::standardiseCategory(bool isADeadline, string time) {
 	}
 
 }
-
+//@author A0108341R
 bool Standardise::verifyValidTime(string time){
 	if (time != "All day event" && time != ""){
 		int pos1 = time.find_first_of(':');
@@ -323,7 +323,7 @@ bool Standardise::verifyValidTime(string time){
 		return true;
 	}
 }
-
+//@author A0108341R
 bool Standardise::checkHr(int hour){
 	if (hour<0 || hour>23){
 		return false;
@@ -332,7 +332,7 @@ bool Standardise::checkHr(int hour){
 		return true;
 	}
 }
-
+//@author A0108375A
 bool Standardise::checkMin(int min){
 	if (min<0 || min>59){
 		return false;
@@ -341,7 +341,7 @@ bool Standardise::checkMin(int min){
 		return true;
 	}
 }
-
+//@author A0108341R
 bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
 	if (startHr > endHr){
 		return false;

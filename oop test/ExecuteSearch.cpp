@@ -9,7 +9,7 @@ ExecuteSearch::ExecuteSearch(UserTask* task) {
 ExecuteSearch::~ExecuteSearch()
 {
 }
-
+//@author A0110748J
 string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	_allItems.clear();
@@ -44,7 +44,7 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		return MESSAGE_INFO_UNFOUND;
 	}
 }
-
+//@author A0093863U
 bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iterator iter) {
 
 	string details, date, time, priority;
@@ -79,7 +79,7 @@ bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iter
 	return (compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
 		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
 }
-
+//@author A0093863U
 bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeChecked) {
 
 	if (infoToBeSearched.length()>infoToBeChecked.length()){

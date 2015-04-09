@@ -11,7 +11,7 @@ Logic::Logic() {
 Logic::~Logic() {
 	delete _parser;
 }
-
+//@author A0110748J
 string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	
 	UserTask* task = _parser->parse(userInput);
@@ -65,7 +65,7 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 
 	return result;
 }
-
+//@author A0093863U
 Executor* Logic::dispatch(UserTask* task) {
 
 	switch (task->getCommand()) {
@@ -89,7 +89,7 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteDirectory(task);
 	};
 }
-
+//@author A0108375A
 void Logic::initialise() {
 
 	vector<string>* vec;
@@ -104,7 +104,7 @@ void Logic::initialise() {
 	}
 	
 }
-
+//@author A0108341R
 string Logic::getCurrentDirectory(){
 	
 	return _extdb.getLocation();

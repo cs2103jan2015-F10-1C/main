@@ -1,7 +1,7 @@
 #include "Global.h"
 #include "Logic.h"
 
-
+//@author A0108341R
 int main() {
 
 	Logic* logic = new Logic;

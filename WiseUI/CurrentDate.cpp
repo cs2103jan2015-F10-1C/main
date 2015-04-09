@@ -9,7 +9,7 @@ CurrentDate::CurrentDate(void)
 CurrentDate::~CurrentDate(void)
 {
 }
-
+//@author A0093863U
 string CurrentDate::getCurrentDate(){
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;

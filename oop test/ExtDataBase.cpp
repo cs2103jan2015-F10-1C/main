@@ -8,7 +8,7 @@ ExtDataBase::ExtDataBase() {
 ExtDataBase::~ExtDataBase()
 {
 }
-
+//@author A0108375A
 string ExtDataBase::getLocation() {
 
 	ifstream ifs;
@@ -28,7 +28,7 @@ string ExtDataBase::getLocation() {
 
 	return _currentLocation;
 }
-
+//@author A0108341R
 string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
 
 	ofstream ofs;
@@ -57,7 +57,7 @@ string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& su
 		return MESSAGE_DIRECTORY_NOT_CHANGED;
 	}
 }
-
+//@author A0110748J
 void ExtDataBase::autoSave(Storage& _storage) {
 	
 	ofstream ofs;
@@ -76,7 +76,7 @@ void ExtDataBase::autoSave(Storage& _storage) {
 	ofs.close();
 	return;
 }
-
+//@author A0108341R
 vector<string>* ExtDataBase::getContent() {
 
 	vector<string>* vec = new vector<string> ;
@@ -100,7 +100,7 @@ vector<string>* ExtDataBase::getContent() {
 
 	return vec;
 }
-
+//@author A0093863U
 void ExtDataBase::archive(string done) {
 
 	ofstream ofs;

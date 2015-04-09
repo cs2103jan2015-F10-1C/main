@@ -52,6 +52,7 @@ namespace WiseUI {
 
 
 	public:
+//@author A0093863U
 		WiseGUI(void)
 		{
 			logic = new Logic;
@@ -75,6 +76,8 @@ namespace WiseUI {
 				delete components;
 			}
 		}
+
+//@author generated
 	private: System::Windows::Forms::TextBox^  CmdLineBox;
 	protected:
 
@@ -230,6 +233,7 @@ namespace WiseUI {
 				 this->PerformLayout();
 
 			 }
+//@author A0093863U
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
 				 int size = newCmd->Length;

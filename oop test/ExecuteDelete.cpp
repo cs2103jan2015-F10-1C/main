@@ -10,7 +10,7 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 
 ExecuteDelete::~ExecuteDelete() {
 }
-
+//@author A0108341R
 string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string indexToBeDeleted = _task->getRemaining();

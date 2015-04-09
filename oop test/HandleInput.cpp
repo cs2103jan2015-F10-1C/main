@@ -6,6 +6,7 @@ HandleInput::HandleInput(){}
 
 HandleInput::~HandleInput(){}
 
+//@author A0110748J
 void HandleInput::handle(string userInput, string& details, string& date, string& time, string& priority, 
 	string& index, string& category, bool& isADeadline, Storage& _storage) {
 
@@ -163,6 +164,7 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 }
 
 
+//@author A0093863U
 string HandleInput::getIndex(string date, Storage _storage) {
 
 	string defaultIndex = "0000";
@@ -224,7 +226,7 @@ string HandleInput::getIndex(string date, Storage _storage) {
 	return returnIndex;
 
 }
-
+//@author A0108341R
 bool HandleInput::isSpecialDetail(string str) {
 
 	if (str[0] == '"') {
@@ -232,7 +234,7 @@ bool HandleInput::isSpecialDetail(string str) {
 	}
 	return false;
 }
-
+//@author A0108341R
 bool HandleInput::isPriority(string str) {
 
 	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
@@ -240,7 +242,7 @@ bool HandleInput::isPriority(string str) {
 	}
 	return false;
 }
-
+//@author A0108341R
 bool HandleInput::isTime(string str) {
 
 	string timeKey[3] = { ":", "am", "pm" };
@@ -253,12 +255,11 @@ bool HandleInput::isTime(string str) {
 				return true;
 			}
 		}
-
 	}
 	return false;
 }
 
-
+//@author A0108341R
 bool HandleInput::isBuffer(string str) {
 
 	string bufferKey[18] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to", "this", "coming", "next" };
@@ -272,7 +273,7 @@ bool HandleInput::isBuffer(string str) {
 	}
 	return false;
 }
-
+//@author A0108341R
 bool HandleInput::isDeadline(string str) {
 
 	string deadlineKey[13] = { "be", "due", "finish", "end", "ready", "prepare", "complete", "done", "before", "by", "on", "deadline", "is" };
@@ -286,7 +287,7 @@ bool HandleInput::isDeadline(string str) {
 	}
 	return false;
 }
-
+//@author A0108375A
 bool HandleInput::isComing(string buffer){
 
 	bool isComing = false;
@@ -295,7 +296,7 @@ bool HandleInput::isComing(string buffer){
 	}
 	return isComing;
 }
-
+//@author A0108375A
 bool HandleInput::isDeadlineProposition(string extract){
 
 	bool checkWord = false;
@@ -304,7 +305,7 @@ bool HandleInput::isDeadlineProposition(string extract){
 	}
 	return checkWord;
 }
-
+//@author A0108375A
 bool HandleInput::isNotDeadlineKeyword(string deadline){
 
 	bool isNotDone = false;

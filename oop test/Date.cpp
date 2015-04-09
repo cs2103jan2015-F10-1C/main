@@ -10,6 +10,7 @@ Date::~Date()
 {
 }
 
+//@author A0110748J
 bool Date::isDate1(string str) {
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -25,6 +26,7 @@ bool Date::isDate1(string str) {
 	return false;
 }
 
+//@author A0110748J
 bool Date::isDate2(string str) {
 
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
@@ -43,7 +45,7 @@ bool Date::isDate2(string str) {
 	return false;
 }
 
-
+//@author A0093863U
 string Date::standardizeMonth(string month){
 	stringstream ss;
 	string monthKey[36] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -63,7 +65,7 @@ string Date::standardizeMonth(string month){
 	
 	return month;
 }
-
+//@author A0093863U
 bool Date::seperateDateNMonth(string& date, string& month, string all){
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -98,7 +100,7 @@ bool Date::seperateDateNMonth(string& date, string& month, string all){
 		return false;
 	}
 }
-
+//@author A0093863U
 bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 	string date = "", month = "";
 
@@ -175,6 +177,7 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 	return true;
 }
 
+//@author A0110748J
 string Date::getTodayDate() {
 
 	time_t rawTime;
@@ -192,6 +195,7 @@ string Date::getTodayDate() {
 	return currentDate;
 }
 
+//@author A0110748J
 string Date::getTomorrowDate() {
 
 	time_t rawTime;
@@ -213,6 +217,7 @@ string Date::getTomorrowDate() {
 
 }
 
+//@author A0110748J
 string Date::getXDaysLaterDate(int add) {
 
 	time_t rawTime;
@@ -235,7 +240,7 @@ string Date::getXDaysLaterDate(int add) {
 
 }
 
-
+//@author A0108375A
 void Date::setTaskTime(int& st, int& et, string time, string category) {
 
 	
@@ -264,6 +269,7 @@ void Date::setTaskTime(int& st, int& et, string time, string category) {
 	}
 }
 
+//@author A0108341R
 string Date::getDateDetails(string date) {
 
 	time_t rawTime;

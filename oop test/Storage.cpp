@@ -9,18 +9,18 @@ Storage::Storage()
 Storage::~Storage()
 {
 }
-
+//@author A0108341R
 string Storage::addNewNote(StickyNote note) {
 	
 	findClashes(note);
 	_noteBook.push_back(note);
 	return MESSAGE_ADD;
 }
-
+//@author A0108375A
 list<StickyNote>::iterator Storage::getIter() {
 	return _noteBook.begin();
 }
-
+//@author A0110748J
 bool Storage::erase(list<StickyNote>::iterator iter) {
 	int oldSize, newSize;
 	oldSize = _noteBook.size();
@@ -32,11 +32,11 @@ bool Storage::erase(list<StickyNote>::iterator iter) {
 	}
 	return false;
 }
-
+//@author A0108375A
 int Storage::getSize() {
 	return _noteBook.size();
 }
-
+//@author A0093863U
 int Storage::getSameDateCount(string date) {
 
 	list<StickyNote>::iterator iter;
@@ -51,7 +51,7 @@ int Storage::getSameDateCount(string date) {
 	}
 	return count;
 }
-
+//@author A0110748J
 string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 
 	ostringstream oss;
@@ -81,7 +81,7 @@ string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 	return oss.str();
 
 }
-
+//@author A0108341R
 string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 	ostringstream oss;
 	string details = iter->getDetails();
@@ -112,7 +112,7 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 		//<< "\r\n";
 	return oss.str();
 }
-
+//@author A0108341R
 bool Storage::noRepeatIndexCount(string index) {
 
 	list<StickyNote>::iterator iter;
@@ -127,7 +127,7 @@ bool Storage::noRepeatIndexCount(string index) {
 
 }
 
-
+//@author A0108375A
 void Storage::findClashes() {
 
 	int _size = getSize();
@@ -161,7 +161,7 @@ void Storage::findClashes() {
 		}
 	}
 }
-
+//@author A0093863U
 void Storage::findClashes(StickyNote& note) {
 
 	int _size = getSize();
@@ -180,7 +180,7 @@ void Storage::findClashes(StickyNote& note) {
 			}
 	}
 }
-
+//@author A0108341R
 void Storage::findClashes(list<StickyNote>::iterator iter) {
 
 	int _size = getSize();

@@ -1,0 +1,169 @@
+//@author: generated
+
+
+
+	/**
+	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+	 */
+
+	private: System::Windows::Forms::TextBox^  CmdLineBox;
+	protected:
+
+	protected: Logic* logic;
+	private: System::Windows::Forms::TextBox^  displayBox;
+	protected:
+
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::TextBox^  dateBox;
+	private: System::Drawing::Icon^ ico;
+
+	private: System::Windows::Forms::TextBox^  displayBox2;
+	private: System::Windows::Forms::PictureBox^  pictureBox;
+	private: System::Windows::Forms::NotifyIcon^  WiseManager;
+	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
+	private: System::Windows::Forms::ToolStripMenuItem^  showWindowToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  hideWindowToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
+
+	private: System::ComponentModel::IContainer^  components;
+
+
+
+#pragma region Windows Form Designer generated code
+			 void InitializeComponent(void)
+			 {
+				 this->components = (gcnew System::ComponentModel::Container());
+				 System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(WiseGUI::typeid));
+				 this->CmdLineBox = (gcnew System::Windows::Forms::TextBox());
+				 this->displayBox = (gcnew System::Windows::Forms::TextBox());
+				 this->dateBox = (gcnew System::Windows::Forms::TextBox());
+				 this->displayBox2 = (gcnew System::Windows::Forms::TextBox());
+				 this->pictureBox = (gcnew System::Windows::Forms::PictureBox());
+				 this->WiseManager = (gcnew System::Windows::Forms::NotifyIcon(this->components));
+				 this->contextMenuStrip = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+				 this->showWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 this->hideWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
+				 this->contextMenuStrip->SuspendLayout();
+				 this->SuspendLayout();
+				 // 
+				 // CmdLineBox
+				 // 
+				 this->CmdLineBox->Location = System::Drawing::Point(12, 335);
+				 this->CmdLineBox->Multiline = true;
+				 this->CmdLineBox->Name = L"CmdLineBox";
+				 this->CmdLineBox->Size = System::Drawing::Size(435, 19);
+				 this->CmdLineBox->TabIndex = 0;
+				 this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
+				 // 
+				 // displayBox
+				 // 
+				 this->displayBox->Location = System::Drawing::Point(12, 47);
+				 this->displayBox->Multiline = true;
+				 this->displayBox->Name = L"displayBox";
+				 this->displayBox->ReadOnly = true;
+				 this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+				 this->displayBox->Size = System::Drawing::Size(435, 211);
+				 this->displayBox->TabIndex = 7;
+				 // 
+				 // dateBox
+				 // 
+				 this->dateBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->dateBox->Location = System::Drawing::Point(12, 12);
+				 this->dateBox->Name = L"dateBox";
+				 this->dateBox->ReadOnly = true;
+				 this->dateBox->Size = System::Drawing::Size(435, 29);
+				 this->dateBox->TabIndex = 15;
+				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				 // 
+				 // displayBox2
+				 // 
+				 this->displayBox2->Location = System::Drawing::Point(12, 264);
+				 this->displayBox2->Multiline = true;
+				 this->displayBox2->Name = L"displayBox2";
+				 this->displayBox2->ReadOnly = true;
+				 this->displayBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+				 this->displayBox2->Size = System::Drawing::Size(435, 65);
+				 this->displayBox2->TabIndex = 19;
+				 // 
+				 // pictureBox
+				 // 
+				 this->pictureBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox.Image")));
+				 this->pictureBox->Location = System::Drawing::Point(66, 360);
+				 this->pictureBox->Name = L"pictureBox";
+				 this->pictureBox->Size = System::Drawing::Size(328, 96);
+				 this->pictureBox->TabIndex = 20;
+				 this->pictureBox->TabStop = false;
+				 // 
+				 // WiseManager
+				 // 
+				 this->WiseManager->ContextMenuStrip = this->contextMenuStrip;
+				 this->WiseManager->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"WiseManager.Icon")));
+				 this->WiseManager->Text = L"WiseManager";
+				 this->WiseManager->Visible = true;
+				 this->WiseManager->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &WiseGUI::WiseManager_MouseDoubleClick);
+				 // 
+				 // contextMenuStrip
+				 // 
+				 this->contextMenuStrip->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+					 this->showWindowToolStripMenuItem,
+						 this->hideWindowToolStripMenuItem, this->exitToolStripMenuItem
+				 });
+				 this->contextMenuStrip->Name = L"contextMenuStrip";
+				 this->contextMenuStrip->Size = System::Drawing::Size(159, 70);
+				 // 
+				 // showWindowToolStripMenuItem
+				 // 
+				 this->showWindowToolStripMenuItem->Name = L"showWindowToolStripMenuItem";
+				 this->showWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->showWindowToolStripMenuItem->Text = L"Show Window";
+				 this->showWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::showWindowToolStripMenuItem_Click);
+				 // 
+				 // hideWindowToolStripMenuItem
+				 // 
+				 this->hideWindowToolStripMenuItem->Name = L"hideWindowToolStripMenuItem";
+				 this->hideWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->hideWindowToolStripMenuItem->Text = L"Hide Window";
+				 this->hideWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::hideWindowToolStripMenuItem_Click);
+				 // 
+				 // exitToolStripMenuItem
+				 // 
+				 this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+				 this->exitToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->exitToolStripMenuItem->Text = L"Exit";
+				 this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::exitToolStripMenuItem_Click);
+				 // 
+				 // WiseGUI
+				 // 
+				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
+				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+				 this->BackColor = System::Drawing::SystemColors::Menu;
+				 this->ClientSize = System::Drawing::Size(459, 468);
+				 this->Controls->Add(this->pictureBox);
+				 this->Controls->Add(this->displayBox2);
+				 this->Controls->Add(this->dateBox);
+				 this->Controls->Add(this->displayBox);
+				 this->Controls->Add(this->CmdLineBox);
+				 this->ForeColor = System::Drawing::SystemColors::ControlText;
+				 this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+				 this->KeyPreview = true;
+				 this->MaximizeBox = false;
+				 this->Name = L"WiseGUI";
+				 this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
+				 this->Text = L"WiseManger";
+				 this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &WiseGUI::WiseGUI_FormClosing);
+				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &WiseGUI::WiseGUI_KeyDown);
+				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
+				 this->contextMenuStrip->ResumeLayout(false);
+				 this->ResumeLayout(false);
+				 this->PerformLayout();
+
+			 }
+	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+
+
+
+
+

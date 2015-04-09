@@ -16,7 +16,7 @@ namespace UnitTest
 	TEST_CLASS(UnitTest1)
 	{
 	public:
-
+//@author A0108375A
 //Unit test for UNDO.
 			TEST_METHOD(UNDOwithnothing)
 			{
@@ -28,7 +28,9 @@ namespace UnitTest
 				Assert::AreEqual(false, successful);
 			}
 
-//Unit test for ADD.		
+//@author A0093863U
+//Unit test for ADD.
+
 			TEST_METHOD(ADDvalid)
 			{
 				bool edited = false;
@@ -120,6 +122,7 @@ namespace UnitTest
 				Assert::AreEqual(false, successful);
 			}
 
+//@author A0108341R
 //Unit test for HELP.		
 
 			TEST_METHOD(HELPvalid1)
@@ -201,8 +204,8 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-
-//Unit test for DISPLAY.
+//@author A0110748J
+//Unit test for SORT.
 
 			TEST_METHOD(SORTinvalid)
 			{
@@ -233,7 +236,7 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-
+//@author A0108375A
 //Unit test for SEARCH.
 			TEST_METHOD(SEARCHvalid)
 			{
@@ -254,7 +257,7 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(false, successful);
 			}
-
+//@author A0108341R
 //Unit test for DIRECTORY.
 			TEST_METHOD(DIRECTORYvalid)
 			{
@@ -285,8 +288,8 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-
-//Unit test for DISPALY.
+//@author A0110748J
+//Unit test for DISPLAY.
 			TEST_METHOD(DISPLAYvalid1)
 			{
 				bool edited = false;
