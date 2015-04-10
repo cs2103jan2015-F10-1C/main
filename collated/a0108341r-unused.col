@@ -1,0 +1,97 @@
+//@author: a0108341r-unused
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+	 */
+
+string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+
+	ostringstream oss;
+	string desireCommand = _task->getRemaining();
+
+	if (desireCommand == ""){
+		successful = false;
+		return MESSAGE_INVALID_SORT;
+	}
+
+	if (desireCommand == "by date"){
+		successful = true;
+		return sortTasksByDate(_storage);
+	}
+	else if (desireCommand == "by priority"){
+		successful = true;
+		return sortTasksPriority(_storage);
+	}
+	else{
+		successful = false;
+		return MESSAGE_INVALID_SORT;
+	}
+	successful = true;
+	return oss.str();
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+	 */
+
+string ExecuteSort::sortTasksPriority(Storage& _storage){
+	vector<list<StickyNote>::iterator> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
+	ostringstream oss;
+
+	getFutureTasks(futureTasks, _storage);
+
+	for (size_t i = 0; i <futureTasks.size(); i++){
+		if ((futureTasks[i]->getPriority())[0] == 'h'){
+			highPrior.push_back(futureTasks[i]);
+		}
+		else if ((futureTasks[i]->getPriority())[0] == 'm'){
+			midPrior.push_back(futureTasks[i]);
+		}
+		else if ((futureTasks[i]->getPriority())[0] == 'l'){
+			lowPrior.push_back(futureTasks[i]);
+		}
+		else{
+			unbounded.push_back(futureTasks[i]);
+		}
+	}
+
+	if (highPrior.size() > 0){
+		for (size_t i = 0; i < highPrior.size(); i++){
+			sortedTasksByPrior.push_back(highPrior[i]);
+		}
+	}
+	if (midPrior.size() > 0){
+		for (size_t i = 0; i < midPrior.size(); i++){
+			sortedTasksByPrior.push_back(midPrior[i]);
+		}
+	}
+	if (lowPrior.size() > 0){
+		for (size_t i = 0; i < lowPrior.size(); i++){
+			sortedTasksByPrior.push_back(lowPrior[i]);
+		}
+	}
+	if (unbounded.size() > 0){
+		for (size_t i = 0; i < unbounded.size(); i++){
+			sortedTasksByPrior.push_back(unbounded[i]);
+		}
+	}
+
+	for (size_t j = 0; j < sortedTasksByPrior.size(); j++){
+		oss << j + 1 << "." << getAllInfoOfOneTask(sortedTasksByPrior[j]) << "\r\n";
+	}
+
+	return oss.str();
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+
+
+
+
+

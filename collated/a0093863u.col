@@ -3,15 +3,25 @@
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 string Date::standardizeMonth(string month){
+	try{
+		if (month == ""){
+			throw month;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
 	stringstream ss;
 	string monthKey[36] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
 		"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
-	int pos = -1;
+	bool isFound = false;
+
 	for (size_t i = 0; i < 36; i++) {
 		if (month == monthKey[i]) {
 			int value = (i+1)%12;
@@ -25,17 +35,25 @@ string Date::standardizeMonth(string month){
 	
 	return month;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 bool Date::seperateDateNMonth(string& date, string& month, string all){
+	try{
+		if (all == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
@@ -43,43 +61,56 @@ bool Date::seperateDateNMonth(string& date, string& month, string all){
 	int pos1 = -1, pos2 = -1;
 	pos1 = all.find("/");
 	pos2 = all.find_first_of(' ');
-
-	if (pos1 > 0 && pos2 < 0){
-		date = all.substr(0, pos1);
-		month = all.substr(pos1 + 1);
-		return true;
-	}
-	else if (pos1 < 0 && pos2 > 0){
-		string part1 = all.substr(0, pos2);
-		string part2 = all.substr(pos2 + 1);
-		for (size_t i = 0; i < 24; i++) {
-			if (monthKey[i] == part1){
-				month = part1;
-				date = part2;
-				return true;
-			}
-			else if (monthKey[i] == part2){
-				month = part2;
-				date = part1;
-				return true;
+	try{
+		if (pos1 > 0 && pos2 < 0){
+			date = all.substr(0, pos1);
+			month = all.substr(pos1 + 1);
+			return true;
+		}
+		else if (pos1 < 0 && pos2 > 0){
+			string part1 = all.substr(0, pos2);
+			string part2 = all.substr(pos2 + 1);
+			for (size_t i = 0; i < 24; i++) {
+				if (monthKey[i] == part1){
+					month = part1;
+					date = part2;
+					return true;
+				}
+				else if (monthKey[i] == part2){
+					month = part2;
+					date = part1;
+					return true;
+				}
 			}
 		}
+		else{
+			throw false;
+		}
 	}
-	else{
-		return false;
+	catch (bool e){
+		return e;
 	}
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
+	try{
+		if (dateNMonth == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
 	string date = "", month = "";
 
 	isConventionalDate = seperateDateNMonth(date, month, dateNMonth); // Conventional date is eg. 3/3, mar 3, 3 mar. 
@@ -89,9 +120,16 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 
 		int intDate = atoi(date.c_str());
 		int intMonth = atoi(month.c_str());
-		if (intMonth < 1 || (intMonth > MONTH_PER_YEAR && intMonth!=99)){
-			return false;
+		try{
+			if (intMonth < 1 || (intMonth > MONTH_PER_YEAR && intMonth != 99)){
+				throw false;
+			}
 		}
+		catch(bool e){
+			return e;
+		}
+
+
 		switch (intMonth){
 		case 99:
 			if (intDate == 99){
@@ -155,14 +193,112 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 	return true;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteAdd.cpp
+	 */
+
+string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+
+	string userInput = _task->getRemaining();
+	try{
+		if (userInput.empty()) {
+			successful = false;
+			throw MESSAGE_ERROR;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	string details="";
+	string date = "";
+	string time = "";
+	string priority = "";
+	string index = "";
+	string category = "";
+	HandleInput handleInput;
+	bool isADeadline = false;
+	bool isConventionalDate = false;
+	bool validDate = false;
+	Date checkDate;
+
+	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
+
+	Standardise item;
+
+	time = item.standardiseTime(time);
+	try{
+		if (!item.verifyValidTime(time)){
+			successful = false;
+			throw MESSAGE_INVALID_TIME;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	if (date != ""){
+		validDate = checkDate.verifyValidDate(date, isConventionalDate);
+	}
+
+	try{
+		if (isConventionalDate && !validDate){
+			successful = false;
+			throw MESSAGE_INVALID_DATE;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	date = item.standardiseDate(date);
+	if (date == "unbounded event" && time != "All day event") {
+		date = checkDate.getTodayDate();
+	}
+	category = item.standardiseCategory(isADeadline, time);
+	index = handleInput.getIndex(date, _storage);
+
+	StickyNote note;
+	note.setEverything(details, date, time, priority, index);
+	note.setCategory(category);
+	note.setStatus("incomplete");
+	int sh, sm, eh, em;
+	checkDate.setTaskTime(sh, eh, sm, em, time, category);
+	note.setStartTime(sh, sm);
+	note.setEndTime(eh, em);
+	string result = _storage.addNewNote(note);
+
+	string undo;
+	undo = "delete " + index;
+	_undoAdd.push(undo);
+
+	successful = true;
+	return result;
+}
+
+
+string ExecuteAdd::undo() {
+
+	string undoAdd;
+	undoAdd = _undoAdd.top();
+	_undoAdd.pop();
+	return undoAdd;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteAdd.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::pushToAllItem(vector<list<StickyNote>::iterator>& day, vector<list<StickyNote>::iterator>& _allItems) {
@@ -194,14 +330,14 @@ void ExecuteDisplay::pushToAllItem(vector<list<StickyNote>::iterator>& day, vect
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getDay7Tasks(vector<list<StickyNote>::iterator>& day7, Storage& _storage) {
@@ -218,14 +354,14 @@ void ExecuteDisplay::getDay7Tasks(vector<list<StickyNote>::iterator>& day7, Stor
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteMark.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteMark.cpp
 	 */
 
 string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
@@ -240,9 +376,14 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 	}
 
 	for (size_t i = 0; i < index.size(); i++) {
-		if (index[i] < '0' || index[i] > '9') {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (index[i] < '0' || index[i] > '9') {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 	}
 
@@ -262,9 +403,14 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 		int forEdit = atoi(index.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit >= _allItems.size()) {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (forEdit < 0 || forEdit >= _allItems.size()) {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 
 		isFound = true;
@@ -279,17 +425,22 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 
 	}
 
-	if (isFound && !isUndo) {
-		string undo = "mark undo " + iter->getIndex();
-		_undoMark.push(undo);
-		iter->setStatus("cleared");
-		_storage.findClashes();
-		successful = true;
-		return MESSAGE_MARKED;
+	try{
+		if (isFound && !isUndo) {
+			string undo = "mark undo " + iter->getIndex();
+			_undoMark.push(undo);
+			iter->setStatus("cleared");
+			_storage.findClashes();
+			successful = true;
+			return MESSAGE_MARKED;
+		}
+		else {
+			successful = false;
+			throw MESSAGE_WRONG_INDEX;
+		}
 	}
-	else {
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	catch (string e){
+		return e;
 	}
 }
 
@@ -300,14 +451,14 @@ string ExecuteMark::undo() {
 	_undoMark.pop();
 	return undoMark;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteMark.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteMark.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
 	 */
 
 bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iterator iter) {
@@ -344,14 +495,15 @@ bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iter
 	return (compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
 		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
 	 */
 
 bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeChecked) {
@@ -381,156 +533,14 @@ bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeCheck
 string ExecuteSearch::undo() {
 	return "";
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-	 */
-
-string ExecuteSort::sortTasksByDate(Storage& _storage){
-
-	vector<list<StickyNote>::iterator> futureTasks;
-	getFutureTasks(futureTasks, _storage);
-
-	ostringstream oss;
-
-	vector<list<StickyNote>::iterator> jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec;
-	for (size_t i = 0; i < futureTasks.size(); i++){
-		switch (futureTasks[i]->getMonth()){
-		case 1:
-			jan.push_back(futureTasks[i]);
-			break;
-		case 2:
-			feb.push_back(futureTasks[i]);
-			break;
-		case 3:
-			mar.push_back(futureTasks[i]);
-			break;
-		case 4:
-			apr.push_back(futureTasks[i]);
-			break;
-		case 5:
-			may.push_back(futureTasks[i]);
-			break;
-		case 6:
-			jun.push_back(futureTasks[i]);
-			break;
-		case 7:
-			jul.push_back(futureTasks[i]);
-			break;
-		case 8:
-			aug.push_back(futureTasks[i]);
-			break;
-		case 9:
-			sep.push_back(futureTasks[i]);
-			break;
-		case 10:
-			oct.push_back(futureTasks[i]);
-			break;
-		case 11:
-			nov.push_back(futureTasks[i]);
-			break;
-		case 12:
-			dec.push_back(futureTasks[i]);
-			break;
-		default:
-			break;
-		}
-	}
-
-
-	vector<list<StickyNote>::iterator> sortedFutureTasks;
-	if (jan.size() > 0){
-		std::sort(jan.begin(), jan.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < jan.size(); i++){
-			sortedFutureTasks.push_back(jan[i]);
-		}
-	}
-	if (feb.size() > 0){
-		std::sort(feb.begin(), feb.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < feb.size(); i++){
-			sortedFutureTasks.push_back(feb[i]);
-		}
-	}
-	if (mar.size() > 0){
-		std::sort(mar.begin(), mar.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < mar.size(); i++){
-			sortedFutureTasks.push_back(mar[i]);
-		}
-	}
-	if (apr.size() > 0){
-		std::sort(apr.begin(), apr.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < apr.size(); i++){
-			sortedFutureTasks.push_back(apr[i]);
-		}
-	}
-	if (may.size() > 0){
-		std::sort(may.begin(), may.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < may.size(); i++){
-			sortedFutureTasks.push_back(may[i]);
-		}
-	}
-	if (jun.size() > 0){
-		std::sort(jun.begin(), jun.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < jun.size(); i++){
-			sortedFutureTasks.push_back(jun[i]);
-		}
-	}
-	if (jul.size() > 0){
-		std::sort(jul.begin(), jul.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < jul.size(); i++){
-			sortedFutureTasks.push_back(jul[i]);
-		}
-	}
-	if (aug.size() > 0){
-		std::sort(aug.begin(), aug.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < aug.size(); i++){
-			sortedFutureTasks.push_back(aug[i]);
-		}
-	}
-	if (sep.size() > 0){
-		std::sort(sep.begin(), sep.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < sep.size(); i++){
-			sortedFutureTasks.push_back(sep[i]);
-		}
-	}
-	if (oct.size() > 0){
-		std::sort(oct.begin(), oct.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < oct.size(); i++){
-			sortedFutureTasks.push_back(oct[i]);
-		}
-	}
-	if (nov.size() > 0){
-		std::sort(nov.begin(), nov.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < nov.size(); i++){
-			sortedFutureTasks.push_back(nov[i]);
-		}
-	}
-	if (dec.size() > 0){
-		std::sort(dec.begin(), dec.end(), compareTwoTasksByDay());
-		for (size_t i = 0; i < dec.size(); i++){
-			sortedFutureTasks.push_back(dec[i]);
-		}
-	}
-
-	for (size_t j = 0; j < sortedFutureTasks.size(); j++){
-		oss << j + 1 << "." << getAllInfoOfOneTask(sortedFutureTasks[j]) << "\r\n";
-	}
-
-	return oss.str();
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 	 */
 
 void ExtDataBase::archive(string done) {
@@ -544,14 +554,14 @@ void ExtDataBase::archive(string done) {
 	return;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 	 */
 
 string HandleInput::getIndex(string date, Storage _storage) {
@@ -615,14 +625,14 @@ string HandleInput::getIndex(string date, Storage _storage) {
 	return returnIndex;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 	 */
 
 Executor* Logic::dispatch(UserTask* task) {
@@ -636,8 +646,6 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteEdit(task);
 	case SEARCH:
 		return new ExecuteSearch(task);
-	case SORT:
-		return new ExecuteSort(task);
 	case DISPLAY:
 		return new ExecuteDisplay(task);
 	case HELP:
@@ -648,14 +656,114 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteDirectory(task);
 	};
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
+	 */
+
+string Logic::realTimeCheck(bool& isOutdated){
+	int curYr = 0, curMon = 0, curD = 0, curHr = 0, curMin = 0, curSec = 0;
+	getCurrentTime(curYr, curMon, curD, curHr, curMin, curSec);
+
+	ostringstream outdatedTasks;
+	list<StickyNote>::iterator iter;
+	iter = _storage.getIter();
+	int _size = _storage.getSize();
+	for (int i = 0; i < _size; i++, iter++) {
+		string date = iter->getDate();
+		string time = iter->getTime();
+		int pos1 = -1, pos2 = -1, pos3 = -1;
+		pos1 = date.find("/");
+		int intDate = atoi((date.substr(0, pos1)).c_str());
+		int intMon = atoi((date.substr(pos1+1)).c_str());
+		pos2 = time.find_first_of('-');
+		pos3 = time.find_last_of(':');
+		int intHr = atoi((time.substr(pos2 + 1, pos3 - pos2 - 1)).c_str());
+		int intMin = atoi((time.substr(pos3+1)).c_str());
+
+
+		if (time == "All day event" && date == "unbounded event"){
+		}
+
+		else if (time == "All day event" && date != "unbounded event"){
+			if (curMon > intMon){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD > intDate){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+
+		else if (time != "All day event" && date == "unbounded event"){
+			if (curHr > intHr){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curHr == intHr && curMin > intMin){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+
+		else if (time != "All day event" && date != "unbounded event"){
+			if (curMon > intMon){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD > intDate){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD == intDate && curHr > intHr){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD == intDate && curHr == intHr && curMin > intMin){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+	
+	}
+
+	return outdatedTasks.str();
+}
+
+void Logic::getCurrentTime(int& year, int& month, int& day, int& hour, int& min, int& sec){
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+	year = timeInfo->tm_year + 1900;
+	month = timeInfo->tm_mon + 1;
+	day = timeInfo->tm_mday;
+	hour = timeInfo->tm_hour;
+	min = timeInfo->tm_min;
+	sec = timeInfo->tm_sec;
+	return;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 	 */
 
 string Standardise::standardiseTime(string inputTime) {
@@ -759,14 +867,14 @@ string Standardise::standardiseTime(string inputTime) {
 	if (min_s == 0) {
 		smin_s = "00";
 	}
-	else {
+	else if (min_s > 0){
 		smin_s = to_string(min_s);
 	}
 
 	if (min_e == 0) {
 		smin_e = "00";
-	}
-	else {
+	}	
+	else if (min_e > 0){
 		smin_e = to_string(min_e);
 	}
 
@@ -775,14 +883,14 @@ string Standardise::standardiseTime(string inputTime) {
 	return changed;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 	 */
 
 void StickyNote::setDate(string change) {
@@ -812,14 +920,14 @@ void StickyNote::setStatus(string change) {
 	_status = change;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 int Storage::getSameDateCount(string date) {
@@ -836,14 +944,14 @@ int Storage::getSameDateCount(string date) {
 	}
 	return count;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 void Storage::findClashes(StickyNote& note) {
@@ -864,28 +972,28 @@ void Storage::findClashes(StickyNote& note) {
 			}
 	}
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 	 */
 
 COMMAND UserTask::getCommand() {
 	return _command;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 	 */
 
 //Unit test for ADD.
@@ -896,6 +1004,26 @@ COMMAND UserTask::getCommand() {
 				bool successful = false;
 				Logic* logic = new Logic;
 				string input = "add meet zann today 8pm -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(ADDvaliddeadline1)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "add swim today by 4pm -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(ADDvaliddeadline2)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "add do homework today before 10pm -high\r\n";
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
@@ -981,14 +1109,14 @@ COMMAND UserTask::getCommand() {
 				Assert::AreEqual(false, successful);
 			}
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\CurrentDate.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\CurrentDate.cpp
 	 */
 
 string CurrentDate::getCurrentDate(){
@@ -1006,14 +1134,28 @@ string CurrentDate::getCurrentDate(){
 	oss << day << "/" << month << "/" << year;
 	return oss.str();
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\CurrentDate.cpp
+
+void CurrentDate::getCurrentTime(int& year, int& month, int& day, int& hour, int& min, int& sec){
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+	year = timeInfo->tm_year + 1900;
+	month = timeInfo->tm_mon + 1;
+	day = timeInfo->tm_mday;
+	hour = timeInfo->tm_hour;
+	min = timeInfo->tm_min;
+	sec = timeInfo->tm_sec;
+	return;
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\CurrentDate.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\WiseGUI.h
 	 */
 
 		WiseGUI(void)
@@ -1029,6 +1171,14 @@ string CurrentDate::getCurrentDate(){
 			string temp = logic->handleInput("display", edited, successful);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
+
+			bool isOutdated = false;
+			string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+			String^ outdatedDisplayed = gcnew String(outdated.c_str());
+			if (isOutdated){
+				expiredBox->Text = outdatedDisplayed;
+			}
+
 		}
 
 	protected:
@@ -1040,14 +1190,14 @@ string CurrentDate::getCurrentDate(){
 			}
 		}
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\WiseGUI.h
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\WiseGUI.h
 	 */
 
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -1066,69 +1216,80 @@ string CurrentDate::getCurrentDate(){
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
 
-				 if (CmdLineBox->Text == "\r\n"){
-					 MessageBox::Show("Wrong Input, re-enter:");
-				 }
-				 else{
-
-					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 _log->logInfo(input);
-
-					 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
-						 input = input.substr(0, input.length() - 2);
+				 try{
+					 if (CmdLineBox->Text == "\r\n"){
+						 throw false;
 					 }
+					 else{
 
-					 bool successful = false;
-					 string result = logic->handleInput(input, edited, successful);
-					 ostringstream message;
-					 message << SUCCESSFUL_LOG << endl;
-					 _log->logInfo(message.str());
+						 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
+						 _log->logInfo(input);
 
-					 String^ feedback = gcnew String(result.c_str());
-
-
-					 for (size_t i = 0; i < input.size(); i++){
-						 input[i] = tolower(input[i]);
-					 }
-
-					 istringstream iss(input);
-					 string cmd = "";
-
-					 if (input.size() > 0){
-						 iss >> cmd;
-					 }
-
-					 if (cmd == "help") {
-						 MessageBox::Show(feedback);
-					 }
-					 else if (cmd == "display" && result != MESSAGE_ERROR) {
-						 dateBox->Text = gcnew String(date.c_str());
-						 displayBox2->Clear();
-						 if (input == "display week\r\n") {
-							 string toShow = date + " to " + date7daysLater;
-							 dateBox->Text = gcnew String(toShow.c_str());
+						 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
+							 input = input.substr(0, input.length() - 2);
 						 }
-						 displayBox->Text = feedback;
-					 }
-					 else {
-						 displayBox2->Text = feedback;
-					 }
 
-					 if (edited){
-						 dateBox->Text = gcnew String(date.c_str());
-						 string temp;
 						 bool successful = false;
-						 if (cmd == "search") {
-							 temp = logic->handleInput("display search", edited, successful);
+						 string result = logic->handleInput(input, edited, successful);
+						 ostringstream message;
+						 message << SUCCESSFUL_LOG << endl;
+						 _log->logInfo(message.str());
+
+						 String^ feedback = gcnew String(result.c_str());
+
+
+						 for (size_t i = 0; i < input.size(); i++){
+							 input[i] = tolower(input[i]);
+						 }
+
+						 istringstream iss(input);
+						 string cmd = "";
+
+						 if (input.size() > 0){
+							 iss >> cmd;
+						 }
+
+						 if (cmd == "help") {
+							 MessageBox::Show(feedback);
+						 }
+						 else if (cmd == "display" && result != MESSAGE_ERROR) {
+							 dateBox->Text = gcnew String(date.c_str());
+							 displayBox2->Clear();
+							 if (input == "display week\r\n") {
+								 string toShow = date + " to " + date7daysLater;
+								 dateBox->Text = gcnew String(toShow.c_str());
+							 }
+							 displayBox->Text = feedback;
 						 }
 						 else {
-							 temp = logic->handleInput("display", edited, successful);
+							 displayBox2->Text = feedback;
 						 }
-						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-						 displayBox->Text = tasksToBeDisplayed;
+
+						 if (edited){
+							 dateBox->Text = gcnew String(date.c_str());
+							 string temp;
+							 bool successful = false;
+							 if (cmd == "search") {
+								 temp = logic->handleInput("display search", edited, successful);
+							 }
+							 else {
+								 temp = logic->handleInput("display", edited, successful);
+							 }
+							 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+							 displayBox->Text = tasksToBeDisplayed;
+						 }
 					 }
 				 }
-				
+				 catch (bool e){
+					 MessageBox::Show("Wrong Input, re-enter:");
+				 }
+
+				 bool isOutdated = false;
+				 string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+				 String^ outdatedDisplayed = gcnew String(outdated.c_str());
+				 if (isOutdated){
+					 expiredBox->Text = outdatedDisplayed;
+				 }
 				 return;
 	}
 
@@ -1171,7 +1332,7 @@ private: System::Void WiseGUI_FormClosing(System::Object^  sender, System::Windo
 }
 };
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\WiseUI\WiseGUI.h
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\WiseUI\WiseGUI.h
 
 
 

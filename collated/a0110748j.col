@@ -3,60 +3,90 @@
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 bool Date::isDate1(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch(bool e){
+		return e;
+	}
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 	int pos = -1;
-
-	for (size_t i = 0; i < 24; i++) {
-		pos = str.find(monthKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		for (size_t i = 0; i < 24; i++) {
+			pos = str.find(monthKey[i]);
+			if (pos == 0) {
+				return true;
+			}
+			else if (pos != 0 && pos != -1){
+				throw false;
+			}
 		}
+	}
+	catch (bool e){
+		return e;
 	}
 	return false;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 bool Date::isDate2(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
 		"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "today", "tomorrow", "/" };
 	int pos = -1;
-
-	for (size_t i = 0; i < 17; i++) {
-		pos = str.find(dateKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		for (size_t i = 0; i < 17; i++) {
+			pos = str.find(dateKey[i]);
+			if (pos == 0) {
+				return true;
+			}
+			else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
+				return true;
+			}
+			else if (pos<-1){
+				throw false;
+			}
 		}
-		else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
-			return true;
-		}
-	  }
+	}
+	catch(bool e){
+		return e;
+	}
 	return false;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 string Date::getTodayDate() {
@@ -73,17 +103,25 @@ string Date::getTodayDate() {
 	int wDay = timeInfo->tm_wday;
 
 	string currentDate = to_string(day) + "/" + to_string(month);
+	try{
+		if (currentDate == ""){
+			throw MESSAGE_NO_TODAY_DATE;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 	return currentDate;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 string Date::getTomorrowDate() {
@@ -101,23 +139,39 @@ string Date::getTomorrowDate() {
 	int wDay = timeInfo->tm_wday;
 
 	string tomorrow = to_string(day) + "/" + to_string(month);
+	try{
+		if (tomorrow == ""){
+			throw MESSAGE_NO_TMR_DATE;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 	Standardise standard;
 	standard.standardiseDate(tomorrow);
 	return tomorrow;
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 string Date::getXDaysLaterDate(int add) {
+	try{
+		if (add < 0){
+			throw MESSAGE_NO_X_DAY_LATER;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -139,303 +193,226 @@ string Date::getXDaysLaterDate(int add) {
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteAdd.cpp
-	 */
-
-string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
-	string userInput = _task->getRemaining();
-
-	if (userInput.empty()) {
-		successful = false;
-		return MESSAGE_ERROR;
-	}
-
-	string details="";
-	string date = "";
-	string time = "";
-	string priority = "";
-	string index = "";
-	string category = "";
-	HandleInput handleInput;
-	bool isADeadline = false;
-	bool isConventionalDate = false;
-	bool validDate = false;
-	Date checkDate;
-
-	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
-
-	Standardise item;
-
-	time = item.standardiseTime(time);
-
-	if (!item.verifyValidTime(time)){
-		successful = false;
-		return MESSAGE_INVALID_TIME;
-	}
-
-	if (date != ""){
-		validDate = checkDate.verifyValidDate(date, isConventionalDate);
-	}
-
-	if (isConventionalDate && !validDate){
-		successful = false;
-		return MESSAGE_INVALID_DATE;
-	}
-
-	date = item.standardiseDate(date);
-	if (date == "unbounded event" && time != "All day event") {
-		date = checkDate.getTodayDate();
-	}
-	category = item.standardiseCategory(isADeadline, time);
-	index = handleInput.getIndex(date, _storage);
-
-	StickyNote note;
-	note.setEverything(details, date, time, priority, index);
-	note.setCategory(category);
-	note.setStatus("incomplete");
-	int st;
-	int et;
-	checkDate.setTaskTime(st, et, time, category);
-	note.setStartTime(st);
-	note.setEndTime(et);
-	string result = _storage.addNewNote(note);
-
-	string undo;
-	undo = "delete " + index;
-	_undoAdd.push(undo);
-
-	successful = true;
-	return result;
-}
-
-
-string ExecuteAdd::undo() {
-
-	string undoAdd;
-	undoAdd = _undoAdd.top();
-	_undoAdd.pop();
-	return undoAdd;
-}
-
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteAdd.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string type = _task->getRemaining();
-	
-	if (type == "") {
-		ostringstream oss;
+	try{
+		if (type == "") {
+			ostringstream oss;
 
-		_allItems.clear();
+			_allItems.clear();
 
-		vector<list<StickyNote>::iterator> taskToday;
-		vector<list<StickyNote>::iterator> taskTmr;
-		vector<list<StickyNote>::iterator> unbounded;
-
-
-		getTodayTasks(taskToday, _storage);
-		getTomorrowTasks(taskTmr, _storage);
-		getUnboundedTasks(unbounded, _storage);
-
-		pushToAllItem(taskToday, _allItems);
-		pushToAllItem(taskTmr, _allItems);
-		pushToAllItem(unbounded, _allItems);
-
-		// show to user
-
-		Date date;
-		int counter = 1;
-
-		oss << "TODAY: " << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
-			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			vector<list<StickyNote>::iterator> taskToday;
+			vector<list<StickyNote>::iterator> taskTmr;
+			vector<list<StickyNote>::iterator> unbounded;
 
 
-		oss << "\r\n" << "TOMORROW: " << "\r\n";
+			getTodayTasks(taskToday, _storage);
+			getTomorrowTasks(taskTmr, _storage);
+			getUnboundedTasks(unbounded, _storage);
 
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			pushToAllItem(taskToday, _allItems);
+			pushToAllItem(taskTmr, _allItems);
+			pushToAllItem(unbounded, _allItems);
 
-		oss << "\r\n" << "UNBOUNDED: " << "\r\n";
+			// show to user
 
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			Date date;
+			int counter = 1;
 
-		successful = true;
-		return oss.str();
-	} // end if no specification.
+			oss << "TODAY: " << "\r\n";
 
-	else if (type == "search") {
-		ostringstream oss;
-		int counter = 1;
-
-		if (_allItems.size() == 0) {
-			successful = false;
-			return MESSAGE_EMPTY_SEARCH;
-		}
-		else {
 			for (size_t i = 0; i < _allItems.size(); i++) {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
+				if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+
+			oss << "\r\n" << "TOMORROW: " << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+			oss << "\r\n" << "UNBOUNDED: " << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+			successful = true;
+			return oss.str();
+		} // end if no specification.
+
+		else if (type == "search") {
+			ostringstream oss;
+			int counter = 1;
+
+			try{
+				if (_allItems.size() == 0) {
+					successful = false;
+					throw MESSAGE_EMPTY_SEARCH;
+				}
+				else {
+					for (size_t i = 0; i < _allItems.size(); i++) {
+						oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+						counter++;
+					}
+					successful = true;
+					return oss.str();
+				}
+			}
+			catch (string e){
+				return e;
+			}
+		} // end search if
+
+		else if (type == "week") {
+
+			ostringstream oss;
+
+			_allItems.clear();
+
+			vector<list<StickyNote>::iterator> day1;
+			vector<list<StickyNote>::iterator> day2;
+			vector<list<StickyNote>::iterator> day3;
+			vector<list<StickyNote>::iterator> day4;
+			vector<list<StickyNote>::iterator> day5;
+			vector<list<StickyNote>::iterator> day6;
+			vector<list<StickyNote>::iterator> day7;
+
+			getTodayTasks(day1, _storage);
+			getTomorrowTasks(day2, _storage);
+			getDay3Tasks(day3, _storage);
+			getDay4Tasks(day4, _storage);
+			getDay5Tasks(day5, _storage);
+			getDay6Tasks(day6, _storage);
+			getDay7Tasks(day7, _storage);
+
+
+			pushToAllItem(day1, _allItems);
+			pushToAllItem(day2, _allItems);
+			pushToAllItem(day3, _allItems);
+			pushToAllItem(day4, _allItems);
+			pushToAllItem(day5, _allItems);
+			pushToAllItem(day6, _allItems);
+			pushToAllItem(day7, _allItems);
+
+
+			//show to user
+
+			Date date;
+			int counter = 1;
+			// day 1
+
+			oss << date.getDateDetails(date.getTodayDate()) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 2
+
+			oss << "\r\n" << date.getDateDetails(date.getTomorrowDate()) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 3
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(2)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(2)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 4
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(3)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(3)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 5
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(4)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(4)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			//day 6
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(5)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(5)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 7
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(6)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(6)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
 			}
 			successful = true;
 			return oss.str();
+
+		} // end week if
+		else {
+			successful = false;
+			throw MESSAGE_ERROR;
 		}
-	} // end search if
-
-	else if (type == "week") {
-
-		ostringstream oss;
-
-		_allItems.clear();
-
-		vector<list<StickyNote>::iterator> day1;
-		vector<list<StickyNote>::iterator> day2;
-		vector<list<StickyNote>::iterator> day3;
-		vector<list<StickyNote>::iterator> day4;
-		vector<list<StickyNote>::iterator> day5;
-		vector<list<StickyNote>::iterator> day6;
-		vector<list<StickyNote>::iterator> day7;
-
-		getTodayTasks(day1, _storage);
-		getTomorrowTasks(day2, _storage);
-		getDay3Tasks(day3, _storage);
-		getDay4Tasks(day4, _storage);
-		getDay5Tasks(day5, _storage);
-		getDay6Tasks(day6, _storage);
-		getDay7Tasks(day7, _storage);
-
-
-		pushToAllItem(day1, _allItems);
-		pushToAllItem(day2, _allItems);
-		pushToAllItem(day3, _allItems);
-		pushToAllItem(day4, _allItems);
-		pushToAllItem(day5, _allItems);
-		pushToAllItem(day6, _allItems);
-		pushToAllItem(day7, _allItems);
-
-
-		//show to user
-		
-		Date date;
-		int counter = 1;
-		// day 1
-
-		oss << date.getDateDetails(date.getTodayDate()) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 2
-
-		oss << "\r\n" << date.getDateDetails(date.getTomorrowDate()) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 3
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(2)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(2)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 4
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(3)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(3)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 5
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(4)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(4)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		//day 6
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(5)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(5)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 7
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(6)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(6)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		successful = true;
-		return oss.str();
-
-	} // end week if
-	else {
-		successful = false;
-		return MESSAGE_ERROR;
+	}
+	catch (string e){
+		return e;
 	}
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getDay6Tasks(vector<list<StickyNote>::iterator>& day6, Storage& _storage) {
@@ -451,127 +428,14 @@ void ExecuteDisplay::getDay6Tasks(vector<list<StickyNote>::iterator>& day6, Stor
 	}
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
-	 */
-
-string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
-	_allItems.clear();
-
-	string infoToBeSearched = _task->getRemaining();
-	list<StickyNote>::iterator iter;
-	iter = _storage.getIter();
-	int _size = _storage.getSize();
-
-	if (infoToBeSearched == ""){
-		successful = false;
-		return MESSAGE_NO_INFO_GIVEN;
-	}
-
-	bool infoIsFound = false;
-	int i = 0;
-	for (iter; i < _size; i++, iter++){
-		if (haveThisInfo(infoToBeSearched, iter)){
-			infoIsFound = true;
-			_allItems.push_back(iter);
-		}
-	}
-
-	if (infoIsFound){
-		string returnMsg;
-		returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
-		successful = true;
-		return returnMsg;
-	}
-	else{
-		successful = false;
-		return MESSAGE_INFO_UNFOUND;
-	}
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSearch.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-	 */
-
-string ExecuteSort::getTodayDate(){
-	time_t rawTime;
-	struct tm * timeInfo = new struct tm;
-
-	time(&rawTime);
-	localtime_s(timeInfo, &rawTime);
-
-	int day = timeInfo->tm_mday;
-	int month = timeInfo->tm_mon + 1;
-	int year = timeInfo->tm_year + 1900;
-	int wDay = timeInfo->tm_wday;
-
-	string currentDate = to_string(day) + "/" + to_string(month);
-	return currentDate;
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-	 */
-
-void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks, Storage& _storage){
-
-	list<StickyNote>::iterator iter = _storage.getIter();
-	size_t _size = _storage.getSize();
-	time_t rawTime;
-	struct tm * timeInfo = new struct tm;
-
-	time(&rawTime);
-	localtime_s(timeInfo, &rawTime);
-
-	int dayNow = timeInfo->tm_mday;
-	int monthNow = timeInfo->tm_mon + 1;
-
-	for (size_t i = 0; i < _size; i++, iter++){
-		string curTaskDate = iter->getDate();
-		int posOfSlash = curTaskDate.find_first_of('/', 0);
-		string day = curTaskDate.substr(0, posOfSlash);
-		string month = curTaskDate.substr(posOfSlash + 1);
-		int dayInt = atoi(day.c_str());
-		int monthInt = atoi(month.c_str());
-		iter->setDay(dayInt);
-		iter->setMonth(monthInt);
-		if (monthInt>monthNow){
-			futureTasks.push_back(iter);
-		}
-		else if (monthInt == monthNow && dayInt >= dayNow){
-			futureTasks.push_back(iter);
-		}
-		else{
-		}
-	}
-
-	return;
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 	 */
 
 void ExtDataBase::autoSave(Storage& _storage) {
@@ -592,14 +456,14 @@ void ExtDataBase::autoSave(Storage& _storage) {
 	ofs.close();
 	return;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 	 */
 
 void HandleInput::handle(string userInput, string& details, string& date, string& time, string& priority, 
@@ -759,14 +623,14 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 }
 
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 	 */
 
 string Logic::handleInput(string userInput, bool& edited, bool& successful) {
@@ -787,30 +651,37 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	
 	else if (task->getCommand() == COMMAND::UNDO) {
 		
-		if (!_inputHistory.empty()) {
-			executor = _inputHistory.top();
-			_inputHistory.pop(); 
-			string conduct = executor->undo();
-			task = _parser->parse(conduct);
-			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb, _allItems, successful);
-			_extdb.autoSave(_storage);
+		try{
+			if (!_inputHistory.empty()) {
+				executor = _inputHistory.top();
+				_inputHistory.pop();
+				string conduct = executor->undo();
+				task = _parser->parse(conduct);
+				executor = dispatch(task);
+				result = executor->execute(_storage, _extdb, _allItems, successful);
+				_extdb.autoSave(_storage);
+			}
+			else {
+				successful = false;
+				throw MESSAGE_INVALID_UNDO;
+			}
 		}
-		else {
-			successful = false;
-			result = MESSAGE_INVALID_UNDO;
+		catch (string e){
+			result = e;
 		}
 
 	} 
 	else {
 			 executor = dispatch(task);
-			 if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
-				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY ||
-				 task->getCommand() == COMMAND::MARK) {
-				 _inputHistory.push(executor);
-			 }
+
 			 result = executor->execute(_storage, _extdb, _allItems, successful);
 			 _extdb.autoSave(_storage);
+
+			 if (successful && (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
+				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY ||
+				 task->getCommand() == COMMAND::MARK)) {
+				 _inputHistory.push(executor);
+			 }
 		 }
 
 	if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
@@ -822,14 +693,14 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 
 	return result;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 	 */
 
 string Standardise::standardiseDate(string date) {
@@ -886,7 +757,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case already in standardised form
+											// case already in standardised form
 			int found = -1;
 			found = extract.find('/');
 			if (found > 0) {
@@ -910,25 +781,25 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			int numberOfDays = 2; // case next / this
+			int numberOfDays = 2;			// case next / this
 			for (size_t case2 = 0; case2 < numberOfDays; case2++) {
 				if (extract == controls[case2]) {
 					if (case2 == 0) { // if next
 						day = day + 7;
 						identified = true;
 					}
-					// if this, do nothing
+											// if this, do nothing
 					identified = true;
 				}
 			}
 		}
 
 		if (!identified) {
-			int numberOfDays = 7; // case day of week
+			int numberOfDays = 7;			// case day of week
 			for (size_t case3 = 0; case3 < numberOfDays; case3++) {
 				if (extract == dayInWeek[case3]) {
 					int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
-					int diff; // used to calculate the number of days difference between current day and input day.
+					int diff;				// used to calculate the number of days difference between current day and input day.
 					if (inputDay <= wDay) {
 						inputDay = inputDay + numberOfDays;
 					}
@@ -940,7 +811,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case specific date e.g. 3rd march, this function extracts the numerical day.
+											// case specific date e.g. 3rd march, this function extracts the numerical day.
 			for (size_t case4 = 0; case4 < extract.length(); case4++) {
 				if (extract[case4] >= '0' && extract[case4] <= '9') {
 					day_extract = day_extract + extract[case4];
@@ -950,7 +821,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			int numberOfMonth = 12; // case month
+			int numberOfMonth = 12;			// case month
 			extract[0] = tolower(extract[0]); // to change Month to month
 			for (size_t case5 = 0; case5 < numberOfMonth; case5++) {
 				int found = -1;
@@ -983,14 +854,93 @@ string Standardise::standardiseDate(string date) {
 
 	return standardisedDate;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+	 */
+
+bool Standardise::checkHr(int hour){
+	try{
+		if (hour<0 || hour>23){
+			throw false;
+		}
+		else{
+			return true;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+	 */
+
+bool Standardise::checkMin(int min){
+	try{
+		if (min<0 || min>59){
+			throw false;
+		}
+		else{
+			return true;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+	 */
+
+bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
+
+	try{
+		if (startHr > endHr){
+			throw false;
+		}
+		else if (startHr < endHr){
+			return true;
+		}
+		else{
+			if (startMin >= endMin){
+				throw false;
+			}
+			else{
+				return true;
+			}
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 	 */
 
 int StickyNote::getDay(){
@@ -1023,14 +973,14 @@ string StickyNote::getSEndTime() {
 
 // SETTERS
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 bool Storage::erase(list<StickyNote>::iterator iter) {
@@ -1044,14 +994,14 @@ bool Storage::erase(list<StickyNote>::iterator iter) {
 	}
 	return false;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
@@ -1083,69 +1033,28 @@ string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 	return oss.str();
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 	 */
 
 void UserTask::setCommand(COMMAND cmd) {
 	_command = cmd;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
-	 */
-
-//Unit test for SORT.
-
-			TEST_METHOD(SORTinvalid)
-			{
-				bool edited = false;
-				bool successful = false;
-				Logic* logic = new Logic;
-				string input = "sort\r\n";
-				logic->handleInput(input, edited, successful);
-				Assert::AreEqual(false, successful);
-			}
-
-			TEST_METHOD(SORTbydate)
-			{
-				bool edited = false;
-				bool successful = false;
-				Logic* logic = new Logic;
-				string input = "sort by date\r\n";
-				logic->handleInput(input, edited, successful);
-				Assert::AreEqual(true, successful);
-			}
-
-			TEST_METHOD(SORTbypriority)
-			{
-				bool edited = false;
-				bool successful = false;
-				Logic* logic = new Logic;
-				string input = "sort by priority\r\n";
-				logic->handleInput(input, edited, successful);
-				Assert::AreEqual(true, successful);
-			}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 	 */
 
 //Unit test for DISPLAY.
@@ -1171,7 +1080,7 @@ void UserTask::setCommand(COMMAND cmd) {
 
 	};
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 
 
 

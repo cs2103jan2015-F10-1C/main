@@ -3,10 +3,18 @@
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 	 */
 
 string Date::getDateDetails(string date) {
+	try{
+		if (date == ""){
+			throw MESSAGE_NO_DATE_GIVEN;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -60,14 +68,14 @@ string Date::getDateDetails(string date) {
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Date.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDelete.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDelete.cpp
 	 */
 
 string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
@@ -77,9 +85,14 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
-		if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 	}
 
@@ -99,17 +112,27 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		int forEdit = atoi(indexToBeDeleted.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit >= _allItems.size()) {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (forEdit < 0 || forEdit >= _allItems.size()) {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 		isFound = true;
 		iter = _allItems[forEdit];
 	}
 
-	if (!isFound) {
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	try{
+		if (!isFound) {
+			successful = false;
+			throw MESSAGE_WRONG_INDEX;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 		string undo;
@@ -122,14 +145,18 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		_deleted = true;
 		_storage.findClashes();
 
-
-		if (_deleted){
-			successful = true;
-			return MESSAGE_DELETED;
+		try{
+			if (_deleted){
+				successful = true;
+				return MESSAGE_DELETED;
+			}
+			else{
+				successful = false;
+				throw MESSAGE_NOT_DELETED;
+			}
 		}
-		else{
-			successful = false;
-			return MESSAGE_NOT_DELETED;
+		catch (string e){
+			return e;
 		}
 }
 
@@ -139,14 +166,14 @@ string ExecuteDelete::undo() {
 	_undoDelete.pop();
 	return undoDelete;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDelete.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDelete.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getTodayTasks(vector<list<StickyNote>::iterator>& taskToday, Storage& _storage){
@@ -162,14 +189,14 @@ void ExecuteDisplay::getTodayTasks(vector<list<StickyNote>::iterator>& taskToday
 	}
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getTomorrowTasks(vector<list<StickyNote>::iterator>& taskTmr, Storage& _storage){
@@ -185,14 +212,14 @@ void ExecuteDisplay::getTomorrowTasks(vector<list<StickyNote>::iterator>& taskTm
 	}
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getDay5Tasks(vector<list<StickyNote>::iterator>& day5, Storage& _storage) {
@@ -208,14 +235,14 @@ void ExecuteDisplay::getDay5Tasks(vector<list<StickyNote>::iterator>& day5, Stor
 	}
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 	 */
 
 void ExecuteDisplay::getUnboundedTasks(vector<list<StickyNote>::iterator>& unbounded, Storage& _storage){
@@ -235,22 +262,27 @@ string ExecuteDisplay::undo() {
 	return "";
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteDisplay.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteEdit.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteEdit.cpp
 	 */
 
 string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 	
 	string toEdit = _task->getRemaining();
-	if (toEdit == ""){
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	try{
+		if (toEdit == ""){
+			successful = false;
+			throw MESSAGE_WRONG_INDEX;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 	bool isUndo = false;
@@ -267,9 +299,14 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	editIndex = toEdit.substr(0, pos);
 
 	for (size_t i = 0; i < editIndex.size(); i++) {
-		if (editIndex[i] < '0' || editIndex[i] > '9') {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (editIndex[i] < '0' || editIndex[i] > '9') {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 	}
 
@@ -289,10 +326,16 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		int forEdit = atoi(editIndex.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit >= _allItems.size()) {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (forEdit < 0 || forEdit >= _allItems.size()) {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
 		}
+		catch (string e){
+			return e;
+		}
+
 		isFound = true;
 		iter = _allItems[forEdit];
 	}
@@ -309,94 +352,114 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	Date checkDate;
 	Standardise item;
 
-	if (isFound){
-		string undo;
-		undo = _storage.oneTaskInfoTypeTwo(iter);
+	try{
+		if (isFound){
+			string undo;
+			undo = _storage.oneTaskInfoTypeTwo(iter);
 
-		HandleInput handleInput;
+			HandleInput handleInput;
 
-		handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
+			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
 
-		bool changeOccur = false;
+			bool changeOccur = false;
 
-		if (details != "" && details != iter->getDetails()) {
-			iter->setDetails(details);
-			changeOccur = true;
-		}
-
-		if (time != "" && time != "All day event" && time != iter->getTime()) {
-			time = item.standardiseTime(time);
-			if (!item.verifyValidTime(time)){
-				successful = false;
-				return MESSAGE_INVALID_TIME;
-			}
-			if (date == "" && time != "All day event") {
-				if (iter->getDate() == "unbounded event")
-					date = checkDate.getTodayDate();
-			}
-			iter->setTime(time);
-			int st;
-			int et;
-			checkDate.setTaskTime(st, et, time, category);
-			iter->setStartTime(st);
-			iter->setEndTime(et);
-			changeOccur = true;
-		}
-
-		if (date != "" && date != "unbounded event" && date != iter->getDate()) {
-			bool isConventionalDate = false;
-			bool validDate = false;
-			validDate = checkDate.verifyValidDate(date, isConventionalDate);
-
-			if (isConventionalDate && !validDate){
-				successful = false;
-				return MESSAGE_INVALID_DATE;
+			if (details != "" && details != iter->getDetails()) {
+				iter->setDetails(details);
+				changeOccur = true;
 			}
 
-			date = item.standardiseDate(date);
-			iter->setDate(date);
-			changeOccur = true;
-		}
+			if (time != "" && time != "All day event" && time != iter->getTime()) {
+				time = item.standardiseTime(time);
 
-		if (priority != "" && priority != iter->getPriority()) {
-			if (priority == "none"){
-				priority == "";
+				try{
+					if (!item.verifyValidTime(time)){
+						successful = false;
+						throw MESSAGE_INVALID_TIME;
+					}
+				}
+				catch (string e){
+					return e;
+				}
+
+				if (date == "" && time != "All day event") {
+					if (iter->getDate() == "unbounded event")
+						date = checkDate.getTodayDate();
+				}
+				iter->setTime(time);
+				int sh, eh, sm, em;
+				checkDate.setTaskTime(sh, eh, sm, em, time, category);
+				iter->setStartTime(sh, sm);
+				iter->setEndTime(eh, em);
+				changeOccur = true;
 			}
-			iter->setPriority(priority);
-			changeOccur = true;
-		}
 
-		category = item.standardiseCategory(isADeadline, time);
-		if (category != iter->getCategory()) {
-			iter->setCategory(category);
-			changeOccur = true;
-		}
+			if (date != "" && date != "unbounded event" && date != iter->getDate()) {
+				bool isConventionalDate = false;
+				bool validDate = false;
+				validDate = checkDate.verifyValidDate(date, isConventionalDate);
 
-		_storage.findClashes(iter);
-		_storage.findClashes();
+				try{
+					if (isConventionalDate && !validDate){
+						successful = false;
+						throw MESSAGE_INVALID_DATE;
+					}
+				}
+				catch (string e){
+					return e;
+				}
+
+				date = item.standardiseDate(date);
+				iter->setDate(date);
+				changeOccur = true;
+			}
+
+			if (priority != "" && priority != iter->getPriority()) {
+				if (priority == "none"){
+					priority == "";
+				}
+				iter->setPriority(priority);
+				changeOccur = true;
+			}
+
+			category = item.standardiseCategory(isADeadline, time);
+			if (category != iter->getCategory()) {
+				iter->setCategory(category);
+				changeOccur = true;
+			}
+
+			_storage.findClashes(iter);
+			_storage.findClashes();
 
 
-		index = iter->getIndex();
+			index = iter->getIndex();
 
-		if (!isUndo) {
-			undo = "edit undo " + index + " " + undo;
-			_undoEdit.push(undo);
-		}
+			if (!isUndo) {
+				undo = "edit undo " + index + " " + undo;
+				_undoEdit.push(undo);
+			}
 
 
-
-		if (changeOccur) {
-			successful = true;
-			return "The Task have been edited successfully to\r\n" + _storage.oneTaskInfoTypeOne(iter);
+			try{
+				if (changeOccur) {
+					successful = true;
+					return MESSAGE_EDIT + _storage.oneTaskInfoTypeOne(iter);
+				}
+				else {
+					successful = false;
+					throw MESSAGE_ERROR;
+				}
+			}
+			catch (string e){
+				return e;
+			}
 		}
 		else {
 			successful = false;
-			return MESSAGE_ERROR;
+			throw MESSAGE_WRONG_INDEX;
 		}
 	}
-	else {
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	catch (string e){
+		return e;
 	}
 }
 
@@ -407,145 +470,14 @@ string ExecuteEdit::undo() {
 	_undoEdit.pop();
 	return undoEdit;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteEdit.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteEdit.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-	 */
-
-string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
-	ostringstream oss;
-	string desireCommand = _task->getRemaining();
-
-	if (desireCommand == ""){
-		successful = false;
-		return MESSAGE_INVALID_SORT;
-	}
-
-	if (desireCommand == "by date"){
-		successful = true;
-		return sortTasksByDate(_storage);
-	}
-	else if (desireCommand == "by priority"){
-		successful = true;
-		return sortTasksPriority(_storage);
-	}
-	else{
-		successful = false;
-		return MESSAGE_INVALID_SORT;
-	}
-	successful = true;
-	return oss.str();
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-	 */
-
-string ExecuteSort::sortTasksPriority(Storage& _storage){
-	vector<list<StickyNote>::iterator> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
-	ostringstream oss;
-
-	getFutureTasks(futureTasks, _storage);
-
-	for (size_t i = 0; i <futureTasks.size(); i++){
-		if ((futureTasks[i]->getPriority())[0] == 'h'){
-			highPrior.push_back(futureTasks[i]);
-		}
-		else if ((futureTasks[i]->getPriority())[0] == 'm'){
-			midPrior.push_back(futureTasks[i]);
-		}
-		else if ((futureTasks[i]->getPriority())[0] == 'l'){
-			lowPrior.push_back(futureTasks[i]);
-		}
-		else{
-			unbounded.push_back(futureTasks[i]);
-		}
-	}
-
-	if (highPrior.size() > 0){
-		for (size_t i = 0; i < highPrior.size(); i++){
-			sortedTasksByPrior.push_back(highPrior[i]);
-		}
-	}
-	if (midPrior.size() > 0){
-		for (size_t i = 0; i < midPrior.size(); i++){
-			sortedTasksByPrior.push_back(midPrior[i]);
-		}
-	}
-	if (lowPrior.size() > 0){
-		for (size_t i = 0; i < lowPrior.size(); i++){
-			sortedTasksByPrior.push_back(lowPrior[i]);
-		}
-	}
-	if (unbounded.size() > 0){
-		for (size_t i = 0; i < unbounded.size(); i++){
-			sortedTasksByPrior.push_back(unbounded[i]);
-		}
-	}
-
-	for (size_t j = 0; j < sortedTasksByPrior.size(); j++){
-		oss << j + 1 << "." << getAllInfoOfOneTask(sortedTasksByPrior[j]) << "\r\n";
-	}
-
-	return oss.str();
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExecuteSort.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
-	 */
-
-string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
-
-	ofstream ofs;
-	ofs.open(newDirectory);
-	bool isOpen = false;
-	isOpen = ofs.is_open();
-	if (isOpen) {
-		ofstream out;
-
-		getLocation();
-		int ensure = remove(_currentLocation.c_str());
-		assert(ensure == 0);
-
-		out.open("../DirectoryStorage.txt");
-		out.clear();
-		out << newDirectory;
-		out.close();
-		ofs.close();
-		getLocation();
-		successful = true;
-		return MESSAGE_DIRECTORY_CHANGED;
-	}
-	else{
-		ofs.close();
-		successful = false;
-		return MESSAGE_DIRECTORY_NOT_CHANGED;
-	}
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 	 */
 
 vector<string>* ExtDataBase::getContent() {
@@ -571,120 +503,102 @@ vector<string>* ExtDataBase::getContent() {
 
 	return vec;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\ExtDataBase.cpp
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 	 */
 
-bool HandleInput::isSpecialDetail(string str) {
+bool HandleInput::isComing(string buffer){
 
-	if (str[0] == '"') {
-		return true;
-	}
-	return false;
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
-	 */
-
-bool HandleInput::isPriority(string str) {
-
-	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
-		return true;
-	}
-	return false;
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
-	 */
-
-bool HandleInput::isTime(string str) {
-
-	string timeKey[3] = { ":", "am", "pm" };
-	int pos = -1;
-
-	for (size_t i = 0; i < 3; i++) {
-		pos = str.find(timeKey[i]);
-		if (pos > 0) {
-			if (str[pos - 1] >= '0' && str[pos - 1] <= '9') { // meaning that there should be an integer present before the delimiter.
-				return true;
-			}
+	try{
+		if (buffer == ""){
+			throw false;
 		}
 	}
-	return false;
-}
+	catch (bool e){
+		return e;
+	}
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	bool isComing = false;
+	if (buffer == "this" || buffer == "coming" || buffer == "this coming"){
+		isComing = true;
+	}
+	return isComing;
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 	 */
 
-bool HandleInput::isBuffer(string str) {
+bool HandleInput::isDeadlineProposition(string extract){
 
-	string bufferKey[18] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to", "this", "coming", "next" };
-	int pos = -1;
-
-	for (size_t i = 0; i < 18; i++) {
-		pos = str.find(bufferKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		if (extract == ""){
+			throw false;
 		}
 	}
-	return false;
+	catch (bool e){
+		return e;
+	}
+
+	bool checkWord = false;
+	if (extract == "by" || extract == "on" || extract == "is" || extract == "before"){
+		checkWord = true;
+	}
+	return checkWord;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 	 */
 
-bool HandleInput::isDeadline(string str) {
+bool HandleInput::isNotDeadlineKeyword(string deadline){
 
-	string deadlineKey[13] = { "be", "due", "finish", "end", "ready", "prepare", "complete", "done", "before", "by", "on", "deadline", "is" };
-	int pos = -1;
-
-	for (size_t i = 0; i < 13; i++) {
-		pos = str.find(deadlineKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		if (deadline == ""){
+			throw false;
 		}
 	}
-	return false;
+	catch (bool e){
+		return e;
+	}
+
+	bool isNotDone = false;
+	if (deadline != "due" || deadline != "end" || deadline != "finish" ||
+		deadline != "ready" || deadline != "deadline" || deadline != "prepare" ||
+		deadline != "complete" || deadline != "done" || deadline != "finished" ||
+		deadline != "prepared" || deadline != "completed"){
+
+		isNotDone = true;
+	}
+
+	return isNotDone;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\HandleInput.cpp
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 	 */
 
 string Logic::getCurrentDirectory(){
@@ -717,14 +631,14 @@ void Logic::archive() {
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Logic.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\main.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\main.cpp
 	 */
 
 int main() {
@@ -746,14 +660,14 @@ int main() {
 
 	return 0;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\main.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\main.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Parser.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Parser.cpp
 	 */
 
 UserTask* Parser::parse(string command) {
@@ -819,9 +733,6 @@ UserTask* Parser::parse(string command) {
 	else if (command == "directory") {
 		_task->setCommand(COMMAND::DIRECTORY);
 	}
-	else if (command == "sort") {
-		_task->setCommand(COMMAND::SORT);
-	}
 	else if (command == "help") {
 		_task->setCommand(COMMAND::HELP);
 	}
@@ -837,95 +748,55 @@ UserTask* Parser::parse(string command) {
 	return _task;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Parser.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Parser.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 	 */
 
 bool Standardise::verifyValidTime(string time){
-	if (time != "All day event" && time != ""){
-		int pos1 = time.find_first_of(':');
-		int pos2 = time.find_first_of('-');
-		int pos3 = time.find_last_of(':');
-		int startHr = atoi((time.substr(0, pos1)).c_str());
-		int startMin = atoi((time.substr(pos1 + 1, pos2 - (pos1 + 1))).c_str());
-		int endHr = atoi((time.substr(pos2 + 1, pos3 - (pos2 + 1))).c_str());
-		int endMin = atoi((time.substr(pos3 + 1)).c_str());
+	try{
+		if (time != "All day event" && time != ""){
+			int pos1 = time.find_first_of(':');
+			int pos2 = time.find_first_of('-');
+			int pos3 = time.find_last_of(':');
+			int startHr = atoi((time.substr(0, pos1)).c_str());
+			int startMin = atoi((time.substr(pos1 + 1, pos2 - (pos1 + 1))).c_str());
+			int endHr = atoi((time.substr(pos2 + 1, pos3 - (pos2 + 1))).c_str());
+			int endMin = atoi((time.substr(pos3 + 1)).c_str());
 
-		if (!(checkHr(startHr) && checkHr(endHr) && checkMin(startMin) && checkMin(endMin))){
-			return false;
+				if (!(checkHr(startHr) && checkHr(endHr) && checkMin(startMin) && checkMin(endMin))){
+					return false;
+				}
+				else{
+					if (checkCorrectSequence(startHr, endHr, startMin, endMin)){
+						return true;
+					}
+					else{
+						return false;
+					}
+				}
 		}
 		else{
-			if (checkCorrectSequence(startHr, endHr, startMin, endMin)){
-				return true;
-			}
-			else{
-				return false;
-			}
+			throw true;
 		}
 	}
-	else{
-		return true;
+	catch (bool e){
+		return e;
 	}
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
-	 */
-
-bool Standardise::checkHr(int hour){
-	if (hour<0 || hour>23){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
-	 */
-
-bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
-	if (startHr > endHr){
-		return false;
-	}
-	else if (startHr < endHr){
-		return true;
-	}
-	else{
-		if (startMin >= endMin){
-			return false;
-		}
-		else{
-			return true;
-		}	
-	}
-}
-
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Standardise.cpp
-
-
-
-
-
-	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 	 */
 
 void StickyNote::setDay(int day){
@@ -935,40 +806,30 @@ void StickyNote::setMonth(int month){
 	_month = month;
 }
 
-void StickyNote::setStartTime(int start) {
-	_startTime = start;
-	_sStartTime = to_string(start);
-	if (_sStartTime.size() == 4) {
-		_sStartTime.insert(2, ":");
-	}
-	else if (_sStartTime.size() == 3) {
-		_sStartTime.insert(1, ":");
-	}
+void StickyNote::setStartTime(int startH, int startM) {
+	ostringstream oss;
+	oss << startH << ":" << startM;
+	_sStartTime = oss.str();
 }
 
-void StickyNote::setEndTime(int end) {
-	_endTime = end;
-	_sEndTime = to_string(end);
-	if (_sEndTime.size() == 4) {
-		_sEndTime.insert(2, ":");
-	}
-	else if (_sEndTime.size() == 3) {
-		_sEndTime.insert(1, ":");
-	}
+void StickyNote::setEndTime(int endH, int endM) {
+	ostringstream oss;
+	oss << endH << ":" << endM;
+	_sEndTime = oss.str();
 }
 
 void StickyNote::setDetails(string change) {
 	_details = change;
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\StickyNote.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 string Storage::addNewNote(StickyNote note) {
@@ -977,14 +838,14 @@ string Storage::addNewNote(StickyNote note) {
 	_noteBook.push_back(note);
 	return MESSAGE_ADD;
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
@@ -1017,14 +878,14 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 		//<< "\r\n";
 	return oss.str();
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 bool Storage::noRepeatIndexCount(string index) {
@@ -1033,22 +894,27 @@ bool Storage::noRepeatIndexCount(string index) {
 	iter = _noteBook.begin();
 
 	for (size_t i = 0; i < _noteBook.size(); i++, iter++) {
-		if (iter->getIndex() == index) {
-			return false;
+		try{
+			if (iter->getIndex() == index) {
+				throw false;
+			}
+		}
+		catch (bool e){
+			return e;
 		}
 	}
 	return true;
 
 }
 
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 	 */
 
 void Storage::findClashes(list<StickyNote>::iterator iter) {
@@ -1069,28 +935,28 @@ void Storage::findClashes(list<StickyNote>::iterator iter) {
 		}
 	}
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\Storage.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 	 */
 
 void UserTask::setRemaining(string remains) {
 	_remaining = remains;
 
 }
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\oop test\UserTask.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 	 */
 
 //Unit test for HELP.		
@@ -1140,7 +1006,7 @@ void UserTask::setRemaining(string remains) {
 				bool edited = false;
 				bool successful = false;
 				Logic* logic = new Logic;
-				string input = "help sort\r\n";
+				string input = "help mark\r\n";
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
@@ -1150,22 +1016,12 @@ void UserTask::setRemaining(string remains) {
 				bool edited = false;
 				bool successful = false;
 				Logic* logic = new Logic;
-				string input = "help mark\r\n";
-				logic->handleInput(input, edited, successful);
-				Assert::AreEqual(true, successful);
-			}
-
-			TEST_METHOD(HELPvalid7)
-			{
-				bool edited = false;
-				bool successful = false;
-				Logic* logic = new Logic;
 				string input = "help directory\r\n";
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
 
-			TEST_METHOD(HELPvalid8)
+			TEST_METHOD(HELPvalid9)
 			{
 				bool edited = false;
 				bool successful = false;
@@ -1174,14 +1030,14 @@ void UserTask::setRemaining(string remains) {
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 
 
 
 
 
 	/**
-	 * origin: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 	 */
 
 //Unit test for DIRECTORY.
@@ -1214,7 +1070,7 @@ void UserTask::setRemaining(string remains) {
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-	// End of segment: D:\NUS\Year 2 Sem 2 AY 14-15\CS2103\Wisemanager\V0.4\UnitTest\unittest1.cpp
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
 
 
 
