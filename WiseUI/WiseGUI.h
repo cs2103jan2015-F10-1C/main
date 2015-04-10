@@ -90,14 +90,14 @@ namespace WiseUI {
 	protected:
 
 	protected: Logic* logic;
-	private: System::Windows::Forms::TextBox^  displayBox;
+
 	protected:
 
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::TextBox^  dateBox;
 	private: System::Drawing::Icon^ ico;
 
-	private: System::Windows::Forms::TextBox^  displayBox2;
+
 
 	private: System::Windows::Forms::NotifyIcon^  WiseManager;
 	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
@@ -105,6 +105,12 @@ namespace WiseUI {
 	private: System::Windows::Forms::ToolStripMenuItem^  hideWindowToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
 	private: System::Windows::Forms::RichTextBox^  expiredBox;
+	private: System::Windows::Forms::RichTextBox^  richTextBox1;
+	private: System::Windows::Forms::RichTextBox^  displayBox2;
+	private: System::Windows::Forms::RichTextBox^  displayBox;
+
+
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -116,57 +122,47 @@ namespace WiseUI {
 				 this->components = (gcnew System::ComponentModel::Container());
 				 System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(WiseGUI::typeid));
 				 this->CmdLineBox = (gcnew System::Windows::Forms::TextBox());
-				 this->displayBox = (gcnew System::Windows::Forms::TextBox());
 				 this->dateBox = (gcnew System::Windows::Forms::TextBox());
-				 this->displayBox2 = (gcnew System::Windows::Forms::TextBox());
 				 this->WiseManager = (gcnew System::Windows::Forms::NotifyIcon(this->components));
 				 this->contextMenuStrip = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 				 this->showWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->hideWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->expiredBox = (gcnew System::Windows::Forms::RichTextBox());
+				 this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+				 this->displayBox2 = (gcnew System::Windows::Forms::RichTextBox());
+				 this->displayBox = (gcnew System::Windows::Forms::RichTextBox());
 				 this->contextMenuStrip->SuspendLayout();
 				 this->SuspendLayout();
 				 // 
 				 // CmdLineBox
 				 // 
-				 this->CmdLineBox->Location = System::Drawing::Point(12, 492);
+				 this->CmdLineBox->BackColor = System::Drawing::SystemColors::Info;
+				 this->CmdLineBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->CmdLineBox->Location = System::Drawing::Point(14, 566);
+				 this->CmdLineBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->CmdLineBox->Multiline = true;
 				 this->CmdLineBox->Name = L"CmdLineBox";
-				 this->CmdLineBox->Size = System::Drawing::Size(435, 19);
+				 this->CmdLineBox->Size = System::Drawing::Size(552, 23);
 				 this->CmdLineBox->TabIndex = 0;
 				 this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 				 // 
-				 // displayBox
-				 // 
-				 this->displayBox->Location = System::Drawing::Point(12, 49);
-				 this->displayBox->Multiline = true;
-				 this->displayBox->Name = L"displayBox";
-				 this->displayBox->ReadOnly = true;
-				 this->displayBox->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox->Size = System::Drawing::Size(435, 211);
-				 this->displayBox->TabIndex = 7;
-				 // 
 				 // dateBox
 				 // 
+				 this->dateBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->dateBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->dateBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->dateBox->Location = System::Drawing::Point(12, 12);
+				 this->dateBox->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
+					 static_cast<System::Int32>(static_cast<System::Byte>(255)));
+				 this->dateBox->Location = System::Drawing::Point(14, 15);
+				 this->dateBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->dateBox->Name = L"dateBox";
 				 this->dateBox->ReadOnly = true;
-				 this->dateBox->Size = System::Drawing::Size(435, 29);
+				 this->dateBox->Size = System::Drawing::Size(553, 22);
 				 this->dateBox->TabIndex = 15;
 				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-				 // 
-				 // displayBox2
-				 // 
-				 this->displayBox2->Location = System::Drawing::Point(12, 264);
-				 this->displayBox2->Multiline = true;
-				 this->displayBox2->Name = L"displayBox2";
-				 this->displayBox2->ReadOnly = true;
-				 this->displayBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox2->Size = System::Drawing::Size(435, 83);
-				 this->displayBox2->TabIndex = 19;
 				 // 
 				 // WiseManager
 				 // 
@@ -208,28 +204,88 @@ namespace WiseUI {
 				 // 
 				 // expiredBox
 				 // 
-				 this->expiredBox->Location = System::Drawing::Point(12, 353);
+				 this->expiredBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->expiredBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
+				 this->expiredBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->expiredBox->ForeColor = System::Drawing::Color::Yellow;
+				 this->expiredBox->Location = System::Drawing::Point(14, 405);
+				 this->expiredBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->expiredBox->Name = L"expiredBox";
 				 this->expiredBox->ReadOnly = true;
 				 this->expiredBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->expiredBox->Size = System::Drawing::Size(435, 99);
+				 this->expiredBox->Size = System::Drawing::Size(553, 104);
 				 this->expiredBox->TabIndex = 20;
 				 this->expiredBox->Text = L"";
 				 // 
+				 // richTextBox1
+				 // 
+				 this->richTextBox1->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+				 this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->richTextBox1->ForeColor = System::Drawing::Color::Red;
+				 this->richTextBox1->Location = System::Drawing::Point(54, 516);
+				 this->richTextBox1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+				 this->richTextBox1->Name = L"richTextBox1";
+				 this->richTextBox1->ReadOnly = true;
+				 this->richTextBox1->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
+				 this->richTextBox1->Size = System::Drawing::Size(463, 42);
+				 this->richTextBox1->TabIndex = 21;
+				 this->richTextBox1->Text = L"     add, delete, edit, mark, undo, search, display, help, directory, exit\n      "
+					 L"                              F1 - System Tray, ESC - Exit";
+				 // 
+				 // displayBox2
+				 // 
+				 this->displayBox2->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->displayBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+				 this->displayBox2->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->displayBox2->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
+					 static_cast<System::Int32>(static_cast<System::Byte>(0)));
+				 this->displayBox2->Location = System::Drawing::Point(14, 311);
+				 this->displayBox2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+				 this->displayBox2->Name = L"displayBox2";
+				 this->displayBox2->ReadOnly = true;
+				 this->displayBox2->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
+				 this->displayBox2->Size = System::Drawing::Size(553, 86);
+				 this->displayBox2->TabIndex = 22;
+				 this->displayBox2->Text = L"";
+				 // 
+				 // displayBox
+				 // 
+				 this->displayBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->displayBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
+				 this->displayBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
+				 this->displayBox->ForeColor = System::Drawing::Color::Lime;
+				 this->displayBox->Location = System::Drawing::Point(14, 50);
+				 this->displayBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
+				 this->displayBox->Name = L"displayBox";
+				 this->displayBox->ReadOnly = true;
+				 this->displayBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
+				 this->displayBox->Size = System::Drawing::Size(553, 254);
+				 this->displayBox->TabIndex = 23;
+				 this->displayBox->Text = L"";
+				 // 
 				 // WiseGUI
 				 // 
-				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
+				 this->AutoScaleDimensions = System::Drawing::SizeF(7, 15);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				 this->BackColor = System::Drawing::SystemColors::Menu;
-				 this->ClientSize = System::Drawing::Size(457, 523);
-				 this->Controls->Add(this->expiredBox);
-				 this->Controls->Add(this->displayBox2);
-				 this->Controls->Add(this->dateBox);
+				 this->BackColor = System::Drawing::SystemColors::InfoText;
+				 this->ClientSize = System::Drawing::Size(581, 598);
 				 this->Controls->Add(this->displayBox);
+				 this->Controls->Add(this->displayBox2);
+				 this->Controls->Add(this->richTextBox1);
+				 this->Controls->Add(this->expiredBox);
+				 this->Controls->Add(this->dateBox);
 				 this->Controls->Add(this->CmdLineBox);
+				 this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					 static_cast<System::Byte>(0)));
 				 this->ForeColor = System::Drawing::SystemColors::ControlText;
 				 this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 				 this->KeyPreview = true;
+				 this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->MaximizeBox = false;
 				 this->Name = L"WiseGUI";
 				 this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
