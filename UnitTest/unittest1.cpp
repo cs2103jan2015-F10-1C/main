@@ -41,6 +41,26 @@ namespace UnitTest
 				Assert::AreEqual(true, successful);
 			}
 
+			TEST_METHOD(ADDvaliddeadline1)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "add swim today by 4pm -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(ADDvaliddeadline2)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "add do homework today before 10pm -high\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
 			TEST_METHOD(ADDinvaliddate1)
 			{
 				bool edited = false;
@@ -170,7 +190,7 @@ namespace UnitTest
 				bool edited = false;
 				bool successful = false;
 				Logic* logic = new Logic;
-				string input = "help sort\r\n";
+				string input = "help mark\r\n";
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
@@ -180,22 +200,12 @@ namespace UnitTest
 				bool edited = false;
 				bool successful = false;
 				Logic* logic = new Logic;
-				string input = "help mark\r\n";
-				logic->handleInput(input, edited, successful);
-				Assert::AreEqual(true, successful);
-			}
-
-			TEST_METHOD(HELPvalid7)
-			{
-				bool edited = false;
-				bool successful = false;
-				Logic* logic = new Logic;
 				string input = "help directory\r\n";
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
 
-			TEST_METHOD(HELPvalid8)
+			TEST_METHOD(HELPvalid9)
 			{
 				bool edited = false;
 				bool successful = false;
@@ -204,9 +214,9 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
-//@author A0110748J
+//@author A0110748J-unused
 //Unit test for SORT.
-
+/*
 			TEST_METHOD(SORTinvalid)
 			{
 				bool edited = false;
@@ -236,6 +246,8 @@ namespace UnitTest
 				logic->handleInput(input, edited, successful);
 				Assert::AreEqual(true, successful);
 			}
+*/
+
 //@author A0108375A
 //Unit test for SEARCH.
 			TEST_METHOD(SEARCHvalid)
