@@ -131,7 +131,7 @@ namespace WiseUI {
 				 // 
 				 // displayBox
 				 // 
-				 this->displayBox->Location = System::Drawing::Point(12, 47);
+				 this->displayBox->Location = System::Drawing::Point(12, 49);
 				 this->displayBox->Multiline = true;
 				 this->displayBox->Name = L"displayBox";
 				 this->displayBox->ReadOnly = true;

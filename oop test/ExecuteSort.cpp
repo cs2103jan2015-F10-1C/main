@@ -12,7 +12,7 @@ ExecuteSort::~ExecuteSort()
 string ExecuteSort::undo() {
 	return "";
 }
-//@author A0108341R
+//@author A0108341R -unused
 string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	ostringstream oss;
@@ -38,7 +38,7 @@ string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	successful = true;
 	return oss.str();
 }
-//@author A0110748J
+//@author A0110748J -unused
 string ExecuteSort::getTodayDate(){
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -54,7 +54,7 @@ string ExecuteSort::getTodayDate(){
 	string currentDate = to_string(day) + "/" + to_string(month);
 	return currentDate;
 }
-//@author A0108375A
+//@author A0108375A -unused
 string ExecuteSort::getAllInfoOfOneTask(list<StickyNote>::iterator iter){
 
 	ostringstream oss;
@@ -66,7 +66,7 @@ string ExecuteSort::getAllInfoOfOneTask(list<StickyNote>::iterator iter){
 	return oss.str();
 
 }
-//@author A0093863U
+//@author A0093863U -unused
 string ExecuteSort::sortTasksByDate(Storage& _storage){
 
 	vector<list<StickyNote>::iterator> futureTasks;
@@ -199,7 +199,7 @@ string ExecuteSort::sortTasksByDate(Storage& _storage){
 
 	return oss.str();
 }
-//@author A0110748J
+//@author A0110748J -unused
 void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks, Storage& _storage){
 
 	list<StickyNote>::iterator iter = _storage.getIter();
@@ -234,7 +234,7 @@ void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks
 
 	return;
 }
-//@author A0108341R
+//@author A0108341R -unused
 string ExecuteSort::sortTasksPriority(Storage& _storage){
 	vector<list<StickyNote>::iterator> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;
 	ostringstream oss;

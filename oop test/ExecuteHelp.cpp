@@ -145,14 +145,14 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			<< "1. directory D:\\\savefile.txt"
 			<< "\r\n";
 	}
-	else if (desireCommand == "sort"){
+/*	else if (desireCommand == "sort"){
 		oss << "To use SORT, it should be input in the following format: " << "\r\n"
 			<< "sort by <criteria>" << "\r\n"
 			<< "1. sort by date" << "\r\n"
 			<< "2. sort by priority"
 			<< "\r\n";
 	}
-
+*/
 	else if (desireCommand == "mark"){
 		oss << "To use MARK, it should be input in the following format: " << "\r\n"
 			<< "\r\n"

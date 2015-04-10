@@ -77,8 +77,6 @@ Executor* Logic::dispatch(UserTask* task) {
 		return new ExecuteEdit(task);
 	case SEARCH:
 		return new ExecuteSearch(task);
-	case SORT:
-		return new ExecuteSort(task);
 	case DISPLAY:
 		return new ExecuteDisplay(task);
 	case HELP:

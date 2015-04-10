@@ -73,9 +73,6 @@ UserTask* Parser::parse(string command) {
 	else if (command == "directory") {
 		_task->setCommand(COMMAND::DIRECTORY);
 	}
-	else if (command == "sort") {
-		_task->setCommand(COMMAND::SORT);
-	}
 	else if (command == "help") {
 		_task->setCommand(COMMAND::HELP);
 	}
