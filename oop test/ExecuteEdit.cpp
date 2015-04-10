@@ -126,11 +126,10 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 						date = checkDate.getTodayDate();
 				}
 				iter->setTime(time);
-				int st;
-				int et;
-				checkDate.setTaskTime(st, et, time, category);
-				iter->setStartTime(st);
-				iter->setEndTime(et);
+				int sh, eh, sm, em;
+				checkDate.setTaskTime(sh, eh, sm, em, time, category);
+				iter->setStartTime(sh, sm);
+				iter->setEndTime(eh, em);
 				changeOccur = true;
 			}
 

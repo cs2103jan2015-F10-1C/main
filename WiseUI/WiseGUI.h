@@ -138,7 +138,7 @@ namespace WiseUI {
 				 // CmdLineBox
 				 // 
 				 this->CmdLineBox->BackColor = System::Drawing::SystemColors::Info;
-				 this->CmdLineBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				 this->CmdLineBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
 				 this->CmdLineBox->Location = System::Drawing::Point(14, 566);
 				 this->CmdLineBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);

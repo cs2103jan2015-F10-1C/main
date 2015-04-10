@@ -264,14 +264,14 @@ string Standardise::standardiseTime(string inputTime) {
 	if (min_s == 0) {
 		smin_s = "00";
 	}
-	else {
+	else if (min_s > 0){
 		smin_s = to_string(min_s);
 	}
 
 	if (min_e == 0) {
 		smin_e = "00";
-	}
-	else {
+	}	
+	else if (min_e > 0){
 		smin_e = to_string(min_e);
 	}
 

@@ -75,11 +75,10 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	note.setEverything(details, date, time, priority, index);
 	note.setCategory(category);
 	note.setStatus("incomplete");
-	int st;
-	int et;
-	checkDate.setTaskTime(st, et, time, category);
-	note.setStartTime(st);
-	note.setEndTime(et);
+	int sh, sm, eh, em;
+	checkDate.setTaskTime(sh, eh, sm, em, time, category);
+	note.setStartTime(sh, sm);
+	note.setEndTime(eh, em);
 	string result = _storage.addNewNote(note);
 
 	string undo;

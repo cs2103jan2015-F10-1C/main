@@ -51,8 +51,8 @@ public:
 	void setStatus(string);
 	void setDay(int);
 	void setMonth(int);
-	void setStartTime(int);
-	void setEndTime(int);
+	void setStartTime(int, int);
+	void setEndTime(int, int);
 
 	
 

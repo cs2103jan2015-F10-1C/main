@@ -18,6 +18,6 @@ public:
 	bool verifyValidDate(string, bool&);
 	string standardizeMonth(string);
 	bool seperateDateNMonth(string&, string&, string);
-	void setTaskTime(int&, int&, string, string);
+	void setTaskTime(int&, int&, int&, int&, string, string);
 };
 

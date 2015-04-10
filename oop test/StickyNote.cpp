@@ -91,26 +91,16 @@ void StickyNote::setMonth(int month){
 	_month = month;
 }
 
-void StickyNote::setStartTime(int start) {
-	_startTime = start;
-	_sStartTime = to_string(start);
-	if (_sStartTime.size() == 4) {
-		_sStartTime.insert(2, ":");
-	}
-	else if (_sStartTime.size() == 3) {
-		_sStartTime.insert(1, ":");
-	}
+void StickyNote::setStartTime(int startH, int startM) {
+	ostringstream oss;
+	oss << startH << ":" << startM;
+	_sStartTime = oss.str();
 }
 
-void StickyNote::setEndTime(int end) {
-	_endTime = end;
-	_sEndTime = to_string(end);
-	if (_sEndTime.size() == 4) {
-		_sEndTime.insert(2, ":");
-	}
-	else if (_sEndTime.size() == 3) {
-		_sEndTime.insert(1, ":");
-	}
+void StickyNote::setEndTime(int endH, int endM) {
+	ostringstream oss;
+	oss << endH << ":" << endM;
+	_sEndTime = oss.str();
 }
 
 void StickyNote::setDetails(string change) {
