@@ -52,13 +52,15 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	} 
 	else {
 			 executor = dispatch(task);
-			 if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
-				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY ||
-				 task->getCommand() == COMMAND::MARK) {
-				 _inputHistory.push(executor);
-			 }
+
 			 result = executor->execute(_storage, _extdb, _allItems, successful);
 			 _extdb.autoSave(_storage);
+
+			 if (successful && (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
+				 || task->getCommand() == COMMAND::EDIT || task->getCommand() == COMMAND::DIRECTORY ||
+				 task->getCommand() == COMMAND::MARK)) {
+				 _inputHistory.push(executor);
+			 }
 		 }
 
 	if (task->getCommand() == COMMAND::ADD || task->getCommand() == COMMAND::DELETE
