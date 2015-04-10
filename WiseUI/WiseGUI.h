@@ -283,6 +283,7 @@ namespace WiseUI {
 				 this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
 				 this->ForeColor = System::Drawing::SystemColors::ControlText;
+				 this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 				 this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 				 this->KeyPreview = true;
 				 this->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
