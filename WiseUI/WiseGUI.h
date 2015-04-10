@@ -250,67 +250,72 @@ namespace WiseUI {
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
 
-				 if (CmdLineBox->Text == "\r\n"){
-					 MessageBox::Show("Wrong Input, re-enter:");
-				 }
-				 else{
-
-					 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
-					 _log->logInfo(input);
-
-					 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
-						 input = input.substr(0, input.length() - 2);
+				 try{
+					 if (CmdLineBox->Text == "\r\n"){
+						 throw false;
 					 }
+					 else{
 
-					 bool successful = false;
-					 string result = logic->handleInput(input, edited, successful);
-					 ostringstream message;
-					 message << SUCCESSFUL_LOG << endl;
-					 _log->logInfo(message.str());
+						 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
+						 _log->logInfo(input);
 
-					 String^ feedback = gcnew String(result.c_str());
-
-
-					 for (size_t i = 0; i < input.size(); i++){
-						 input[i] = tolower(input[i]);
-					 }
-
-					 istringstream iss(input);
-					 string cmd = "";
-
-					 if (input.size() > 0){
-						 iss >> cmd;
-					 }
-
-					 if (cmd == "help") {
-						 MessageBox::Show(feedback);
-					 }
-					 else if (cmd == "display" && result != MESSAGE_ERROR) {
-						 dateBox->Text = gcnew String(date.c_str());
-						 displayBox2->Clear();
-						 if (input == "display week\r\n") {
-							 string toShow = date + " to " + date7daysLater;
-							 dateBox->Text = gcnew String(toShow.c_str());
+						 if (input[input.length() - 1] == '\r' && input[input.length()] == '\n') {
+							 input = input.substr(0, input.length() - 2);
 						 }
-						 displayBox->Text = feedback;
-					 }
-					 else {
-						 displayBox2->Text = feedback;
-					 }
 
-					 if (edited){
-						 dateBox->Text = gcnew String(date.c_str());
-						 string temp;
 						 bool successful = false;
-						 if (cmd == "search") {
-							 temp = logic->handleInput("display search", edited, successful);
+						 string result = logic->handleInput(input, edited, successful);
+						 ostringstream message;
+						 message << SUCCESSFUL_LOG << endl;
+						 _log->logInfo(message.str());
+
+						 String^ feedback = gcnew String(result.c_str());
+
+
+						 for (size_t i = 0; i < input.size(); i++){
+							 input[i] = tolower(input[i]);
+						 }
+
+						 istringstream iss(input);
+						 string cmd = "";
+
+						 if (input.size() > 0){
+							 iss >> cmd;
+						 }
+
+						 if (cmd == "help") {
+							 MessageBox::Show(feedback);
+						 }
+						 else if (cmd == "display" && result != MESSAGE_ERROR) {
+							 dateBox->Text = gcnew String(date.c_str());
+							 displayBox2->Clear();
+							 if (input == "display week\r\n") {
+								 string toShow = date + " to " + date7daysLater;
+								 dateBox->Text = gcnew String(toShow.c_str());
+							 }
+							 displayBox->Text = feedback;
 						 }
 						 else {
-							 temp = logic->handleInput("display", edited, successful);
+							 displayBox2->Text = feedback;
 						 }
-						 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-						 displayBox->Text = tasksToBeDisplayed;
+
+						 if (edited){
+							 dateBox->Text = gcnew String(date.c_str());
+							 string temp;
+							 bool successful = false;
+							 if (cmd == "search") {
+								 temp = logic->handleInput("display search", edited, successful);
+							 }
+							 else {
+								 temp = logic->handleInput("display", edited, successful);
+							 }
+							 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+							 displayBox->Text = tasksToBeDisplayed;
+						 }
 					 }
+				 }
+				 catch (bool e){
+					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
 				
 				 return;

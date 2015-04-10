@@ -226,24 +226,51 @@ string HandleInput::getIndex(string date, Storage _storage) {
 	return returnIndex;
 
 }
-//@author A0108341R
+//@author A0108375A
 bool HandleInput::isSpecialDetail(string str) {
+
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	if (str[0] == '"') {
 		return true;
 	}
 	return false;
 }
-//@author A0108341R
+//@author A0108375A
 bool HandleInput::isPriority(string str) {
+
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
 		return true;
 	}
 	return false;
 }
-//@author A0108341R
+//@author A0108375A
 bool HandleInput::isTime(string str) {
+
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string timeKey[3] = { ":", "am", "pm" };
 	int pos = -1;
@@ -259,8 +286,17 @@ bool HandleInput::isTime(string str) {
 	return false;
 }
 
-//@author A0108341R
+//@author A0108375A
 bool HandleInput::isBuffer(string str) {
+
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string bufferKey[18] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to", "this", "coming", "next" };
 	int pos = -1;
@@ -273,8 +309,17 @@ bool HandleInput::isBuffer(string str) {
 	}
 	return false;
 }
-//@author A0108341R
+//@author A0108375A
 bool HandleInput::isDeadline(string str) {
+
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string deadlineKey[13] = { "be", "due", "finish", "end", "ready", "prepare", "complete", "done", "before", "by", "on", "deadline", "is" };
 	int pos = -1;
@@ -287,8 +332,17 @@ bool HandleInput::isDeadline(string str) {
 	}
 	return false;
 }
-//@author A0108375A
+//@author A0108341R
 bool HandleInput::isComing(string buffer){
+
+	try{
+		if (buffer == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	bool isComing = false;
 	if (buffer == "this" || buffer == "coming" || buffer == "this coming"){
@@ -296,8 +350,17 @@ bool HandleInput::isComing(string buffer){
 	}
 	return isComing;
 }
-//@author A0108375A
+//@author A0108341R
 bool HandleInput::isDeadlineProposition(string extract){
+
+	try{
+		if (extract == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	bool checkWord = false;
 	if (extract == "by" || extract == "on" || extract == "is" || extract == "before"){
@@ -305,8 +368,17 @@ bool HandleInput::isDeadlineProposition(string extract){
 	}
 	return checkWord;
 }
-//@author A0108375A
+//@author A0108341R
 bool HandleInput::isNotDeadlineKeyword(string deadline){
+
+	try{
+		if (deadline == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	bool isNotDone = false;
 	if (deadline != "due" || deadline != "end" || deadline != "finish" ||

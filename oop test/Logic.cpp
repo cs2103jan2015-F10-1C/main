@@ -30,18 +30,23 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 	
 	else if (task->getCommand() == COMMAND::UNDO) {
 		
-		if (!_inputHistory.empty()) {
-			executor = _inputHistory.top();
-			_inputHistory.pop(); 
-			string conduct = executor->undo();
-			task = _parser->parse(conduct);
-			executor = dispatch(task);
-			result = executor->execute(_storage, _extdb, _allItems, successful);
-			_extdb.autoSave(_storage);
+		try{
+			if (!_inputHistory.empty()) {
+				executor = _inputHistory.top();
+				_inputHistory.pop();
+				string conduct = executor->undo();
+				task = _parser->parse(conduct);
+				executor = dispatch(task);
+				result = executor->execute(_storage, _extdb, _allItems, successful);
+				_extdb.autoSave(_storage);
+			}
+			else {
+				successful = false;
+				throw MESSAGE_INVALID_UNDO;
+			}
 		}
-		else {
-			successful = false;
-			result = MESSAGE_INVALID_UNDO;
+		catch (string e){
+			result = e;
 		}
 
 	} 

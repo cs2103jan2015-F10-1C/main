@@ -22,9 +22,14 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 	}
 
 	for (size_t i = 0; i < index.size(); i++) {
-		if (index[i] < '0' || index[i] > '9') {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (index[i] < '0' || index[i] > '9') {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 	}
 
@@ -44,9 +49,14 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 		int forEdit = atoi(index.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit >= _allItems.size()) {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (forEdit < 0 || forEdit >= _allItems.size()) {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 
 		isFound = true;
@@ -61,17 +71,22 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 
 	}
 
-	if (isFound && !isUndo) {
-		string undo = "mark undo " + iter->getIndex();
-		_undoMark.push(undo);
-		iter->setStatus("cleared");
-		_storage.findClashes();
-		successful = true;
-		return MESSAGE_MARKED;
+	try{
+		if (isFound && !isUndo) {
+			string undo = "mark undo " + iter->getIndex();
+			_undoMark.push(undo);
+			iter->setStatus("cleared");
+			_storage.findClashes();
+			successful = true;
+			return MESSAGE_MARKED;
+		}
+		else {
+			successful = false;
+			throw MESSAGE_WRONG_INDEX;
+		}
 	}
-	else {
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	catch (string e){
+		return e;
 	}
 }
 

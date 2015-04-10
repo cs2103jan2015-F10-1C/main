@@ -16,10 +16,9 @@
 
 using namespace std;
 
-const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.4! \n";
+const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.5! \n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
-
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \n";
 const string MESSAGE_NO_INFO_GIVEN = "There is no keyword inputed to be searched. \n";
 const string MESSAGE_UNRECOGNISED_COMMAND_TYPE = "Command not recognised. Please re-input. \n";
@@ -27,6 +26,7 @@ const string MESSAGE_DISPLAY = "Displaying %s task(s)\n";
 const string MESSAGE_UNRECOGNISED_DISPLAY_TYPE = "Display type not recognised. Please re-input. \n";
 const string MESSAGE_DELETED = "The Task have been deleted successfully. \n";
 const string MESSAGE_NOT_DELETED = "The Task have not been deleted. Please Check your inputs. \n";
+const string MESSAGE_EDIT = "The Task have been edited successfully. \n";
 const string MESSAGE_WRONG_INDEX = "This index is not found. \n";
 const string MESSAGE_INVALID_DATE = "This is an invalid date. \n";
 const string MESSAGE_INVALID_TIME = "This is an invalid time/deadline. \n";
@@ -40,10 +40,13 @@ const string MESSAGE_MARKED = "task has been marked as cleared\n";
 const string MESSAGE_SUCCESSFUL_SEARCH = "The following tasks are found with the specified key words: ";
 const string MESSAGE_SUCCESSFUL_SORTED = "The tasks are sorted successfully.";
 const string MESSAGE_HOME_RETURN = "Please enter \"display\" or enter any valid operations to return to home screen. \r\n";
-const string MESSAGE_EMPTY_SEARCH = "There are no tasks found containing the search term \r\n";
+const string MESSAGE_EMPTY_SEARCH = "There are no tasks found containing the search term. \r\n";
+const string MESSAGE_NO_DATE_GIVEN = "There is no date given. \r\n";
 const string SUCCESSFUL_LOG = "Continue...";
 const string DEFAULT_SAVE_LOCATION = "D:/Storage.txt";
-
+const string MESSAGE_NO_TODAY_DATE = "Unable to get today's date. \r\n";
+const string MESSAGE_NO_TMR_DATE = "Unable to get tomorrow's date. \r\n";
+const string MESSAGE_NO_X_DAY_LATER = "Unable to get the date. \r\n";
 const int SEC_PER_DAY = 24 * 60 * 60;
 const int DAY_PER_SOLAR_MONTH_OF_31 = 31;
 const int DAY_PER_SOLAR_MONTH_OF_30 = 30;

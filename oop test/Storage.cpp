@@ -119,8 +119,13 @@ bool Storage::noRepeatIndexCount(string index) {
 	iter = _noteBook.begin();
 
 	for (size_t i = 0; i < _noteBook.size(); i++, iter++) {
-		if (iter->getIndex() == index) {
-			return false;
+		try{
+			if (iter->getIndex() == index) {
+				throw false;
+			}
+		}
+		catch (bool e){
+			return e;
 		}
 	}
 	return true;

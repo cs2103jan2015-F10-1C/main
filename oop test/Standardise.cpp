@@ -65,7 +65,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case already in standardised form
+											// case already in standardised form
 			int found = -1;
 			found = extract.find('/');
 			if (found > 0) {
@@ -89,25 +89,25 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			int numberOfDays = 2; // case next / this
+			int numberOfDays = 2;			// case next / this
 			for (size_t case2 = 0; case2 < numberOfDays; case2++) {
 				if (extract == controls[case2]) {
 					if (case2 == 0) { // if next
 						day = day + 7;
 						identified = true;
 					}
-					// if this, do nothing
+											// if this, do nothing
 					identified = true;
 				}
 			}
 		}
 
 		if (!identified) {
-			int numberOfDays = 7; // case day of week
+			int numberOfDays = 7;			// case day of week
 			for (size_t case3 = 0; case3 < numberOfDays; case3++) {
 				if (extract == dayInWeek[case3]) {
 					int inputDay = case3 + 1; // 1: monday, 2: tuesday ... 7: sunday
-					int diff; // used to calculate the number of days difference between current day and input day.
+					int diff;				// used to calculate the number of days difference between current day and input day.
 					if (inputDay <= wDay) {
 						inputDay = inputDay + numberOfDays;
 					}
@@ -119,7 +119,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			// case specific date e.g. 3rd march, this function extracts the numerical day.
+											// case specific date e.g. 3rd march, this function extracts the numerical day.
 			for (size_t case4 = 0; case4 < extract.length(); case4++) {
 				if (extract[case4] >= '0' && extract[case4] <= '9') {
 					day_extract = day_extract + extract[case4];
@@ -129,7 +129,7 @@ string Standardise::standardiseDate(string date) {
 		}
 
 		if (!identified) {
-			int numberOfMonth = 12; // case month
+			int numberOfMonth = 12;			// case month
 			extract[0] = tolower(extract[0]); // to change Month to month
 			for (size_t case5 = 0; case5 < numberOfMonth; case5++) {
 				int found = -1;
@@ -298,63 +298,84 @@ string Standardise::standardiseCategory(bool isADeadline, string time) {
 }
 //@author A0108341R
 bool Standardise::verifyValidTime(string time){
-	if (time != "All day event" && time != ""){
-		int pos1 = time.find_first_of(':');
-		int pos2 = time.find_first_of('-');
-		int pos3 = time.find_last_of(':');
-		int startHr = atoi((time.substr(0, pos1)).c_str());
-		int startMin = atoi((time.substr(pos1 + 1, pos2 - (pos1 + 1))).c_str());
-		int endHr = atoi((time.substr(pos2 + 1, pos3 - (pos2 + 1))).c_str());
-		int endMin = atoi((time.substr(pos3 + 1)).c_str());
+	try{
+		if (time != "All day event" && time != ""){
+			int pos1 = time.find_first_of(':');
+			int pos2 = time.find_first_of('-');
+			int pos3 = time.find_last_of(':');
+			int startHr = atoi((time.substr(0, pos1)).c_str());
+			int startMin = atoi((time.substr(pos1 + 1, pos2 - (pos1 + 1))).c_str());
+			int endHr = atoi((time.substr(pos2 + 1, pos3 - (pos2 + 1))).c_str());
+			int endMin = atoi((time.substr(pos3 + 1)).c_str());
 
-		if (!(checkHr(startHr) && checkHr(endHr) && checkMin(startMin) && checkMin(endMin))){
-			return false;
+				if (!(checkHr(startHr) && checkHr(endHr) && checkMin(startMin) && checkMin(endMin))){
+					return false;
+				}
+				else{
+					if (checkCorrectSequence(startHr, endHr, startMin, endMin)){
+						return true;
+					}
+					else{
+						return false;
+					}
+				}
 		}
 		else{
-			if (checkCorrectSequence(startHr, endHr, startMin, endMin)){
-				return true;
-			}
-			else{
-				return false;
-			}
+			throw true;
 		}
 	}
-	else{
-		return true;
+	catch (bool e){
+		return e;
 	}
 }
-//@author A0108341R
+//@author A0110748J
 bool Standardise::checkHr(int hour){
-	if (hour<0 || hour>23){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
-//@author A0108375A
-bool Standardise::checkMin(int min){
-	if (min<0 || min>59){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
-//@author A0108341R
-bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
-	if (startHr > endHr){
-		return false;
-	}
-	else if (startHr < endHr){
-		return true;
-	}
-	else{
-		if (startMin >= endMin){
-			return false;
+	try{
+		if (hour<0 || hour>23){
+			throw false;
 		}
 		else{
 			return true;
-		}	
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+}
+//@author A0110748J
+bool Standardise::checkMin(int min){
+	try{
+		if (min<0 || min>59){
+			throw false;
+		}
+		else{
+			return true;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+}
+//@author A0110748J
+bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
+
+	try{
+		if (startHr > endHr){
+			throw false;
+		}
+		else if (startHr < endHr){
+			return true;
+		}
+		else{
+			if (startMin >= endMin){
+				throw false;
+			}
+			else{
+				return true;
+			}
+		}
+	}
+	catch (bool e){
+		return e;
 	}
 }

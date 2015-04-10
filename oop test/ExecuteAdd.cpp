@@ -9,14 +9,18 @@ ExecuteAdd::ExecuteAdd(UserTask* task) {
 ExecuteAdd::~ExecuteAdd()
 {
 }
-//@author A0110748J
+//@author A0093863U
 string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string userInput = _task->getRemaining();
-
-	if (userInput.empty()) {
-		successful = false;
-		return MESSAGE_ERROR;
+	try{
+		if (userInput.empty()) {
+			successful = false;
+			throw MESSAGE_ERROR;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 	string details="";
@@ -36,19 +40,28 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	Standardise item;
 
 	time = item.standardiseTime(time);
-
-	if (!item.verifyValidTime(time)){
-		successful = false;
-		return MESSAGE_INVALID_TIME;
+	try{
+		if (!item.verifyValidTime(time)){
+			successful = false;
+			throw MESSAGE_INVALID_TIME;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 	if (date != ""){
 		validDate = checkDate.verifyValidDate(date, isConventionalDate);
 	}
 
-	if (isConventionalDate && !validDate){
-		successful = false;
-		return MESSAGE_INVALID_DATE;
+	try{
+		if (isConventionalDate && !validDate){
+			successful = false;
+			throw MESSAGE_INVALID_DATE;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 	date = item.standardiseDate(date);

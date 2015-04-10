@@ -14,193 +14,202 @@ ExecuteDisplay::~ExecuteDisplay()
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	string type = _task->getRemaining();
-	
-	if (type == "") {
-		ostringstream oss;
+	try{
+		if (type == "") {
+			ostringstream oss;
 
-		_allItems.clear();
+			_allItems.clear();
 
-		vector<list<StickyNote>::iterator> taskToday;
-		vector<list<StickyNote>::iterator> taskTmr;
-		vector<list<StickyNote>::iterator> unbounded;
-
-
-		getTodayTasks(taskToday, _storage);
-		getTomorrowTasks(taskTmr, _storage);
-		getUnboundedTasks(unbounded, _storage);
-
-		pushToAllItem(taskToday, _allItems);
-		pushToAllItem(taskTmr, _allItems);
-		pushToAllItem(unbounded, _allItems);
-
-		// show to user
-
-		Date date;
-		int counter = 1;
-
-		oss << "TODAY: " << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
-			oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			vector<list<StickyNote>::iterator> taskToday;
+			vector<list<StickyNote>::iterator> taskTmr;
+			vector<list<StickyNote>::iterator> unbounded;
 
 
-		oss << "\r\n" << "TOMORROW: " << "\r\n";
+			getTodayTasks(taskToday, _storage);
+			getTomorrowTasks(taskTmr, _storage);
+			getUnboundedTasks(unbounded, _storage);
 
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			pushToAllItem(taskToday, _allItems);
+			pushToAllItem(taskTmr, _allItems);
+			pushToAllItem(unbounded, _allItems);
 
-		oss << "\r\n" << "UNBOUNDED: " << "\r\n";
+			// show to user
 
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
+			Date date;
+			int counter = 1;
 
-		successful = true;
-		return oss.str();
-	} // end if no specification.
+			oss << "TODAY: " << "\r\n";
 
-	else if (type == "search") {
-		ostringstream oss;
-		int counter = 1;
-
-		if (_allItems.size() == 0) {
-			successful = false;
-			return MESSAGE_EMPTY_SEARCH;
-		}
-		else {
 			for (size_t i = 0; i < _allItems.size(); i++) {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
+				if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+
+			oss << "\r\n" << "TOMORROW: " << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+			oss << "\r\n" << "UNBOUNDED: " << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+
+			successful = true;
+			return oss.str();
+		} // end if no specification.
+
+		else if (type == "search") {
+			ostringstream oss;
+			int counter = 1;
+
+			try{
+				if (_allItems.size() == 0) {
+					successful = false;
+					throw MESSAGE_EMPTY_SEARCH;
+				}
+				else {
+					for (size_t i = 0; i < _allItems.size(); i++) {
+						oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+						counter++;
+					}
+					successful = true;
+					return oss.str();
+				}
+			}
+			catch (string e){
+				return e;
+			}
+		} // end search if
+
+		else if (type == "week") {
+
+			ostringstream oss;
+
+			_allItems.clear();
+
+			vector<list<StickyNote>::iterator> day1;
+			vector<list<StickyNote>::iterator> day2;
+			vector<list<StickyNote>::iterator> day3;
+			vector<list<StickyNote>::iterator> day4;
+			vector<list<StickyNote>::iterator> day5;
+			vector<list<StickyNote>::iterator> day6;
+			vector<list<StickyNote>::iterator> day7;
+
+			getTodayTasks(day1, _storage);
+			getTomorrowTasks(day2, _storage);
+			getDay3Tasks(day3, _storage);
+			getDay4Tasks(day4, _storage);
+			getDay5Tasks(day5, _storage);
+			getDay6Tasks(day6, _storage);
+			getDay7Tasks(day7, _storage);
+
+
+			pushToAllItem(day1, _allItems);
+			pushToAllItem(day2, _allItems);
+			pushToAllItem(day3, _allItems);
+			pushToAllItem(day4, _allItems);
+			pushToAllItem(day5, _allItems);
+			pushToAllItem(day6, _allItems);
+			pushToAllItem(day7, _allItems);
+
+
+			//show to user
+
+			Date date;
+			int counter = 1;
+			// day 1
+
+			oss << date.getDateDetails(date.getTodayDate()) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 2
+
+			oss << "\r\n" << date.getDateDetails(date.getTomorrowDate()) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 3
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(2)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(2)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 4
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(3)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(3)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 5
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(4)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(4)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			//day 6
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(5)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(5)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
+			}
+			// day 7
+
+			oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(6)) << "\r\n";
+
+			for (size_t i = 0; i < _allItems.size(); i++) {
+				if ((_allItems[i]->getDate() == date.getXDaysLaterDate(6)) && _allItems[i]->getStatus() != "cleared") {
+					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
+					counter++;
+				}
 			}
 			successful = true;
 			return oss.str();
+
+		} // end week if
+		else {
+			successful = false;
+			throw MESSAGE_ERROR;
 		}
-	} // end search if
-
-	else if (type == "week") {
-
-		ostringstream oss;
-
-		_allItems.clear();
-
-		vector<list<StickyNote>::iterator> day1;
-		vector<list<StickyNote>::iterator> day2;
-		vector<list<StickyNote>::iterator> day3;
-		vector<list<StickyNote>::iterator> day4;
-		vector<list<StickyNote>::iterator> day5;
-		vector<list<StickyNote>::iterator> day6;
-		vector<list<StickyNote>::iterator> day7;
-
-		getTodayTasks(day1, _storage);
-		getTomorrowTasks(day2, _storage);
-		getDay3Tasks(day3, _storage);
-		getDay4Tasks(day4, _storage);
-		getDay5Tasks(day5, _storage);
-		getDay6Tasks(day6, _storage);
-		getDay7Tasks(day7, _storage);
-
-
-		pushToAllItem(day1, _allItems);
-		pushToAllItem(day2, _allItems);
-		pushToAllItem(day3, _allItems);
-		pushToAllItem(day4, _allItems);
-		pushToAllItem(day5, _allItems);
-		pushToAllItem(day6, _allItems);
-		pushToAllItem(day7, _allItems);
-
-
-		//show to user
-		
-		Date date;
-		int counter = 1;
-		// day 1
-
-		oss << date.getDateDetails(date.getTodayDate()) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 2
-
-		oss << "\r\n" << date.getDateDetails(date.getTomorrowDate()) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 3
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(2)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(2)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 4
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(3)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(3)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 5
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(4)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(4)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		//day 6
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(5)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(5)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		// day 7
-
-		oss << "\r\n" << date.getDateDetails(date.getXDaysLaterDate(6)) << "\r\n";
-
-		for (size_t i = 0; i < _allItems.size(); i++) {
-			if ((_allItems[i]->getDate() == date.getXDaysLaterDate(6)) && _allItems[i]->getStatus() != "cleared") {
-				oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
-				counter++;
-			}
-		}
-		successful = true;
-		return oss.str();
-
-	} // end week if
-	else {
-		successful = false;
-		return MESSAGE_ERROR;
+	}
+	catch (string e){
+		return e;
 	}
 
 }

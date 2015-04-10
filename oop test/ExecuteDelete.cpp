@@ -18,9 +18,14 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
-		if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (indexToBeDeleted[i] < '0' || indexToBeDeleted[i] > '9') {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 	}
 
@@ -40,17 +45,27 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		int forEdit = atoi(indexToBeDeleted.c_str());
 		forEdit--;
 
-		if (forEdit < 0 || forEdit >= _allItems.size()) {
-			successful = false;
-			return MESSAGE_WRONG_INDEX;
+		try{
+			if (forEdit < 0 || forEdit >= _allItems.size()) {
+				successful = false;
+				throw MESSAGE_WRONG_INDEX;
+			}
+		}
+		catch (string e){
+			return e;
 		}
 		isFound = true;
 		iter = _allItems[forEdit];
 	}
 
-	if (!isFound) {
-		successful = false;
-		return MESSAGE_WRONG_INDEX;
+	try{
+		if (!isFound) {
+			successful = false;
+			throw MESSAGE_WRONG_INDEX;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 		string undo;
@@ -63,14 +78,18 @@ string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		_deleted = true;
 		_storage.findClashes();
 
-
-		if (_deleted){
-			successful = true;
-			return MESSAGE_DELETED;
+		try{
+			if (_deleted){
+				successful = true;
+				return MESSAGE_DELETED;
+			}
+			else{
+				successful = false;
+				throw MESSAGE_NOT_DELETED;
+			}
 		}
-		else{
-			successful = false;
-			return MESSAGE_NOT_DELETED;
+		catch (string e){
+			return e;
 		}
 }
 

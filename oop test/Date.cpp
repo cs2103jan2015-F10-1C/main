@@ -12,46 +12,86 @@ Date::~Date()
 
 //@author A0110748J
 bool Date::isDate1(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch(bool e){
+		return e;
+	}
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 	int pos = -1;
-
-	for (size_t i = 0; i < 24; i++) {
-		pos = str.find(monthKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		for (size_t i = 0; i < 24; i++) {
+			pos = str.find(monthKey[i]);
+			if (pos == 0) {
+				return true;
+			}
+			else if (pos != 0 && pos != -1){
+				throw false;
+			}
 		}
+	}
+	catch (bool e){
+		return e;
 	}
 	return false;
 }
 
 //@author A0110748J
 bool Date::isDate2(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
 		"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "today", "tomorrow", "/" };
 	int pos = -1;
-
-	for (size_t i = 0; i < 17; i++) {
-		pos = str.find(dateKey[i]);
-		if (pos == 0) {
-			return true;
+	try{
+		for (size_t i = 0; i < 17; i++) {
+			pos = str.find(dateKey[i]);
+			if (pos == 0) {
+				return true;
+			}
+			else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
+				return true;
+			}
+			else if (pos<-1){
+				throw false;
+			}
 		}
-		else if (pos > 0 && i == 16) { // to find and ensure it is a date i.e. 11/12
-			return true;
-		}
-	  }
+	}
+	catch(bool e){
+		return e;
+	}
 	return false;
 }
 
 //@author A0093863U
 string Date::standardizeMonth(string month){
+	try{
+		if (month == ""){
+			throw month;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
 	stringstream ss;
 	string monthKey[36] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
 		"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
-	int pos = -1;
+	bool isFound = false;
+
 	for (size_t i = 0; i < 36; i++) {
 		if (month == monthKey[i]) {
 			int value = (i+1)%12;
@@ -67,6 +107,14 @@ string Date::standardizeMonth(string month){
 }
 //@author A0093863U
 bool Date::seperateDateNMonth(string& date, string& month, string all){
+	try{
+		if (all == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
@@ -74,34 +122,47 @@ bool Date::seperateDateNMonth(string& date, string& month, string all){
 	int pos1 = -1, pos2 = -1;
 	pos1 = all.find("/");
 	pos2 = all.find_first_of(' ');
-
-	if (pos1 > 0 && pos2 < 0){
-		date = all.substr(0, pos1);
-		month = all.substr(pos1 + 1);
-		return true;
-	}
-	else if (pos1 < 0 && pos2 > 0){
-		string part1 = all.substr(0, pos2);
-		string part2 = all.substr(pos2 + 1);
-		for (size_t i = 0; i < 24; i++) {
-			if (monthKey[i] == part1){
-				month = part1;
-				date = part2;
-				return true;
-			}
-			else if (monthKey[i] == part2){
-				month = part2;
-				date = part1;
-				return true;
+	try{
+		if (pos1 > 0 && pos2 < 0){
+			date = all.substr(0, pos1);
+			month = all.substr(pos1 + 1);
+			return true;
+		}
+		else if (pos1 < 0 && pos2 > 0){
+			string part1 = all.substr(0, pos2);
+			string part2 = all.substr(pos2 + 1);
+			for (size_t i = 0; i < 24; i++) {
+				if (monthKey[i] == part1){
+					month = part1;
+					date = part2;
+					return true;
+				}
+				else if (monthKey[i] == part2){
+					month = part2;
+					date = part1;
+					return true;
+				}
 			}
 		}
+		else{
+			throw false;
+		}
 	}
-	else{
-		return false;
+	catch (bool e){
+		return e;
 	}
 }
 //@author A0093863U
 bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
+	try{
+		if (dateNMonth == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
 	string date = "", month = "";
 
 	isConventionalDate = seperateDateNMonth(date, month, dateNMonth); // Conventional date is eg. 3/3, mar 3, 3 mar. 
@@ -111,9 +172,16 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 
 		int intDate = atoi(date.c_str());
 		int intMonth = atoi(month.c_str());
-		if (intMonth < 1 || (intMonth > MONTH_PER_YEAR && intMonth!=99)){
-			return false;
+		try{
+			if (intMonth < 1 || (intMonth > MONTH_PER_YEAR && intMonth != 99)){
+				throw false;
+			}
 		}
+		catch(bool e){
+			return e;
+		}
+
+
 		switch (intMonth){
 		case 99:
 			if (intDate == 99){
@@ -192,6 +260,14 @@ string Date::getTodayDate() {
 	int wDay = timeInfo->tm_wday;
 
 	string currentDate = to_string(day) + "/" + to_string(month);
+	try{
+		if (currentDate == ""){
+			throw MESSAGE_NO_TODAY_DATE;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 	return currentDate;
 }
 
@@ -211,6 +287,14 @@ string Date::getTomorrowDate() {
 	int wDay = timeInfo->tm_wday;
 
 	string tomorrow = to_string(day) + "/" + to_string(month);
+	try{
+		if (tomorrow == ""){
+			throw MESSAGE_NO_TMR_DATE;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 	Standardise standard;
 	standard.standardiseDate(tomorrow);
 	return tomorrow;
@@ -219,6 +303,14 @@ string Date::getTomorrowDate() {
 
 //@author A0110748J
 string Date::getXDaysLaterDate(int add) {
+	try{
+		if (add < 0){
+			throw MESSAGE_NO_X_DAY_LATER;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
@@ -242,8 +334,22 @@ string Date::getXDaysLaterDate(int add) {
 
 //@author A0108375A
 void Date::setTaskTime(int& st, int& et, string time, string category) {
-
-	
+	try{
+		if (time == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return;
+	}
+	try{
+		if (category == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return;
+	}
 	int posCol; 
 	int posDas;
 
@@ -271,6 +377,14 @@ void Date::setTaskTime(int& st, int& et, string time, string category) {
 
 //@author A0108341R
 string Date::getDateDetails(string date) {
+	try{
+		if (date == ""){
+			throw MESSAGE_NO_DATE_GIVEN;
+		}
+	}
+	catch (string e){
+		return e;
+	}
 
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;

@@ -9,7 +9,7 @@ ExecuteSearch::ExecuteSearch(UserTask* task) {
 ExecuteSearch::~ExecuteSearch()
 {
 }
-//@author A0110748J
+//@author A0108375A
 string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
 
 	_allItems.clear();
@@ -19,9 +19,14 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 	iter = _storage.getIter();
 	int _size = _storage.getSize();
 
-	if (infoToBeSearched == ""){
-		successful = false;
-		return MESSAGE_NO_INFO_GIVEN;
+	try{
+		if (infoToBeSearched == ""){
+			successful = false;
+			throw MESSAGE_NO_INFO_GIVEN;
+		}
+	}
+	catch (string e){
+		return e;
 	}
 
 	bool infoIsFound = false;
@@ -33,15 +38,20 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		}
 	}
 
-	if (infoIsFound){
-		string returnMsg;
-		returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
-		successful = true;
-		return returnMsg;
+	try{
+		if (infoIsFound){
+			string returnMsg;
+			returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
+			successful = true;
+			return returnMsg;
+		}
+		else{
+			successful = false;
+			throw MESSAGE_INFO_UNFOUND;
+		}
 	}
-	else{
-		successful = false;
-		return MESSAGE_INFO_UNFOUND;
+	catch (string e){
+		return e;
 	}
 }
 //@author A0093863U
@@ -79,6 +89,7 @@ bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iter
 	return (compareStrings(infoToBeSearched, details) || compareStrings(infoToBeSearched, date) ||
 		compareStrings(infoToBeSearched, time) || compareStrings(infoToBeSearched, priority));
 }
+
 //@author A0093863U
 bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeChecked) {
 

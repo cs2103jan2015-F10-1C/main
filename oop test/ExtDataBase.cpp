@@ -28,33 +28,39 @@ string ExtDataBase::getLocation() {
 
 	return _currentLocation;
 }
-//@author A0108341R
+//@author A0108375A
 string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
 
 	ofstream ofs;
 	ofs.open(newDirectory);
 	bool isOpen = false;
 	isOpen = ofs.is_open();
-	if (isOpen) {
-		ofstream out;
+	
+	try{
+		if (isOpen) {
+			ofstream out;
 
-		getLocation();
-		int ensure = remove(_currentLocation.c_str());
-		assert(ensure == 0);
+			getLocation();
+			int ensure = remove(_currentLocation.c_str());
+			assert(ensure == 0);
 
-		out.open("../DirectoryStorage.txt");
-		out.clear();
-		out << newDirectory;
-		out.close();
-		ofs.close();
-		getLocation();
-		successful = true;
-		return MESSAGE_DIRECTORY_CHANGED;
+			out.open("../DirectoryStorage.txt");
+			out.clear();
+			out << newDirectory;
+			out.close();
+			ofs.close();
+			getLocation();
+			successful = true;
+			return MESSAGE_DIRECTORY_CHANGED;
+		}
+		else{
+			ofs.close();
+			successful = false;
+			throw MESSAGE_DIRECTORY_NOT_CHANGED;
+		}
 	}
-	else{
-		ofs.close();
-		successful = false;
-		return MESSAGE_DIRECTORY_NOT_CHANGED;
+	catch (string e){
+		return e;
 	}
 }
 //@author A0110748J
@@ -100,6 +106,7 @@ vector<string>* ExtDataBase::getContent() {
 
 	return vec;
 }
+
 //@author A0093863U
 void ExtDataBase::archive(string done) {
 
