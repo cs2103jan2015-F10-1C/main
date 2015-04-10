@@ -66,6 +66,14 @@ namespace WiseUI {
 			string temp = logic->handleInput("display", edited, successful);
 			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
 			displayBox->Text = tasksToBeDisplayed;
+
+			bool isOutdated = false;
+			string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+			String^ outdatedDisplayed = gcnew String(outdated.c_str());
+			if (isOutdated){
+				expiredBox->Text = outdatedDisplayed;
+			}
+
 		}
 
 	protected:
@@ -90,12 +98,13 @@ namespace WiseUI {
 	private: System::Drawing::Icon^ ico;
 
 	private: System::Windows::Forms::TextBox^  displayBox2;
-	private: System::Windows::Forms::PictureBox^  pictureBox;
+
 	private: System::Windows::Forms::NotifyIcon^  WiseManager;
 	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
 	private: System::Windows::Forms::ToolStripMenuItem^  showWindowToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  hideWindowToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
+	private: System::Windows::Forms::RichTextBox^  expiredBox;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -110,19 +119,18 @@ namespace WiseUI {
 				 this->displayBox = (gcnew System::Windows::Forms::TextBox());
 				 this->dateBox = (gcnew System::Windows::Forms::TextBox());
 				 this->displayBox2 = (gcnew System::Windows::Forms::TextBox());
-				 this->pictureBox = (gcnew System::Windows::Forms::PictureBox());
 				 this->WiseManager = (gcnew System::Windows::Forms::NotifyIcon(this->components));
 				 this->contextMenuStrip = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 				 this->showWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->hideWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->BeginInit();
+				 this->expiredBox = (gcnew System::Windows::Forms::RichTextBox());
 				 this->contextMenuStrip->SuspendLayout();
 				 this->SuspendLayout();
 				 // 
 				 // CmdLineBox
 				 // 
-				 this->CmdLineBox->Location = System::Drawing::Point(12, 335);
+				 this->CmdLineBox->Location = System::Drawing::Point(12, 492);
 				 this->CmdLineBox->Multiline = true;
 				 this->CmdLineBox->Name = L"CmdLineBox";
 				 this->CmdLineBox->Size = System::Drawing::Size(435, 19);
@@ -157,17 +165,8 @@ namespace WiseUI {
 				 this->displayBox2->Name = L"displayBox2";
 				 this->displayBox2->ReadOnly = true;
 				 this->displayBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-				 this->displayBox2->Size = System::Drawing::Size(435, 65);
+				 this->displayBox2->Size = System::Drawing::Size(435, 83);
 				 this->displayBox2->TabIndex = 19;
-				 // 
-				 // pictureBox
-				 // 
-				 this->pictureBox->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox.Image")));
-				 this->pictureBox->Location = System::Drawing::Point(66, 360);
-				 this->pictureBox->Name = L"pictureBox";
-				 this->pictureBox->Size = System::Drawing::Size(328, 96);
-				 this->pictureBox->TabIndex = 20;
-				 this->pictureBox->TabStop = false;
 				 // 
 				 // WiseManager
 				 // 
@@ -207,13 +206,23 @@ namespace WiseUI {
 				 this->exitToolStripMenuItem->Text = L"Exit";
 				 this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::exitToolStripMenuItem_Click);
 				 // 
+				 // expiredBox
+				 // 
+				 this->expiredBox->Location = System::Drawing::Point(12, 353);
+				 this->expiredBox->Name = L"expiredBox";
+				 this->expiredBox->ReadOnly = true;
+				 this->expiredBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
+				 this->expiredBox->Size = System::Drawing::Size(435, 99);
+				 this->expiredBox->TabIndex = 20;
+				 this->expiredBox->Text = L"";
+				 // 
 				 // WiseGUI
 				 // 
 				 this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 				 this->BackColor = System::Drawing::SystemColors::Menu;
-				 this->ClientSize = System::Drawing::Size(459, 468);
-				 this->Controls->Add(this->pictureBox);
+				 this->ClientSize = System::Drawing::Size(457, 523);
+				 this->Controls->Add(this->expiredBox);
 				 this->Controls->Add(this->displayBox2);
 				 this->Controls->Add(this->dateBox);
 				 this->Controls->Add(this->displayBox);
@@ -227,7 +236,6 @@ namespace WiseUI {
 				 this->Text = L"WiseManger";
 				 this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &WiseGUI::WiseGUI_FormClosing);
 				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &WiseGUI::WiseGUI_KeyDown);
-				 (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox))->EndInit();
 				 this->contextMenuStrip->ResumeLayout(false);
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
@@ -317,7 +325,13 @@ namespace WiseUI {
 				 catch (bool e){
 					 MessageBox::Show("Wrong Input, re-enter:");
 				 }
-				
+
+				 bool isOutdated = false;
+				 string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+				 String^ outdatedDisplayed = gcnew String(outdated.c_str());
+				 if (isOutdated){
+					 expiredBox->Text = outdatedDisplayed;
+				 }
 				 return;
 	}
 

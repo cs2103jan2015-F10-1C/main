@@ -17,6 +17,7 @@
 using namespace std;
 
 const string MESSAGE_WELCOME = "Welcome to Wise Manager V0.5! \n";
+const string MESSAGE_OUTDATED = "The following tasks are expired. Please use delete/edit/mark commands to modify them. \r\n";
 const string MESSAGE_ADD = "New task has been added successfully.\n";
 const string MESSAGE_ERROR = "Invalid input. \n";
 const string MESSAGE_INFO_UNFOUND = "This keyword is not found. \n";

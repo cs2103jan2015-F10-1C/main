@@ -14,7 +14,6 @@
 #include "ExecuteDirectory.h"
 #include "ExecuteMark.h"
 
-
 class Logic
 {
 private:
@@ -34,6 +33,8 @@ public:
 	void initialise();
 	string getCurrentDirectory();
 	void archive();
+	string realTimeCheck(bool&);
+	void getCurrentTime(int&, int&, int&, int&, int&, int&);
 
 };
 

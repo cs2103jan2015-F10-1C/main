@@ -14,5 +14,6 @@ public:
 	CurrentDate();
 	~CurrentDate();
 	string getCurrentDate();
+	void getCurrentTime(int&, int&, int&, int&, int&, int&);
 };
 

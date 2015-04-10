@@ -137,3 +137,94 @@ void Logic::archive() {
 	}
 
 }
+
+//@author A0093863U
+string Logic::realTimeCheck(bool& isOutdated){
+	int curYr = 0, curMon = 0, curD = 0, curHr = 0, curMin = 0, curSec = 0;
+	getCurrentTime(curYr, curMon, curD, curHr, curMin, curSec);
+
+	ostringstream outdatedTasks;
+	list<StickyNote>::iterator iter;
+	iter = _storage.getIter();
+	int _size = _storage.getSize();
+	for (int i = 0; i < _size; i++, iter++) {
+		string date = iter->getDate();
+		string time = iter->getTime();
+		int pos1 = -1, pos2 = -1, pos3 = -1;
+		pos1 = date.find("/");
+		int intDate = atoi((date.substr(0, pos1)).c_str());
+		int intMon = atoi((date.substr(pos1+1)).c_str());
+		pos2 = time.find_first_of('-');
+		pos3 = time.find_last_of(':');
+		int intHr = atoi((time.substr(pos2 + 1, pos3 - pos2 - 1)).c_str());
+		int intMin = atoi((time.substr(pos3+1)).c_str());
+
+
+		if (time == "All day event" && date == "unbounded event"){
+		}
+
+		else if (time == "All day event" && date != "unbounded event"){
+			if (curMon > intMon){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD > intDate){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+
+		else if (time != "All day event" && date == "unbounded event"){
+			if (curHr > intHr){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curHr == intHr && curMin > intMin){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+
+		else if (time != "All day event" && date != "unbounded event"){
+			if (curMon > intMon){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD > intDate){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD == intDate && curHr > intHr){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else if (curMon == intMon && curD == intDate && curHr == intHr && curMin > intMin){
+				outdatedTasks << _storage.oneTaskInfoTypeOne(iter);
+				isOutdated = true;
+			}
+			else{
+			}
+		}
+	
+	}
+
+	return outdatedTasks.str();
+}
+
+void Logic::getCurrentTime(int& year, int& month, int& day, int& hour, int& min, int& sec){
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+	year = timeInfo->tm_year + 1900;
+	month = timeInfo->tm_mon + 1;
+	day = timeInfo->tm_mday;
+	hour = timeInfo->tm_hour;
+	min = timeInfo->tm_min;
+	sec = timeInfo->tm_sec;
+	return;
+}
