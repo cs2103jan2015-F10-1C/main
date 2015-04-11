@@ -6,24 +6,22 @@ ExecuteDisplay::ExecuteDisplay(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteDisplay::~ExecuteDisplay()
 {
 }
+
 //@author A0110748J
 string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	string type = _task->getRemaining();
+
 	try{
 		if (type == "") {
 			ostringstream oss;
-
 			_allItems.clear();
 
 			vector<list<StickyNote>::iterator> taskToday;
 			vector<list<StickyNote>::iterator> taskTmr;
 			vector<list<StickyNote>::iterator> unbounded;
-
 
 			getTodayTasks(taskToday, _storage);
 			getTomorrowTasks(taskTmr, _storage);
@@ -33,13 +31,10 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 			pushToAllItem(taskTmr, _allItems);
 			pushToAllItem(unbounded, _allItems);
 
-			// show to user
-
 			Date date;
 			int counter = 1;
 
 			oss << "TODAY: " << "\r\n";
-
 			for (size_t i = 0; i < _allItems.size(); i++) {
 				if ((_allItems[i]->getDate() == date.getTodayDate()) && _allItems[i]->getStatus() != "cleared") {
 					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
@@ -47,9 +42,7 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 				}
 			}
 
-
 			oss << "\r\n" << "TOMORROW: " << "\r\n";
-
 			for (size_t i = 0; i < _allItems.size(); i++) {
 				if ((_allItems[i]->getDate() == date.getTomorrowDate()) && _allItems[i]->getStatus() != "cleared") {
 					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
@@ -58,15 +51,14 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 			}
 
 			oss << "\r\n" << "UNBOUNDED: " << "\r\n";
-
 			for (size_t i = 0; i < _allItems.size(); i++) {
 				if ((_allItems[i]->getDate() == "unbounded event") && _allItems[i]->getStatus() != "cleared") {
 					oss << counter << ". " << _storage.oneTaskInfoTypeOne(_allItems[i]);
 					counter++;
 				}
 			}
-
 			successful = true;
+
 			return oss.str();
 		} // end if no specification.
 
@@ -96,7 +88,6 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 		else if (type == "week") {
 
 			ostringstream oss;
-
 			_allItems.clear();
 
 			vector<list<StickyNote>::iterator> day1;
@@ -115,7 +106,6 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 			getDay6Tasks(day6, _storage);
 			getDay7Tasks(day7, _storage);
 
-
 			pushToAllItem(day1, _allItems);
 			pushToAllItem(day2, _allItems);
 			pushToAllItem(day3, _allItems);
@@ -123,9 +113,6 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 			pushToAllItem(day5, _allItems);
 			pushToAllItem(day6, _allItems);
 			pushToAllItem(day7, _allItems);
-
-
-			//show to user
 
 			Date date;
 			int counter = 1;
@@ -200,8 +187,8 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 				}
 			}
 			successful = true;
-			return oss.str();
 
+			return oss.str();
 		} // end week if
 		else {
 			successful = false;
@@ -211,13 +198,11 @@ string ExecuteDisplay::execute(Storage& _storage, ExtDataBase extdb, vector<list
 	catch (string e){
 		return e;
 	}
-
 }
+
 //@author A0093863U
 void ExecuteDisplay::pushToAllItem(vector<list<StickyNote>::iterator>& day, vector<list<StickyNote>::iterator>& _allItems) {
-
 	vector<list<StickyNote>::iterator>::iterator iter;
-
 	iter = day.begin();
 	int size = day.size();
 	vector<vector<list<StickyNote>::iterator>::iterator> toDelete;
@@ -240,7 +225,6 @@ void ExecuteDisplay::pushToAllItem(vector<list<StickyNote>::iterator>& day, vect
 	}
 
 	day.clear();
-
 }
 
 //@author A0108341R
@@ -255,8 +239,8 @@ void ExecuteDisplay::getTodayTasks(vector<list<StickyNote>::iterator>& taskToday
 			taskToday.push_back(iter);
 		}
 	}
-
 }
+
 //@author A0108341R
 void ExecuteDisplay::getTomorrowTasks(vector<list<StickyNote>::iterator>& taskTmr, Storage& _storage){
 	Date date;
@@ -269,8 +253,8 @@ void ExecuteDisplay::getTomorrowTasks(vector<list<StickyNote>::iterator>& taskTm
 			taskTmr.push_back(iter);
 		}
 	}
-
 }
+
 //@author A0108375A
 void ExecuteDisplay::getDay3Tasks(vector<list<StickyNote>::iterator>& day3, Storage& _storage) {
 	Date date;
@@ -283,8 +267,8 @@ void ExecuteDisplay::getDay3Tasks(vector<list<StickyNote>::iterator>& day3, Stor
 			day3.push_back(iter);
 		}
 	}
-
 }
+
 //@author A0108375A
 void ExecuteDisplay::getDay4Tasks(vector<list<StickyNote>::iterator>& day4, Storage& _storage) {
 	Date date;
@@ -311,8 +295,8 @@ void ExecuteDisplay::getDay5Tasks(vector<list<StickyNote>::iterator>& day5, Stor
 			day5.push_back(iter);
 		}
 	}
-
 }
+
 //@author A0110748J
 void ExecuteDisplay::getDay6Tasks(vector<list<StickyNote>::iterator>& day6, Storage& _storage) {
 	Date date;
@@ -325,8 +309,8 @@ void ExecuteDisplay::getDay6Tasks(vector<list<StickyNote>::iterator>& day6, Stor
 			day6.push_back(iter);
 		}
 	}
-
 }
+
 //@author A0093863U
 void ExecuteDisplay::getDay7Tasks(vector<list<StickyNote>::iterator>& day7, Storage& _storage) {
 	Date date;
@@ -339,7 +323,6 @@ void ExecuteDisplay::getDay7Tasks(vector<list<StickyNote>::iterator>& day7, Stor
 			day7.push_back(iter);
 		}
 	}
-
 }
 
 //@author A0108341R
@@ -353,9 +336,9 @@ void ExecuteDisplay::getUnboundedTasks(vector<list<StickyNote>::iterator>& unbou
 			unbounded.push_back(iter);
 		}
 	}
-
 }
 
 string ExecuteDisplay::undo() {
+
 	return "";
 }

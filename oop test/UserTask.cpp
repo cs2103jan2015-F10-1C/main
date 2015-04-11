@@ -5,7 +5,6 @@ UserTask::UserTask()
 {
 }
 
-
 UserTask::~UserTask()
 {
 }

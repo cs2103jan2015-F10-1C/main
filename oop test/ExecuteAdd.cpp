@@ -9,10 +9,11 @@ ExecuteAdd::ExecuteAdd(UserTask* task) {
 ExecuteAdd::~ExecuteAdd()
 {
 }
+
 //@author A0093863U
 string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	string userInput = _task->getRemaining();
+
 	try{
 		if (userInput.empty()) {
 			successful = false;
@@ -38,8 +39,8 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	handleInput.handle(userInput, details, date, time, priority, index, category, isADeadline, _storage);
 
 	Standardise item;
-
 	time = item.standardiseTime(time);
+
 	try{
 		if (!item.verifyValidTime(time)){
 			successful = false;
@@ -75,17 +76,19 @@ string ExecuteAdd::execute(Storage& _storage, ExtDataBase extdb, vector<list<Sti
 	note.setEverything(details, date, time, priority, index);
 	note.setCategory(category);
 	note.setStatus("incomplete");
+
 	int sh, sm, eh, em;
 	checkDate.setTaskTime(sh, eh, sm, em, time, category);
 	note.setStartTime(sh, sm);
 	note.setEndTime(eh, em);
-	string result = _storage.addNewNote(note);
 
+	string result = _storage.addNewNote(note);
 	string undo;
 	undo = "delete " + index;
 	_undoAdd.push(undo);
 
 	successful = true;
+
 	return result;
 }
 
@@ -95,5 +98,6 @@ string ExecuteAdd::undo() {
 	string undoAdd;
 	undoAdd = _undoAdd.top();
 	_undoAdd.pop();
+
 	return undoAdd;
 }

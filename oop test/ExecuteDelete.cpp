@@ -7,15 +7,13 @@ ExecuteDelete::ExecuteDelete(UserTask* task) {
 
 }
 
-
 ExecuteDelete::~ExecuteDelete() {
 }
+
 //@author A0108341R
 string ExecuteDelete::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	string indexToBeDeleted = _task->getRemaining();
 	bool isFound = false;
-
 
 	for (size_t i = 0; i < indexToBeDeleted.size(); i++) {
 		try{
@@ -97,5 +95,6 @@ string ExecuteDelete::undo() {
 	string undoDelete;
 	undoDelete = _undoDelete.top();
 	_undoDelete.pop();
+
 	return undoDelete;
 }

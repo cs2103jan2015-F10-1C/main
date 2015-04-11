@@ -8,9 +8,9 @@ ExtDataBase::ExtDataBase() {
 ExtDataBase::~ExtDataBase()
 {
 }
+
 //@author A0108375A
 string ExtDataBase::getLocation() {
-
 	ifstream ifs;
 	ofstream ofs;
 	ifs.open("../DirectoryStorage.txt");
@@ -23,16 +23,18 @@ string ExtDataBase::getLocation() {
 		ofs << DEFAULT_SAVE_LOCATION;
 		_currentLocation = DEFAULT_SAVE_LOCATION;
 	}
+
 	ifs.close();
 	ofs.close();
 
 	return _currentLocation;
 }
+
 //@author A0108375A
 string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
-
 	ofstream ofs;
 	ofs.open(newDirectory);
+
 	bool isOpen = false;
 	isOpen = ofs.is_open();
 	
@@ -63,28 +65,31 @@ string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& su
 		return e;
 	}
 }
+
 //@author A0110748J
 void ExtDataBase::autoSave(Storage& _storage) {
-	
 	ofstream ofs;
 	size_t _size = _storage.getSize();
 	list<StickyNote>::iterator iter;
-	iter = _storage.getIter();
 
+	iter = _storage.getIter();
 	getLocation();
 	ofs.open(_currentLocation);
 	assert(ofs.is_open() == true);
+
 	for (size_t i = 0; i < _size; i++, iter++){
 		if (iter->getStatus() != "cleared"){
 			ofs << _storage.oneTaskInfoTypeTwo(iter);
 		}
 	}
+
 	ofs.close();
+
 	return;
 }
+
 //@author A0108341R
 vector<string>* ExtDataBase::getContent() {
-
 	vector<string>* vec = new vector<string> ;
 	ifstream ifs(_currentLocation);
 	string line;
@@ -109,12 +114,12 @@ vector<string>* ExtDataBase::getContent() {
 
 //@author A0093863U
 void ExtDataBase::archive(string done) {
-
 	ofstream ofs;
 	ofs.open("../archive.txt", ios::app);
 	if (ofs.is_open()) {
 		ofs << done << endl;
 	}
 	ofs.close();
+
 	return;
 }

@@ -29,10 +29,8 @@ string test = "";
 Log* _log;
 string fileDirectory;
 Date attainDate;
-
 string date = attainDate.getDateDetails(attainDate.getTodayDate());
 string date7daysLater = attainDate.getDateDetails(attainDate.getXDaysLaterDate(6));
-
 
 namespace WiseUI {
 
@@ -49,15 +47,15 @@ namespace WiseUI {
 	public ref class WiseGUI : public System::Windows::Forms::Form
 	{
 
-
-
 	public:
+
 //@author A0093863U
 		WiseGUI(void)
 		{
 			logic = new Logic;
 			_log = new Log;
 			InitializeComponent();
+
 			String^ dateDisplayed = gcnew String(date.c_str());
 			dateBox->Text = dateDisplayed;
 
@@ -73,7 +71,6 @@ namespace WiseUI {
 			if (isOutdated){
 				expiredBox->Text = outdatedDisplayed;
 			}
-
 		}
 
 	protected:
@@ -96,9 +93,6 @@ namespace WiseUI {
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::TextBox^  dateBox;
 	private: System::Drawing::Icon^ ico;
-
-
-
 	private: System::Windows::Forms::NotifyIcon^  WiseManager;
 	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
 	private: System::Windows::Forms::ToolStripMenuItem^  showWindowToolStripMenuItem;
@@ -108,13 +102,7 @@ namespace WiseUI {
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 	private: System::Windows::Forms::RichTextBox^  displayBox2;
 	private: System::Windows::Forms::RichTextBox^  displayBox;
-
-
-
-
 	private: System::ComponentModel::IContainer^  components;
-
-
 
 #pragma region Windows Form Designer generated code
 			 void InitializeComponent(void)
@@ -296,8 +284,8 @@ namespace WiseUI {
 				 this->contextMenuStrip->ResumeLayout(false);
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
-
 			 }
+
 //@author A0093863U
 	private: System::Void CmdLineBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 				 String^ newCmd = CmdLineBox->Text;
@@ -312,6 +300,7 @@ namespace WiseUI {
 					 }
 				 }
 	} 
+
 	private: System::Void Enter_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool edited = false;
 
@@ -320,7 +309,6 @@ namespace WiseUI {
 						 throw false;
 					 }
 					 else{
-
 						 string input = msclr::interop::marshal_as<std::string>(CmdLineBox->Text);
 						 _log->logInfo(input);
 
@@ -335,7 +323,6 @@ namespace WiseUI {
 						 _log->logInfo(message.str());
 
 						 String^ feedback = gcnew String(result.c_str());
-
 
 						 for (size_t i = 0; i < input.size(); i++){
 							 input[i] = tolower(input[i]);
@@ -395,12 +382,15 @@ namespace WiseUI {
 	private: System::Void WiseManager_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			 this->Show();
 	}
+
 	private: System::Void showWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 			 this->Show(); 
 	}
+
 	private: System::Void hideWindowToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 			 this->Hide();
 	}
+
 	private: System::Void exitToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 				 bool successful = false;
 				 bool edited = false;
@@ -421,8 +411,9 @@ namespace WiseUI {
 			 }
 			 else{
 			 }
-			 return;
+		 return;
 	}
+
 private: System::Void WiseGUI_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
 			 bool successful = false;
 			 bool edited = false;

@@ -4,7 +4,6 @@ ExecuteSort::ExecuteSort(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteSort::~ExecuteSort()
 {
 }
@@ -12,9 +11,9 @@ ExecuteSort::~ExecuteSort()
 string ExecuteSort::undo() {
 	return "";
 }
+
 //@author A0108341R-unused
 string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	ostringstream oss;
 	string desireCommand = _task->getRemaining();
 
@@ -36,8 +35,10 @@ string ExecuteSort::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		return MESSAGE_INVALID_SORT;
 	}
 	successful = true;
+
 	return oss.str();
 }
+
 //@author A0110748J-unused
 string ExecuteSort::getTodayDate(){
 	time_t rawTime;
@@ -50,25 +51,25 @@ string ExecuteSort::getTodayDate(){
 	int month = timeInfo->tm_mon + 1;
 	int year = timeInfo->tm_year + 1900;
 	int wDay = timeInfo->tm_wday;
-
 	string currentDate = to_string(day) + "/" + to_string(month);
+
 	return currentDate;
 }
+
 //@author A0108375A-unused
 string ExecuteSort::getAllInfoOfOneTask(list<StickyNote>::iterator iter){
-
 	ostringstream oss;
 	oss << "Index: " << iter->getIndex() << "\r\n"
 		<< "Details: " << iter->getDetails() << "\r\n"
 		<< "Date: " << iter->getDate() << "\r\n"
 		<< "Time: " << iter->getTime() << "\r\n"
 		<< "Priority: " << iter->getPriority() << "\r\n";
-	return oss.str();
 
+	return oss.str();
 }
+
 //@author A0093863U-unused
 string ExecuteSort::sortTasksByDate(Storage& _storage){
-
 	vector<list<StickyNote>::iterator> futureTasks;
 	getFutureTasks(futureTasks, _storage);
 
@@ -199,9 +200,9 @@ string ExecuteSort::sortTasksByDate(Storage& _storage){
 
 	return oss.str();
 }
+
 //@author A0110748J-unused
 void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks, Storage& _storage){
-
 	list<StickyNote>::iterator iter = _storage.getIter();
 	size_t _size = _storage.getSize();
 	time_t rawTime;
@@ -214,6 +215,7 @@ void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks
 	int monthNow = timeInfo->tm_mon + 1;
 
 	for (size_t i = 0; i < _size; i++, iter++){
+
 		string curTaskDate = iter->getDate();
 		int posOfSlash = curTaskDate.find_first_of('/', 0);
 		string day = curTaskDate.substr(0, posOfSlash);
@@ -222,6 +224,7 @@ void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks
 		int monthInt = atoi(month.c_str());
 		iter->setDay(dayInt);
 		iter->setMonth(monthInt);
+
 		if (monthInt>monthNow){
 			futureTasks.push_back(iter);
 		}
@@ -234,6 +237,7 @@ void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks
 
 	return;
 }
+
 //@author A0108341R-unused
 string ExecuteSort::sortTasksPriority(Storage& _storage){
 	vector<list<StickyNote>::iterator> futureTasks, highPrior, midPrior, lowPrior, unbounded, sortedTasksByPrior;

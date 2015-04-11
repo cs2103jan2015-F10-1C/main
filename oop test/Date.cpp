@@ -24,6 +24,7 @@ bool Date::isDate1(string str) {
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
 	int pos = -1;
+
 	try{
 		for (size_t i = 0; i < 24; i++) {
 			pos = str.find(monthKey[i]);
@@ -38,6 +39,7 @@ bool Date::isDate1(string str) {
 	catch (bool e){
 		return e;
 	}
+
 	return false;
 }
 
@@ -55,6 +57,7 @@ bool Date::isDate2(string str) {
 	string dateKey[17] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
 		"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "today", "tomorrow", "/" };
 	int pos = -1;
+
 	try{
 		for (size_t i = 0; i < 17; i++) {
 			pos = str.find(dateKey[i]);
@@ -72,6 +75,7 @@ bool Date::isDate2(string str) {
 	catch(bool e){
 		return e;
 	}
+
 	return false;
 }
 
@@ -93,7 +97,7 @@ string Date::standardizeMonth(string month){
 	bool isFound = false;
 
 	for (size_t i = 0; i < 36; i++) {
-		if (month == monthKey[i]) {
+		if (month == monthKey[i]) {  // Convert month from a string description to an integer value.
 			int value = (i+1)%12;
 			if (value == 0){
 				value = 12;
@@ -105,6 +109,7 @@ string Date::standardizeMonth(string month){
 	
 	return month;
 }
+
 //@author A0093863U
 bool Date::seperateDateNMonth(string& date, string& month, string all){
 	try{
@@ -118,17 +123,17 @@ bool Date::seperateDateNMonth(string& date, string& month, string all){
 
 	string monthKey[24] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 		"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
-
 	int pos1 = -1, pos2 = -1;
 	pos1 = all.find("/");
 	pos2 = all.find_first_of(' ');
+
 	try{
-		if (pos1 > 0 && pos2 < 0){
+		if (pos1 > 0 && pos2 < 0){    // Date is in the "DD/MM" format.
 			date = all.substr(0, pos1);
 			month = all.substr(pos1 + 1);
 			return true;
 		}
-		else if (pos1 < 0 && pos2 > 0){
+		else if (pos1 < 0 && pos2 > 0){  // Date is in the format either "May 5" or "5 May".
 			string part1 = all.substr(0, pos2);
 			string part2 = all.substr(pos2 + 1);
 			for (size_t i = 0; i < 24; i++) {
@@ -152,6 +157,7 @@ bool Date::seperateDateNMonth(string& date, string& month, string all){
 		return e;
 	}
 }
+
 //@author A0093863U
 bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 	try{
@@ -184,7 +190,7 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 
 		switch (intMonth){
 		case 99:
-			if (intDate == 99){
+			if (intDate == 99){  // Date of "99/99" indicates it is an unbounded task.
 				return true;
 			}
 			else{
@@ -242,6 +248,7 @@ bool Date::verifyValidDate(string dateNMonth, bool& isConventionalDate){
 			}
 		}
 	}
+
 	return true;
 }
 
@@ -258,8 +265,8 @@ string Date::getTodayDate() {
 	int month = timeInfo->tm_mon + 1;
 	int year = timeInfo->tm_year + SYSTEM_TIME_YEAR_STARTING_POINT;
 	int wDay = timeInfo->tm_wday;
-
 	string currentDate = to_string(day) + "/" + to_string(month);
+
 	try{
 		if (currentDate == ""){
 			throw MESSAGE_NO_TODAY_DATE;
@@ -268,6 +275,7 @@ string Date::getTodayDate() {
 	catch (string e){
 		return e;
 	}
+
 	return currentDate;
 }
 
@@ -285,8 +293,8 @@ string Date::getTomorrowDate() {
 	int month = timeInfo->tm_mon + 1;
 	int year = timeInfo->tm_year + SYSTEM_TIME_YEAR_STARTING_POINT;
 	int wDay = timeInfo->tm_wday;
-
 	string tomorrow = to_string(day) + "/" + to_string(month);
+	
 	try{
 		if (tomorrow == ""){
 			throw MESSAGE_NO_TMR_DATE;
@@ -295,8 +303,10 @@ string Date::getTomorrowDate() {
 	catch (string e){
 		return e;
 	}
+
 	Standardise standard;
 	standard.standardiseDate(tomorrow);
+
 	return tomorrow;
 
 }
@@ -328,8 +338,8 @@ string Date::getXDaysLaterDate(int add) {
 	string xDays = to_string(day) + "/" + to_string(month);
 	Standardise standard;
 	standard.standardiseDate(xDays);
-	return xDays;
 
+	return xDays;
 }
 
 //@author A0108375A
@@ -342,6 +352,7 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 	catch (bool e){
 		return;
 	}
+
 	try{
 		if (category == ""){
 			throw false;
@@ -350,6 +361,7 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 	catch (bool e){
 		return;
 	}
+
 	int posCol, posCol2; 
 	int posDas;
 
@@ -365,7 +377,6 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 		return;
 	}
 
-
 	string startH = time.substr(0, posCol);
 	string startM = time.substr(posCol + 1, posDas - posCol - 1);
 	string endH = time.substr(posDas + 1, posCol2 - posDas - 1);
@@ -380,6 +391,8 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 		eh = 0;
 		em = 0;
 	}
+
+	return;
 }
 
 //@author A0108341R
@@ -420,7 +433,6 @@ string Date::getDateDetails(string date) {
 
 	int day = atoi(sDay.c_str());
 	int mth = atoi(sMth.c_str());
-
 	int diff = mth - currentMonth;
 
 	if (diff > 0) {
@@ -435,12 +447,8 @@ string Date::getDateDetails(string date) {
 	}
 
 	int dayDiff = day - currentDay;
-
-
 	int weekDay = ((currentWDay - 1) + (dayDiff % DAY_PER_WEEK)) % DAY_PER_WEEK;
-
 	string returnItem = wDays[weekDay] + ", " + sDay + " " + months[mth - 1];
 
 	return returnItem;
-
 }

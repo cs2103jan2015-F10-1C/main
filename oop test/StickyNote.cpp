@@ -5,47 +5,40 @@ StickyNote::StickyNote(void)
 {
 }
 
-
 StickyNote::~StickyNote(void)
 {
 }
+
 //@author A0108375A
 void StickyNote::setEverything(string details, string date, string time, string priority, string index) {
-
 	_details = details;
 	_date = date;
 	_time = time;
 	_priority = priority;
 	_index = index;
-
 }
 
 // GETTERS
 
 //@author A0108375A
-
 string StickyNote::getCategory() {
 	return _category;
 }
 
 string StickyNote::getDetails() {
 	return _details;
-
 }
 
 string StickyNote::getDate() {
 	return _date;
-
 }
 
 string StickyNote::getTime() {
 	return _time;
-
 }
 
 string StickyNote::getPriority() {
 	return _priority;
-
 }
 
 string StickyNote::getIndex() {
@@ -62,7 +55,6 @@ int StickyNote::getMonth(){
 
 string StickyNote::getStatus(){
 	return _status;
-
 }
 
 int StickyNote::getStartTime() {
@@ -110,17 +102,14 @@ void StickyNote::setDetails(string change) {
 //@author A0093863U
 void StickyNote::setDate(string change) {
 	_date = change;
-
 }
 
 void StickyNote::setTime(string change) {
 	_time = change;
-
 }
 
 void StickyNote::setPriority(string change) {
 	_priority = change;
-
 }
 
 void StickyNote::setCategory(string change) {

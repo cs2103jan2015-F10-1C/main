@@ -5,17 +5,17 @@ Parser::Parser() {
 	_task = new UserTask; 
 }
 
-
 Parser::~Parser(){
 	delete _task;
 }
+
 //@author A0108341R
 UserTask* Parser::parse(string command) {
-
-
 	string temp = "", remainingCommand = "";
+
 	int startOfCommand = command.find_first_not_of(" ", 0);
 	int endOfCommand = command.find_first_of(" ", startOfCommand);
+
 	if (endOfCommand < 0){
 		command = command.substr(startOfCommand);
 		remainingCommand = "";
@@ -37,7 +37,6 @@ UserTask* Parser::parse(string command) {
 		}
 		command = command.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
 	}
-
 	else{
 		for (size_t index = 0; index < command.length(); index++) {
 			command[index] = tolower(command[index]);
@@ -50,6 +49,7 @@ UserTask* Parser::parse(string command) {
 			remainingCommand = remainingCommand.substr(0, commandSize);  // Remove "/r/n" of the string from UI.
 		}
 	}
+
 	_task->setRemaining(remainingCommand);
 
 	if (command == "add") {
@@ -86,5 +86,4 @@ UserTask* Parser::parse(string command) {
 		_task->setCommand(COMMAND::ERROR);
 
 	return _task;
-
 }

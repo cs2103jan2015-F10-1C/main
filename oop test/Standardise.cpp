@@ -6,22 +6,19 @@ Standardise::Standardise()
 
 }
 
-
 Standardise::~Standardise() 
 {
 }
+
 //@author A0110748J
 string Standardise::standardiseDate(string date) {
-
 	string standardisedDate;
 	string extract;
 	istringstream iss(date);
 	string day_extract = "";
 	string month_extract = "";
 	
-
 	// get current date
-
 	time_t rawTime;
 	struct tm * timeInfo = new struct tm;
 
@@ -41,7 +38,6 @@ string Standardise::standardiseDate(string date) {
 	string controls[2] = { "next", "this" };
 
 	// start standardising
-
 	if (date.empty()) {
 		return "unbounded event";
 	}
@@ -53,7 +49,6 @@ string Standardise::standardiseDate(string date) {
 	if (date == "99/99") {
 		return "unbounded event";
 	}
-
 
 	while (iss) {
 
@@ -162,9 +157,9 @@ string Standardise::standardiseDate(string date) {
 
 	return standardisedDate;
 }
+
 //@author A0093863U
 string Standardise::standardiseTime(string inputTime) {
-
 	if (inputTime.empty()) { // for no time input by user
 		return "All day event";
 	}
@@ -189,9 +184,9 @@ string Standardise::standardiseTime(string inputTime) {
 	string smin_e;
 
 	std::string::size_type sz;
-
 	hour_s = stoi(inputTime, &sz);
 	inputTime = inputTime.substr(sz);
+
 	if (inputTime[0] == '.' || inputTime[0] == ':') { // there exists some minutes
 		inputTime = inputTime.substr(1);
 		min_s = stoi(inputTime, &sz);
@@ -245,7 +240,6 @@ string Standardise::standardiseTime(string inputTime) {
 		min_e = min_s;
 	}
 
-
 	// below just makes the 0's appear nicer. in output e.g. 00:00 rather than 0:0
 	if (hour_s == 0) {
 		shour_s = "00";
@@ -278,11 +272,10 @@ string Standardise::standardiseTime(string inputTime) {
 	changed = shour_s + ":" + smin_s + "-" + shour_e + ":" + smin_e;
 
 	return changed;
-
 }
+
 //@author A0108375A
 string Standardise::standardiseCategory(bool isADeadline, string time) {
-
 	if (isADeadline) {
 		return "Deadline";
 	}
@@ -294,8 +287,8 @@ string Standardise::standardiseCategory(bool isADeadline, string time) {
 			return "normal";
 		}
 	}
-
 }
+
 //@author A0108341R
 bool Standardise::verifyValidTime(string time){
 	try{
@@ -328,6 +321,7 @@ bool Standardise::verifyValidTime(string time){
 		return e;
 	}
 }
+
 //@author A0110748J
 bool Standardise::checkHr(int hour){
 	try{
@@ -342,6 +336,7 @@ bool Standardise::checkHr(int hour){
 		return e;
 	}
 }
+
 //@author A0110748J
 bool Standardise::checkMin(int min){
 	try{
@@ -356,9 +351,9 @@ bool Standardise::checkMin(int min){
 		return e;
 	}
 }
+
 //@author A0110748J
 bool Standardise::checkCorrectSequence(int startHr, int endHr, int startMin, int endMin){
-
 	try{
 		if (startHr > endHr){
 			throw false;

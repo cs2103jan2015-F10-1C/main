@@ -5,14 +5,12 @@ ExecuteHelp::ExecuteHelp(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteHelp::~ExecuteHelp()
 {
 }
 
 //@author A0108375A
 string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	ostringstream oss;
 	string desireCommand = _task->getRemaining(); 
 	
@@ -213,9 +211,11 @@ string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 	}
 
 	successful = true;
+
 	return oss.str();
 }
 
 string ExecuteHelp::undo() {
+
 	return "";
 }

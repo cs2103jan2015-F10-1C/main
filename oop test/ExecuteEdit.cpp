@@ -7,14 +7,14 @@ ExecuteEdit::ExecuteEdit(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteEdit::~ExecuteEdit()
 {
 }
+
 //@author A0108341R
 string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-	
 	string toEdit = _task->getRemaining();
+
 	try{
 		if (toEdit == ""){
 			successful = false;
@@ -27,6 +27,7 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 
 	bool isUndo = false;
 	string type = toEdit.substr(0, 4);
+
 	if (type == "undo") {
 		isUndo = true;
 		toEdit = toEdit.substr(5);
@@ -98,7 +99,6 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			undo = _storage.oneTaskInfoTypeTwo(iter);
 
 			HandleInput handleInput;
-
 			handleInput.handle(toEdit, details, date, time, priority, index, category, isADeadline, _storage);
 
 			bool changeOccur = false;
@@ -170,14 +170,12 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 			_storage.findClashes(iter);
 			_storage.findClashes();
 
-
 			index = iter->getIndex();
 
 			if (!isUndo) {
 				undo = "edit undo " + index + " " + undo;
 				_undoEdit.push(undo);
 			}
-
 
 			try{
 				if (changeOccur) {
@@ -199,14 +197,15 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 		}
 	}
 	catch (string e){
+
 		return e;
 	}
 }
 
 string ExecuteEdit::undo() {
-
 	string undoEdit;
 	undoEdit = _undoEdit.top();
 	_undoEdit.pop();
+
 	return undoEdit;
 }

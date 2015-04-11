@@ -5,13 +5,12 @@ ExecuteSearch::ExecuteSearch(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteSearch::~ExecuteSearch()
 {
 }
+
 //@author A0108375A
 string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	_allItems.clear();
 
 	string infoToBeSearched = _task->getRemaining();
@@ -43,6 +42,7 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 			string returnMsg;
 			returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
 			successful = true;
+
 			return returnMsg;
 		}
 		else{
@@ -54,10 +54,11 @@ string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<
 		return e;
 	}
 }
+
 //@author A0093863U
 bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iterator iter) {
-
 	string details, date, time, priority;
+
 	if (iter->getDetails() == ""){
 		details = "";
 	}
@@ -92,17 +93,20 @@ bool ExecuteSearch::haveThisInfo(string infoToBeSearched, list<StickyNote>::iter
 
 //@author A0093863U
 bool ExecuteSearch::compareStrings(string infoToBeSearched, string infoToBeChecked) {
-
 	if (infoToBeSearched.length()>infoToBeChecked.length()){
 		return false;
 	}
 	else{
 		size_t startingPosOfTask, startingPosOfInfo, posUnderChecking;
+
 		for (startingPosOfTask = 0; startingPosOfTask<infoToBeChecked.length(); startingPosOfTask++){
+			
 			startingPosOfInfo = 0;
 			posUnderChecking = startingPosOfTask;
+
 			while (posUnderChecking<infoToBeChecked.length() &&
 				infoToBeChecked[posUnderChecking] == infoToBeSearched[startingPosOfInfo]){
+
 				posUnderChecking++;
 				startingPosOfInfo++;
 			}

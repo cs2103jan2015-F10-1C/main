@@ -1,10 +1,11 @@
 #include "HandleInput.h"
 
 
-HandleInput::HandleInput(){}
+HandleInput::HandleInput(){
+}
 
-
-HandleInput::~HandleInput(){}
+HandleInput::~HandleInput(){
+}
 
 //@author A0110748J
 void HandleInput::handle(string userInput, string& details, string& date, string& time, string& priority, 
@@ -17,7 +18,6 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 	Date checkDate;
 
 	while (iss) {
-
 
 		iss >> extract;
 
@@ -34,8 +34,8 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 					details = details + " " + buffer;
 				}
 			}
-			buffer.clear();
 
+			buffer.clear();
 			extract = extract.substr(1); // removes the " at start of word
 
 			if (extract[extract.length() - 1] != '"') {
@@ -53,9 +53,11 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 			extract = extract.substr(0, extract.length() - 1); // remove the final "
 			details = details + " " + extract;
 		}
+
 		else if (isPriority(extract)) {
 			priority = extract.substr(1); // to remove "-"
 		}
+
 		else if (isTime(extract)) {
 			if (!deadline.empty()) {
 				isADeadline = true;
@@ -71,6 +73,7 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 			}
 			buffer.clear();
 		}
+
 		else if (checkDate.isDate1(extract)) { // date1 means there are more things to extract adjacent to it, either before or after. 
 			if (!deadline.empty()) {
 				isADeadline = true;
@@ -86,6 +89,7 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 			}
 			buffer.clear();
 		}
+
 		else if (checkDate.isDate2(extract)) { // date2 identifies date terms which do not need other adjacent terms
 			if (!deadline.empty()) {
 				isADeadline = true;
@@ -109,7 +113,6 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 			buffer.clear();
 		}
 		else if (isBuffer(extract)) {
-
 			if (buffer.empty()) {
 				buffer = extract;
 			}
@@ -139,6 +142,7 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 				deadline = deadline + " " + extract;
 			}
 		}
+
 		else {
 			if (!buffer.empty()) {
 				details = details + " " + buffer;
@@ -163,15 +167,12 @@ void HandleInput::handle(string userInput, string& details, string& date, string
 	}
 }
 
-
 //@author A0093863U
 string HandleInput::getIndex(string date, Storage _storage) {
-
 	string defaultIndex = "0000";
 	string returnIndex = "";
 	int numberOfTask = 0;
 	bool noRepeats = false;
-
 
 	numberOfTask = _storage.getSameDateCount(date);
 
@@ -185,6 +186,7 @@ string HandleInput::getIndex(string date, Storage _storage) {
 				returnIndex = defaultIndex + to_string(numberOfTask);
 			}
 		}
+
 		else { // a date exists and should be in standard form i.e. 3/3
 
 			int pos = date.find('/');
@@ -215,6 +217,7 @@ string HandleInput::getIndex(string date, Storage _storage) {
 				}
 			}
 		}
+
 		noRepeats = _storage.noRepeatIndexCount(returnIndex);
 
 		if (noRepeats == false) {
@@ -224,11 +227,10 @@ string HandleInput::getIndex(string date, Storage _storage) {
 	} // end noRepeat while loop
 
 	return returnIndex;
-
 }
+
 //@author A0108375A
 bool HandleInput::isSpecialDetail(string str) {
-
 	try{
 		if (str == ""){
 			throw false;
@@ -241,11 +243,12 @@ bool HandleInput::isSpecialDetail(string str) {
 	if (str[0] == '"') {
 		return true;
 	}
+
 	return false;
 }
+
 //@author A0108375A
 bool HandleInput::isPriority(string str) {
-
 	try{
 		if (str == ""){
 			throw false;
@@ -258,11 +261,12 @@ bool HandleInput::isPriority(string str) {
 	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
 		return true;
 	}
+
 	return false;
 }
+
 //@author A0108375A
 bool HandleInput::isTime(string str) {
-
 	try{
 		if (str == ""){
 			throw false;
@@ -283,12 +287,12 @@ bool HandleInput::isTime(string str) {
 			}
 		}
 	}
+
 	return false;
 }
 
 //@author A0108375A
 bool HandleInput::isBuffer(string str) {
-
 	try{
 		if (str == ""){
 			throw false;
@@ -307,11 +311,12 @@ bool HandleInput::isBuffer(string str) {
 			return true;
 		}
 	}
+
 	return false;
 }
+
 //@author A0108375A
 bool HandleInput::isDeadline(string str) {
-
 	try{
 		if (str == ""){
 			throw false;
@@ -330,11 +335,12 @@ bool HandleInput::isDeadline(string str) {
 			return true;
 		}
 	}
+
 	return false;
 }
+
 //@author A0108341R
 bool HandleInput::isComing(string buffer){
-
 	try{
 		if (buffer == ""){
 			throw false;
@@ -348,11 +354,12 @@ bool HandleInput::isComing(string buffer){
 	if (buffer == "this" || buffer == "coming" || buffer == "this coming"){
 		isComing = true;
 	}
+
 	return isComing;
 }
+
 //@author A0108341R
 bool HandleInput::isDeadlineProposition(string extract){
-
 	try{
 		if (extract == ""){
 			throw false;
@@ -366,11 +373,12 @@ bool HandleInput::isDeadlineProposition(string extract){
 	if (extract == "by" || extract == "on" || extract == "is" || extract == "before"){
 		checkWord = true;
 	}
+
 	return checkWord;
 }
+
 //@author A0108341R
 bool HandleInput::isNotDeadlineKeyword(string deadline){
-
 	try{
 		if (deadline == ""){
 			throw false;

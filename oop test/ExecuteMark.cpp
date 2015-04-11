@@ -5,13 +5,12 @@ ExecuteMark::ExecuteMark(UserTask* task) {
 	_task = task;
 }
 
-
 ExecuteMark::~ExecuteMark()
 {
 }
+
 //@author A0093863U
 string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
-
 	string index = _task->getRemaining();
 	bool isFound = false;
 	bool isUndo = false;
@@ -67,8 +66,8 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 		iter->setStatus("incomplete");
 		_storage.findClashes();
 		successful = true;
-		return MESSAGE_MARKED;
 
+		return MESSAGE_MARKED;
 	}
 
 	try{
@@ -91,9 +90,9 @@ string ExecuteMark::execute(Storage& _storage, ExtDataBase _extdb, vector<list<S
 }
 
 string ExecuteMark::undo() {
-
 	string undoMark;
 	undoMark = _undoMark.top();
 	_undoMark.pop();
+
 	return undoMark;
 }
