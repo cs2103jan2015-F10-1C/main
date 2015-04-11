@@ -1,0 +1,899 @@
+//@author: a0108375a
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
+	 */
+
+void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string category) {
+	try{
+		if (time == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return;
+	}
+
+	try{
+		if (category == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return;
+	}
+
+	int posCol, posCol2; 
+	int posDas;
+
+	posCol = time.find_first_of(":", 0);
+	posCol2 = time.find_last_of(":", 0);
+	posDas = time.find_first_of("-", 0);
+
+	if (posCol == -1 || posDas == -1) {
+		sh = 0;
+		eh = 0;
+		sm = 0;
+		em = 0;
+		return;
+	}
+
+	string startH = time.substr(0, posCol);
+	string startM = time.substr(posCol + 1, posDas - posCol - 1);
+	string endH = time.substr(posDas + 1, posCol2 - posDas - 1);
+	string endM = time.substr(posCol2 + 1);
+
+	sh = atoi(startH.c_str());
+	eh = atoi(endH.c_str());
+	sm = atoi(startM.c_str());
+	em = atoi(endM.c_str());
+
+	if (category == "Deadline") {
+		eh = 0;
+		em = 0;
+	}
+
+	return;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Date.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDirectory.cpp
+	 */
+
+string ExecuteDirectory::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+	string undo = "directory " + extdb.getLocation();
+	_undoDirectory.push(undo);
+
+	string newDirectory = _task->getRemaining();
+	string result;
+	result = extdb.setLocation(_storage, newDirectory, successful);
+
+	return result;
+}
+
+string ExecuteDirectory::undo() {
+
+	string undoDirectory;
+	undoDirectory = _undoDirectory.top();
+	_undoDirectory.pop();
+
+	return undoDirectory;
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDirectory.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
+	 */
+
+void ExecuteDisplay::getDay3Tasks(vector<list<StickyNote>::iterator>& day3, Storage& _storage) {
+	Date date;
+	string xDay = date.getXDaysLaterDate(2);
+	list<StickyNote>::iterator iter = _storage.getIter();
+	size_t _size = _storage.getSize();
+
+	for (size_t i = 0; i < _size; i++, iter++){
+		if (iter->getDate() == xDay){
+			day3.push_back(iter);
+		}
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
+	 */
+
+void ExecuteDisplay::getDay4Tasks(vector<list<StickyNote>::iterator>& day4, Storage& _storage) {
+	Date date;
+	string xDay = date.getXDaysLaterDate(3);
+	list<StickyNote>::iterator iter = _storage.getIter();
+	size_t _size = _storage.getSize();
+
+	for (size_t i = 0; i < _size; i++, iter++){
+		if (iter->getDate() == xDay){
+			day4.push_back(iter);
+		}
+	}
+
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteDisplay.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteHelp.cpp
+	 */
+
+string ExecuteHelp::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+	ostringstream oss;
+	string desireCommand = _task->getRemaining(); 
+	
+	try{
+		if (desireCommand == ""){
+			successful = false;
+			throw MESSAGE_INVALID_HELP;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	try{
+		if (desireCommand == "add"){
+
+			oss << "Please notice that WiseManager does not support a task between more than 1 days." << "\r\n"
+				<< "In other words, the starting time and ending time should be within the same day." << "\r\n"
+
+				<< "To use ADD, it should be input in the following format: " << "\r\n"
+				<< "\r\n"
+				<< "1. add <details of the task> date time -priority				or" << "\r\n"
+				<< "2. add <details of the task> time date -priority				or" << "\r\n"
+				<< "3. add <details of the task> <by/before/is/on> time -priority				or" << "\r\n" << "\r\n"
+				<< "An example of a simple add task input will be: " << "\r\n"
+				<< "1.	add do homework 3 march 5pm -high" << "\r\n"
+				<< "2.	add do homework 5pm on 3 march -high" << "\r\n"
+				<< "this means adding the task do homework on 3 march at 5pm with high priority" << "\r\n"
+				<< "3.	add do homework 3 march 5pm - 5.50pm -high" << "\r\n"
+				<< "this means adding the task do homework on 3 march at from 5pm to 5.50pm with high priority" << "\r\n"
+				<< "4.	add do homework 5.30pm - 9.30pm tomorrow -high" << "\r\n"
+				<< "this means adding the task do homework on the next day from 5.30pm - 9.30pm with high priority" << "\r\n"
+				<< "5.	add do homework 11:5 tomorrow -high" << "\r\n"
+				<< "this means adding the task do homework on the next day at 11:05 with high priority" << "\r\n"
+				<< "please do non enter by 11:05" << "\r\n"
+				<< "6.	add do homework by 5pm tomorrow -high" << "\r\n"
+				<< "this means adding the task do homework on the next day before 5pm with high priority" << "\r\n"
+				<< "\r\n"
+				<< "1.1	Possible flexicommands variations for adding a task will be: " << "\r\n"
+				<< "\r\n"
+				<< "For the inclusion of time, indicate with :, am or pm." << "\r\n"
+				<< "there should be no space between time and am / pm (e.g.have dinner 5pm) " << "\r\n"
+				<< "The following inputs are wrong : have dinner 5 pm OR have dinner 5 : 00" << "\r\n"
+				<< "\r\n"
+
+				<< "1.2	For the inclusion of date, do note that the inputs are in (dd/mm)" << "\r\n"
+				<< "\r\n"
+				<< "1. 3 mar" << "\r\n"
+				<< "2. 3 march" << "\r\n"
+				<< "3. mar 3" << "\r\n"
+				<< "4. today" << "\r\n"
+				<< "5. tomorrow" << "\r\n"
+				<< "6. days of week(monday - sunday)" << "\r\n"
+				<< "\r\n"
+
+				<< "1.3	For the priority of the task, it can be varied according with inputs: " << "\r\n"
+				<< "\r\n"
+				<< "1. -high represents task of high priority." << "\r\n"
+				<< "\r\n"
+
+				<< "1.4	For details with conflicting terms such as certain days in a week and am / pm, user needs to include a quotation mark" << "\r\n"
+				<< "\r\n"
+				<< "To avoid creating a task on tuesday or at 3pm." << "\r\n"
+				<< "e.g.meet at \"taco tuesday\" or meet at \"cafe 3pm\" or \"high tea\"" << "\r\n"
+				<< "\r\n"
+
+				<< "1.5	Handling inputs that goes missing" << "\r\n"
+				<< "\r\n"
+				<< "If there is an empty inputs for example:" << "\r\n"
+				<< "UNBOUNDED:" << "\r\n"
+				<< "1.[All day event][Status:incomplete]" << "\r\n"
+				<< "This means there is input of conflicting terms and user can undo the task and adding the task with quotation marks around the task descriptions." << "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "display"){
+
+			oss << "To use DISPLAY, it should be input in the following format: " << "\r\n"
+				<< "\r\n"
+				<< "1. display" << "\r\n"
+				<< "2. display week" << "\r\n"
+				<< "to display task in one-week period" << "\r\n"
+				<< "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "search"){
+
+			oss << "To use SEARCH, it should be input in the following format: " << "\r\n"
+				<< "\r\n"
+				<< "search <task description>" << "\r\n"
+				<< "the function will then return the tasks with the keywords input by the user. " << "\r\n"
+				<< "please take note of the task indexes as displayed on the user interface as they will be used for delete and edit purposes" << "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "delete"){
+
+			oss << "To use DELETE, it should be input in the following format: " << "\r\n"
+				<< "\r\n"
+				<< "delete <task index>" << "\r\n"
+				<< "\r\n"
+				<< "For example:" << "\r\n"
+				<< "if the display shows:" << "\r\n"
+				<< "1.[All day event] meet junyang[Status:incomplete]" << "\r\n"
+				<< "2.[All day event] meet zann[Status:incomplete]" << "\r\n"
+				<< "3.[All day event] meet ruyan[Status:incomplete]" << "\r\n"
+				<< "\r\n"
+				<< "if the user inputs \"delete 1\" " << "\r\n"
+				<< "the function will then delete the task with index 1 in display list which is: " << "\r\n"
+				<< "1.[All day event] meet junyang[Status:incomplete]" << "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "edit"){
+
+			oss << "To use EDIT, it should be input in the following format: " << "\r\n"
+				<< "edit <task index> <edit informations>" << "\r\n"
+				<< "\r\n"
+				<< "For example:" << "\r\n"
+				<< "if the display shows:" << "\r\n"
+				<< "TODAY: " << "\r\n"
+				<< "1.[21:00 - 22 : 00] meet zann[Status:incomplete]" << "\r\n"
+				<< "\r\n"
+				<< "The user can input the following to edit the task: " << "\r\n"
+				<< "1. edit 1 meet derrick tomorrow 9pm " << "\r\n"
+				<< "\r\n"
+				<< "The edited task will be as follows: " << "\r\n"
+				<< "TOMORROW:" << "\r\n"
+				<< "1.[21:00 - 22 : 00] meet derrick[Status:incomplete]" << "\r\n"
+				<< "the function will edit the task specified with the task index and then modified the information of the task accordingly." << "\r\n"
+				<< "\r\n"
+				<< "To change task from bounded to unbounded: " << "\r\n"
+				<< "If the screen displays this: " << "\r\n"
+				<< "TOMORROW:" << "\r\n"
+				<< "1.[21:00 - 22 : 00] meet derrick[Status:incomplete]" << "\r\n"
+				<< "edit 1 99/99 99:99 " << "\r\n"
+				<< "This will change the task to unbounded and the screen will appear:  " << "\r\n"
+				<< " UNBOUNDED:" << "\r\n"
+				<< "1.[All day event] meet derrick" << "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "directory"){
+			oss << "To CHANGE DIRECTORY, it should be input in the following format: " << "\r\n"
+				<< "directory <new file directory>" << "\r\n"
+				<< "1. directory D:\\\savefile.txt"
+				<< "\r\n";
+		}
+		/*	else if (desireCommand == "sort"){
+				oss << "To use SORT, it should be input in the following format: " << "\r\n"
+				<< "sort by <criteria>" << "\r\n"
+				<< "1. sort by date" << "\r\n"
+				<< "2. sort by priority"
+				<< "\r\n";
+				}
+				*/
+		else if (desireCommand == "mark"){
+			oss << "To use MARK, it should be input in the following format: " << "\r\n"
+				<< "\r\n"
+				<< "For example:" << "\r\n"
+				<< "if the display shows:" << "\r\n"
+				<< "TODAY: " << "\r\n"
+				<< "1.[21:00 - 22 : 00] meet zann[Status:incomplete]" << "\r\n"
+				<< "\r\n"
+				<< "To signify Task completion: " << "\r\n"
+				<< "user can input in the following format: mark <index number>" << "\r\n"
+				<< "Exampe of using this command: " << "\r\n"
+				<< "1. mark 1" << "\r\n"
+				<< "\r\n"
+				<< "Executing this command will change the status of the task to done." << "\r\n"
+				<< "Task will be shifted to the archive upon this command and user will no longer see it in the display box." << "\r\n"
+				<< "\r\n";
+		}
+		else if (desireCommand == "undo"){
+			oss << "To use UNDO, it should be input in the following format: " << "\r\n"
+				<< "This command reverts the programme back to its previous state." << "\r\n"
+				<< "\r\n"
+				<< "For example:" << "\r\n"
+				<< "if the previous action by an user is \"add do homework today 9pm\" " << "\r\n"
+				<< "resulting which the display shows:" << "\r\n"
+				<< "TODAY: " << "\r\n"
+				<< "1.[21:00 - 22 : 00] do homework[Status:incomplete]" << "\r\n"
+				<< "\r\n"
+				<< "To execute undo for this addition of task: " << "\r\n"
+				<< "user can input in the following format: undo" << "\r\n"
+				<< "Exampe of using this command: " << "\r\n"
+				<< "1. undo" << "\r\n"
+				<< "Executing this command will remove the task added previously." << "\r\n"
+				<< "\r\n"
+				<< "The same applies for mark, edit,delete and change of directory." << "\r\n"
+				<< "Nothing will happen if you undo other commands.(i.e search,sort and display) " << "\r\n"
+				<< "User will be able to keep using UNDO command till his/her very first action" << "\r\n"
+				<< "\r\n";
+		}
+		else{
+			successful = false;
+			throw MESSAGE_INVALID_HELP;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	successful = true;
+
+	return oss.str();
+}
+
+string ExecuteHelp::undo() {
+
+	return "";
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteHelp.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
+	 */
+
+string ExecuteSearch::execute(Storage& _storage, ExtDataBase extdb, vector<list<StickyNote>::iterator>& _allItems, bool& successful) {
+	_allItems.clear();
+
+	string infoToBeSearched = _task->getRemaining();
+	list<StickyNote>::iterator iter;
+	iter = _storage.getIter();
+	int _size = _storage.getSize();
+
+	try{
+		if (infoToBeSearched == ""){
+			successful = false;
+			throw MESSAGE_NO_INFO_GIVEN;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+
+	bool infoIsFound = false;
+	int i = 0;
+	for (iter; i < _size; i++, iter++){
+		if (haveThisInfo(infoToBeSearched, iter)){
+			infoIsFound = true;
+			_allItems.push_back(iter);
+		}
+	}
+
+	try{
+		if (infoIsFound){
+			string returnMsg;
+			returnMsg = MESSAGE_SUCCESSFUL_SEARCH + infoToBeSearched + "\r\n" + MESSAGE_HOME_RETURN;
+			successful = true;
+
+			return returnMsg;
+		}
+		else{
+			successful = false;
+			throw MESSAGE_INFO_UNFOUND;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSearch.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
+	 */
+
+string ExtDataBase::getLocation() {
+	ifstream ifs;
+	ofstream ofs;
+	ifs.open("../DirectoryStorage.txt");
+
+	if (ifs.is_open()) {
+		getline(ifs, _currentLocation);
+	}
+	else {
+		ofs.open("../DirectoryStorage.txt");
+		ofs << DEFAULT_SAVE_LOCATION;
+		_currentLocation = DEFAULT_SAVE_LOCATION;
+	}
+
+	ifs.close();
+	ofs.close();
+
+	return _currentLocation;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
+	 */
+
+string ExtDataBase::setLocation(Storage& _storage, string newDirectory, bool& successful) {
+	ofstream ofs;
+	ofs.open(newDirectory);
+
+	bool isOpen = false;
+	isOpen = ofs.is_open();
+	
+	try{
+		if (isOpen) {
+			ofstream out;
+
+			getLocation();
+			int ensure = remove(_currentLocation.c_str());
+			assert(ensure == 0);
+
+			out.open("../DirectoryStorage.txt");
+			out.clear();
+			out << newDirectory;
+			out.close();
+			ofs.close();
+			getLocation();
+			successful = true;
+			return MESSAGE_DIRECTORY_CHANGED;
+		}
+		else{
+			ofs.close();
+			successful = false;
+			throw MESSAGE_DIRECTORY_NOT_CHANGED;
+		}
+	}
+	catch (string e){
+		return e;
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExtDataBase.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+	 */
+
+bool HandleInput::isSpecialDetail(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
+	if (str[0] == '"') {
+		return true;
+	}
+
+	return false;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+	 */
+
+bool HandleInput::isPriority(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
+	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
+		return true;
+	}
+
+	return false;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+	 */
+
+bool HandleInput::isTime(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
+	string timeKey[3] = { ":", "am", "pm" };
+	int pos = -1;
+
+	for (size_t i = 0; i < 3; i++) {
+		pos = str.find(timeKey[i]);
+		if (pos > 0) {
+			if (str[pos - 1] >= '0' && str[pos - 1] <= '9') { // meaning that there should be an integer present before the delimiter.
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+	 */
+
+bool HandleInput::isBuffer(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
+	string bufferKey[18] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "at", "on", "-", "from", "to", "this", "coming", "next" };
+	int pos = -1;
+
+	for (size_t i = 0; i < 18; i++) {
+		pos = str.find(bufferKey[i]);
+		if (pos == 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+	 */
+
+bool HandleInput::isDeadline(string str) {
+	try{
+		if (str == ""){
+			throw false;
+		}
+	}
+	catch (bool e){
+		return e;
+	}
+
+	string deadlineKey[13] = { "be", "due", "finish", "end", "ready", "prepare", "complete", "done", "before", "by", "on", "deadline", "is" };
+	int pos = -1;
+
+	for (size_t i = 0; i < 13; i++) {
+		pos = str.find(deadlineKey[i]);
+		if (pos == 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\HandleInput.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Log.cpp
+	 */
+
+void Log::logInfo(string info){
+	_writeLog << info;
+	return;
+}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Log.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
+	 */
+
+void Logic::initialise() {
+	vector<string>* vec;
+
+	vec = _extdb.getContent();
+	bool successful = false;
+
+	for (int i = 0; i < vec->size(); i++) {
+		UserTask* task = _parser->parse((*vec)[i]);
+		Executor* execute = dispatch(task);
+		execute->execute(_storage, _extdb, _allItems, successful);
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Logic.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+	 */
+
+string Standardise::standardiseCategory(bool isADeadline, string time) {
+	if (isADeadline) {
+		return "Deadline";
+	}
+	else {
+		if (time == "All day event") {
+			return "unbounded";
+		}
+		else {
+			return "normal";
+		}
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Standardise.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
+	 */
+
+void StickyNote::setEverything(string details, string date, string time, string priority, string index) {
+	_details = details;
+	_date = date;
+	_time = time;
+	_priority = priority;
+	_index = index;
+}
+
+// GETTERS
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
+	 */
+
+string StickyNote::getCategory() {
+	return _category;
+}
+
+string StickyNote::getDetails() {
+	return _details;
+}
+
+string StickyNote::getDate() {
+	return _date;
+}
+
+string StickyNote::getTime() {
+	return _time;
+}
+
+string StickyNote::getPriority() {
+	return _priority;
+}
+
+string StickyNote::getIndex() {
+	return _index;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\StickyNote.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+	 */
+
+list<StickyNote>::iterator Storage::getIter() {
+	return _noteBook.begin();
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+	 */
+
+int Storage::getSize() {
+	return _noteBook.size();
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+	 */
+
+void Storage::findClashes() {
+	int _size = getSize();
+	list<StickyNote>::iterator iter;
+	iter = getIter();
+
+	for (int i = 0; i < _size; i++, iter++) {
+		bool isClashExist = false;
+
+		if (iter->getStatus() == "Clash") {
+			list<StickyNote>::iterator find;
+			find = getIter(); // i do not want to increment iter.
+
+			for (int j = 0; j < _size; j++, find++) {
+
+				if ((iter->getDate() == find->getDate()) && find->getStartTime() != 0 
+					&& find->getEndTime() != 0 && find->getStatus() == "Clash" 
+						&& (find->getIndex() != iter->getIndex())) {
+
+					if (!(iter->getStartTime() > find->getStartTime() && iter->getStartTime() >= find->getEndTime())
+						&& !(iter->getEndTime() <= find->getStartTime() && iter->getEndTime() < find->getEndTime())) {
+						isClashExist = true;
+						break;
+					}
+				}
+			}
+
+			if (!isClashExist) {
+				iter->setStatus("incomplete");
+			}
+		}
+	}
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\Storage.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
+	 */
+
+string UserTask::getRemaining() {
+	return _remaining;
+
+}
+
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\UserTask.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+	 */
+
+//Unit test for UNDO.
+			TEST_METHOD(UNDOwithnothing)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "undo\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+	 */
+
+//Unit test for SEARCH.
+			TEST_METHOD(SEARCHvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "search zann\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(SEARCHinvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "search derrick\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+
+
+
+
+

@@ -1,0 +1,119 @@
+//@author: a0110748j-unused
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+	 */
+
+string ExecuteSort::getTodayDate(){
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int day = timeInfo->tm_mday;
+	int month = timeInfo->tm_mon + 1;
+	int year = timeInfo->tm_year + 1900;
+	int wDay = timeInfo->tm_wday;
+	string currentDate = to_string(day) + "/" + to_string(month);
+
+	return currentDate;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+	 */
+
+void ExecuteSort::getFutureTasks(vector<list<StickyNote>::iterator> &futureTasks, Storage& _storage){
+	list<StickyNote>::iterator iter = _storage.getIter();
+	size_t _size = _storage.getSize();
+	time_t rawTime;
+	struct tm * timeInfo = new struct tm;
+
+	time(&rawTime);
+	localtime_s(timeInfo, &rawTime);
+
+	int dayNow = timeInfo->tm_mday;
+	int monthNow = timeInfo->tm_mon + 1;
+
+	for (size_t i = 0; i < _size; i++, iter++){
+
+		string curTaskDate = iter->getDate();
+		int posOfSlash = curTaskDate.find_first_of('/', 0);
+		string day = curTaskDate.substr(0, posOfSlash);
+		string month = curTaskDate.substr(posOfSlash + 1);
+		int dayInt = atoi(day.c_str());
+		int monthInt = atoi(month.c_str());
+		iter->setDay(dayInt);
+		iter->setMonth(monthInt);
+
+		if (monthInt>monthNow){
+			futureTasks.push_back(iter);
+		}
+		else if (monthInt == monthNow && dayInt >= dayNow){
+			futureTasks.push_back(iter);
+		}
+		else{
+		}
+	}
+
+	return;
+}
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\oop test\ExecuteSort.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+	 */
+
+//Unit test for SORT.
+/*
+			TEST_METHOD(SORTinvalid)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(false, successful);
+			}
+
+			TEST_METHOD(SORTbydate)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort by date\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+
+			TEST_METHOD(SORTbypriority)
+			{
+				bool edited = false;
+				bool successful = false;
+				Logic* logic = new Logic;
+				string input = "sort by priority\r\n";
+				logic->handleInput(input, edited, successful);
+				Assert::AreEqual(true, successful);
+			}
+*/
+
+	// End of segment: D:\NUS Undergraduate Studies\CS2103\Project\V0.5\UnitTest\unittest1.cpp
+
+
+
+
+
