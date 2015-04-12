@@ -365,9 +365,9 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 	int posCol, posCol2; 
 	int posDas;
 
-	posCol = time.find_first_of(":", 0);
-	posCol2 = time.find_last_of(":", 0);
-	posDas = time.find_first_of("-", 0);
+	posCol = time.find_first_of(':', 0);
+	posCol2 = time.find_first_of(':', posCol+1);
+	posDas = time.find_first_of('-', 0);
 
 	if (posCol == -1 || posDas == -1) {
 		sh = 0;

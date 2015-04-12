@@ -59,17 +59,23 @@ namespace WiseUI {
 			String^ dateDisplayed = gcnew String(date.c_str());
 			dateBox->Text = dateDisplayed;
 
-			bool successful = false;
-			bool edited = false;
-			string temp = logic->handleInput("display", edited, successful);
-			String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-			displayBox->Text = tasksToBeDisplayed;
-
 			bool isOutdated = false;
 			string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
 			String^ outdatedDisplayed = gcnew String(outdated.c_str());
 			if (isOutdated){
-				expiredBox->Text = outdatedDisplayed;
+				bool successful = false;
+				bool edited = false;
+				string temp = logic->handleInput("display", edited, successful);
+				string overall = outdated + "\r\n" + temp;
+				String^ tasksToBeDisplayed = gcnew String(overall.c_str());
+				displayBox->Text = tasksToBeDisplayed;
+			}
+			else{
+				bool successful = false;
+				bool edited = false;
+				string temp = logic->handleInput("display", edited, successful);
+				String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+				displayBox->Text = tasksToBeDisplayed;
 			}
 		}
 
@@ -98,7 +104,7 @@ namespace WiseUI {
 	private: System::Windows::Forms::ToolStripMenuItem^  showWindowToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  hideWindowToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
-	private: System::Windows::Forms::RichTextBox^  expiredBox;
+
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 	private: System::Windows::Forms::RichTextBox^  displayBox2;
 	private: System::Windows::Forms::RichTextBox^  displayBox;
@@ -116,7 +122,6 @@ namespace WiseUI {
 				 this->showWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->hideWindowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 				 this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-				 this->expiredBox = (gcnew System::Windows::Forms::RichTextBox());
 				 this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 				 this->displayBox2 = (gcnew System::Windows::Forms::RichTextBox());
 				 this->displayBox = (gcnew System::Windows::Forms::RichTextBox());
@@ -128,11 +133,11 @@ namespace WiseUI {
 				 this->CmdLineBox->BackColor = System::Drawing::SystemColors::Info;
 				 this->CmdLineBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->CmdLineBox->Location = System::Drawing::Point(14, 566);
+				 this->CmdLineBox->Location = System::Drawing::Point(14, 492);
 				 this->CmdLineBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->CmdLineBox->Multiline = true;
 				 this->CmdLineBox->Name = L"CmdLineBox";
-				 this->CmdLineBox->Size = System::Drawing::Size(552, 23);
+				 this->CmdLineBox->Size = System::Drawing::Size(587, 23);
 				 this->CmdLineBox->TabIndex = 0;
 				 this->CmdLineBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::CmdLineBox_TextChanged);
 				 // 
@@ -148,7 +153,7 @@ namespace WiseUI {
 				 this->dateBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->dateBox->Name = L"dateBox";
 				 this->dateBox->ReadOnly = true;
-				 this->dateBox->Size = System::Drawing::Size(553, 22);
+				 this->dateBox->Size = System::Drawing::Size(585, 22);
 				 this->dateBox->TabIndex = 15;
 				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 				 // 
@@ -190,35 +195,18 @@ namespace WiseUI {
 				 this->exitToolStripMenuItem->Text = L"Exit";
 				 this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::exitToolStripMenuItem_Click);
 				 // 
-				 // expiredBox
-				 // 
-				 this->expiredBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
-				 this->expiredBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
-				 this->expiredBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-					 static_cast<System::Byte>(0)));
-				 this->expiredBox->ForeColor = System::Drawing::Color::Yellow;
-				 this->expiredBox->Location = System::Drawing::Point(14, 405);
-				 this->expiredBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
-				 this->expiredBox->Name = L"expiredBox";
-				 this->expiredBox->ReadOnly = true;
-				 this->expiredBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->expiredBox->Size = System::Drawing::Size(553, 104);
-				 this->expiredBox->TabIndex = 20;
-				 this->expiredBox->Text = L"";
-				 // 
 				 // richTextBox1
 				 // 
 				 this->richTextBox1->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
-				 this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
 				 this->richTextBox1->ForeColor = System::Drawing::Color::Red;
-				 this->richTextBox1->Location = System::Drawing::Point(54, 516);
+				 this->richTextBox1->Location = System::Drawing::Point(50, 442);
 				 this->richTextBox1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->richTextBox1->Name = L"richTextBox1";
 				 this->richTextBox1->ReadOnly = true;
 				 this->richTextBox1->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-				 this->richTextBox1->Size = System::Drawing::Size(463, 42);
+				 this->richTextBox1->Size = System::Drawing::Size(517, 42);
 				 this->richTextBox1->TabIndex = 21;
 				 this->richTextBox1->Text = L"     add, delete, edit, mark, undo, search, display, help, directory, exit\n      "
 					 L"                              F1 - System Tray, ESC - Exit";
@@ -236,7 +224,7 @@ namespace WiseUI {
 				 this->displayBox2->Name = L"displayBox2";
 				 this->displayBox2->ReadOnly = true;
 				 this->displayBox2->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->displayBox2->Size = System::Drawing::Size(553, 86);
+				 this->displayBox2->Size = System::Drawing::Size(585, 123);
 				 this->displayBox2->TabIndex = 22;
 				 this->displayBox2->Text = L"";
 				 // 
@@ -252,7 +240,7 @@ namespace WiseUI {
 				 this->displayBox->Name = L"displayBox";
 				 this->displayBox->ReadOnly = true;
 				 this->displayBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->displayBox->Size = System::Drawing::Size(553, 254);
+				 this->displayBox->Size = System::Drawing::Size(585, 254);
 				 this->displayBox->TabIndex = 23;
 				 this->displayBox->Text = L"";
 				 // 
@@ -261,11 +249,10 @@ namespace WiseUI {
 				 this->AutoScaleDimensions = System::Drawing::SizeF(7, 15);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 				 this->BackColor = System::Drawing::SystemColors::InfoText;
-				 this->ClientSize = System::Drawing::Size(581, 598);
+				 this->ClientSize = System::Drawing::Size(611, 528);
 				 this->Controls->Add(this->displayBox);
 				 this->Controls->Add(this->displayBox2);
 				 this->Controls->Add(this->richTextBox1);
-				 this->Controls->Add(this->expiredBox);
 				 this->Controls->Add(this->dateBox);
 				 this->Controls->Add(this->CmdLineBox);
 				 this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -284,6 +271,7 @@ namespace WiseUI {
 				 this->contextMenuStrip->ResumeLayout(false);
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
+
 			 }
 
 //@author A0093863U
@@ -322,6 +310,9 @@ namespace WiseUI {
 						 message << SUCCESSFUL_LOG << endl;
 						 _log->logInfo(message.str());
 
+						 bool isOutdated = false;
+						 string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+
 						 String^ feedback = gcnew String(result.c_str());
 
 						 for (size_t i = 0; i < input.size(); i++){
@@ -352,6 +343,7 @@ namespace WiseUI {
 						 }
 
 						 if (edited){
+
 							 dateBox->Text = gcnew String(date.c_str());
 							 string temp;
 							 bool successful = false;
@@ -361,20 +353,20 @@ namespace WiseUI {
 							 else {
 								 temp = logic->handleInput("display", edited, successful);
 							 }
-							 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
-							 displayBox->Text = tasksToBeDisplayed;
+							 if (isOutdated){
+								 string overall = outdated + "\r\n" + temp;
+								 String^ tasksToBeDisplayed = gcnew String(overall.c_str());
+								 displayBox->Text = tasksToBeDisplayed;
+							 }
+							 else{
+								 String^ tasksToBeDisplayed = gcnew String(temp.c_str());
+								 displayBox->Text = tasksToBeDisplayed;
+							 }
 						 }
 					 }
 				 }
 				 catch (bool e){
 					 MessageBox::Show("Wrong Input, re-enter:");
-				 }
-
-				 bool isOutdated = false;
-				 string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
-				 String^ outdatedDisplayed = gcnew String(outdated.c_str());
-				 if (isOutdated){
-					 expiredBox->Text = outdatedDisplayed;
 				 }
 				 return;
 	}
