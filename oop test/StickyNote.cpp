@@ -85,13 +85,48 @@ void StickyNote::setMonth(int month){
 
 void StickyNote::setStartTime(int startH, int startM) {
 	ostringstream oss;
-	oss << startH << ":" << startM;
+	string sHour, sMin;
+	int startTime = 0;
+	sHour = to_string(startH);
+	sMin = to_string(startM);
+	if (sHour.size() < 2) {
+		sHour = "0" + sHour;
+	}
+	if (sMin.size() < 2) {
+		sMin = "0" + sMin;
+	}
+	if (startH > 0) {
+		startTime = startH * 100;
+	}
+	if (startM > 0) {
+		startTime = startTime + startM;
+	}
+	_startTime = startTime;
+	oss << sHour << ":" << sMin;
 	_sStartTime = oss.str();
 }
 
 void StickyNote::setEndTime(int endH, int endM) {
 	ostringstream oss;
-	oss << endH << ":" << endM;
+	string eHour, eMin;
+	int endTime = 0;
+	eHour = to_string(endH);
+	eMin = to_string(endM);
+	if (eHour.size() < 2) {
+		eHour = "0" + eHour;
+	}
+	if (eMin.size() < 2) {
+		eMin = "0" + eMin;
+	}
+	if (endH > 0) {
+		endTime = endH * 100;
+	}
+	if (endM > 0) {
+		endTime = endTime + endM;
+	}
+
+	_endTime = endTime;
+	oss << eHour << ":" << eMin;
 	_sEndTime = oss.str();
 }
 

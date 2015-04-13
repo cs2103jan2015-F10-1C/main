@@ -70,7 +70,7 @@ string Storage::oneTaskInfoTypeOne(list<StickyNote>::iterator iter) {
 	if (iter->getCategory() == "Deadline") {
 		oss << "Before ";
 	}
-	if (iter->getStartTime() == 0) {
+	if (iter->getTime() == "All day event") {
 		oss << iter->getTime();
 	}
 	else {
@@ -105,7 +105,13 @@ string Storage::oneTaskInfoTypeTwo(list<StickyNote>::iterator iter) {
 		oss << "99/99" << " ";
 	}
 	if (iter->getTime() != "All day event") {
-		oss << iter->getTime() << " ";
+		if (iter->getCategory() == "Deadline") {
+			oss << "before ";
+		}
+		oss << iter->getSStartTime() << " ";
+		if (iter->getCategory() != "Deadline") {
+			oss << "-" << iter->getSEndTime() << " ";
+		}
 	}
 	else {
 		oss << "99:99" << " ";

@@ -130,6 +130,9 @@ string ExecuteEdit::execute(Storage& _storage, ExtDataBase extdb, vector<list<St
 				checkDate.setTaskTime(sh, eh, sm, em, time, category);
 				iter->setStartTime(sh, sm);
 				iter->setEndTime(eh, em);
+				if (iter->getSEndTime() == "00:00") {
+					isADeadline = true;
+				}
 				changeOccur = true;
 			}
 

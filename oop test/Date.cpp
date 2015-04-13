@@ -369,12 +369,15 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 	posCol2 = time.find_first_of(':', posCol+1);
 	posDas = time.find_first_of('-', 0);
 
-	if (posCol == -1 || posDas == -1) {
+	if (posCol == -1) {
 		sh = 0;
-		eh = 0;
 		sm = 0;
-		em = 0;
 		return;
+	}
+
+	if (posDas == -1) {
+		eh = 0;
+		em = 0;
 	}
 
 	string startH = time.substr(0, posCol);

@@ -258,7 +258,7 @@ bool HandleInput::isPriority(string str) {
 		return e;
 	}
 
-	if (str == "-high" || str == "-mid" || str == "-low" || str == "-none") {
+	if (str == "-high" || str == "-none") {
 		return true;
 	}
 

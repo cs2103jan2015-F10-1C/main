@@ -108,6 +108,9 @@ namespace WiseUI {
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 	private: System::Windows::Forms::RichTextBox^  displayBox2;
 	private: System::Windows::Forms::RichTextBox^  displayBox;
+	private: System::Windows::Forms::Panel^  panel1;
+	private: System::Windows::Forms::Panel^  panel2;
+
 	private: System::ComponentModel::IContainer^  components;
 
 #pragma region Windows Form Designer generated code
@@ -125,12 +128,17 @@ namespace WiseUI {
 				 this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 				 this->displayBox2 = (gcnew System::Windows::Forms::RichTextBox());
 				 this->displayBox = (gcnew System::Windows::Forms::RichTextBox());
+				 this->panel1 = (gcnew System::Windows::Forms::Panel());
+				 this->panel2 = (gcnew System::Windows::Forms::Panel());
 				 this->contextMenuStrip->SuspendLayout();
+				 this->panel1->SuspendLayout();
+				 this->panel2->SuspendLayout();
 				 this->SuspendLayout();
 				 // 
 				 // CmdLineBox
 				 // 
-				 this->CmdLineBox->BackColor = System::Drawing::SystemColors::Info;
+				 this->CmdLineBox->BackColor = System::Drawing::Color::White;
+				 this->CmdLineBox->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 				 this->CmdLineBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
 				 this->CmdLineBox->Location = System::Drawing::Point(14, 492);
@@ -143,19 +151,19 @@ namespace WiseUI {
 				 // 
 				 // dateBox
 				 // 
-				 this->dateBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->dateBox->BackColor = System::Drawing::Color::White;
 				 this->dateBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->dateBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->dateBox->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
-					 static_cast<System::Int32>(static_cast<System::Byte>(255)));
-				 this->dateBox->Location = System::Drawing::Point(14, 15);
+				 this->dateBox->ForeColor = System::Drawing::Color::Black;
+				 this->dateBox->Location = System::Drawing::Point(12, 13);
 				 this->dateBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->dateBox->Name = L"dateBox";
 				 this->dateBox->ReadOnly = true;
-				 this->dateBox->Size = System::Drawing::Size(585, 22);
+				 this->dateBox->Size = System::Drawing::Size(589, 22);
 				 this->dateBox->TabIndex = 15;
 				 this->dateBox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				 this->dateBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::dateBox_TextChanged);
 				 // 
 				 // WiseManager
 				 // 
@@ -172,89 +180,113 @@ namespace WiseUI {
 						 this->hideWindowToolStripMenuItem, this->exitToolStripMenuItem
 				 });
 				 this->contextMenuStrip->Name = L"contextMenuStrip";
-				 this->contextMenuStrip->Size = System::Drawing::Size(159, 70);
+				 this->contextMenuStrip->Size = System::Drawing::Size(151, 70);
 				 // 
 				 // showWindowToolStripMenuItem
 				 // 
 				 this->showWindowToolStripMenuItem->Name = L"showWindowToolStripMenuItem";
-				 this->showWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->showWindowToolStripMenuItem->Size = System::Drawing::Size(150, 22);
 				 this->showWindowToolStripMenuItem->Text = L"Show Window";
 				 this->showWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::showWindowToolStripMenuItem_Click);
 				 // 
 				 // hideWindowToolStripMenuItem
 				 // 
 				 this->hideWindowToolStripMenuItem->Name = L"hideWindowToolStripMenuItem";
-				 this->hideWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->hideWindowToolStripMenuItem->Size = System::Drawing::Size(150, 22);
 				 this->hideWindowToolStripMenuItem->Text = L"Hide Window";
 				 this->hideWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::hideWindowToolStripMenuItem_Click);
 				 // 
 				 // exitToolStripMenuItem
 				 // 
 				 this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-				 this->exitToolStripMenuItem->Size = System::Drawing::Size(158, 22);
+				 this->exitToolStripMenuItem->Size = System::Drawing::Size(150, 22);
 				 this->exitToolStripMenuItem->Text = L"Exit";
 				 this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::exitToolStripMenuItem_Click);
 				 // 
 				 // richTextBox1
 				 // 
-				 this->richTextBox1->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->richTextBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(238)), static_cast<System::Int32>(static_cast<System::Byte>(238)),
+					 static_cast<System::Int32>(static_cast<System::Byte>(238)));
+				 this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->richTextBox1->ForeColor = System::Drawing::Color::Red;
-				 this->richTextBox1->Location = System::Drawing::Point(50, 442);
+				 this->richTextBox1->ForeColor = System::Drawing::Color::Gray;
+				 this->richTextBox1->Location = System::Drawing::Point(70, 442);
 				 this->richTextBox1->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->richTextBox1->Name = L"richTextBox1";
 				 this->richTextBox1->ReadOnly = true;
 				 this->richTextBox1->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-				 this->richTextBox1->Size = System::Drawing::Size(517, 42);
+				 this->richTextBox1->Size = System::Drawing::Size(475, 42);
 				 this->richTextBox1->TabIndex = 21;
 				 this->richTextBox1->Text = L"     add, delete, edit, mark, undo, search, display, help, directory, exit\n      "
 					 L"                              F1 - System Tray, ESC - Exit";
+				 this->richTextBox1->TextChanged += gcnew System::EventHandler(this, &WiseGUI::richTextBox1_TextChanged);
 				 // 
 				 // displayBox2
 				 // 
-				 this->displayBox2->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->displayBox2->BackColor = System::Drawing::Color::White;
 				 this->displayBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->displayBox2->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->displayBox2->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
-					 static_cast<System::Int32>(static_cast<System::Byte>(0)));
-				 this->displayBox2->Location = System::Drawing::Point(14, 311);
+				 this->displayBox2->ForeColor = System::Drawing::Color::Black;
+				 this->displayBox2->Location = System::Drawing::Point(7, 5);
 				 this->displayBox2->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->displayBox2->Name = L"displayBox2";
 				 this->displayBox2->ReadOnly = true;
 				 this->displayBox2->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->displayBox2->Size = System::Drawing::Size(585, 123);
+				 this->displayBox2->Size = System::Drawing::Size(570, 48);
 				 this->displayBox2->TabIndex = 22;
 				 this->displayBox2->Text = L"";
+				 this->displayBox2->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox2_TextChanged);
 				 // 
 				 // displayBox
 				 // 
-				 this->displayBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+				 this->displayBox->BackColor = System::Drawing::Color::White;
 				 this->displayBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
 				 this->displayBox->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
-				 this->displayBox->ForeColor = System::Drawing::Color::Lime;
-				 this->displayBox->Location = System::Drawing::Point(14, 50);
+				 this->displayBox->ForeColor = System::Drawing::Color::Black;
+				 this->displayBox->Location = System::Drawing::Point(58, 54);
 				 this->displayBox->Margin = System::Windows::Forms::Padding(3, 4, 3, 4);
 				 this->displayBox->Name = L"displayBox";
 				 this->displayBox->ReadOnly = true;
 				 this->displayBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
-				 this->displayBox->Size = System::Drawing::Size(585, 254);
+				 this->displayBox->Size = System::Drawing::Size(472, 222);
 				 this->displayBox->TabIndex = 23;
 				 this->displayBox->Text = L"";
+				 this->displayBox->TextChanged += gcnew System::EventHandler(this, &WiseGUI::displayBox_TextChanged);
+				 // 
+				 // panel1
+				 // 
+				 this->panel1->BackColor = System::Drawing::Color::Black;
+				 this->panel1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel1.BackgroundImage")));
+				 this->panel1->Controls->Add(this->displayBox);
+				 this->panel1->Location = System::Drawing::Point(12, 44);
+				 this->panel1->Name = L"panel1";
+				 this->panel1->Size = System::Drawing::Size(589, 327);
+				 this->panel1->TabIndex = 24;
+				 this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &WiseGUI::panel1_Paint);
+				 // 
+				 // panel2
+				 // 
+				 this->panel2->BackColor = System::Drawing::Color::Black;
+				 this->panel2->Controls->Add(this->displayBox2);
+				 this->panel2->Location = System::Drawing::Point(12, 377);
+				 this->panel2->Name = L"panel2";
+				 this->panel2->Size = System::Drawing::Size(585, 58);
+				 this->panel2->TabIndex = 25;
 				 // 
 				 // WiseGUI
 				 // 
 				 this->AutoScaleDimensions = System::Drawing::SizeF(7, 15);
 				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				 this->BackColor = System::Drawing::SystemColors::InfoText;
+				 this->BackColor = System::Drawing::Color::White;
 				 this->ClientSize = System::Drawing::Size(611, 528);
-				 this->Controls->Add(this->displayBox);
-				 this->Controls->Add(this->displayBox2);
-				 this->Controls->Add(this->richTextBox1);
 				 this->Controls->Add(this->dateBox);
+				 this->Controls->Add(this->richTextBox1);
 				 this->Controls->Add(this->CmdLineBox);
+				 this->Controls->Add(this->panel1);
+				 this->Controls->Add(this->panel2);
 				 this->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(0)));
 				 this->ForeColor = System::Drawing::SystemColors::ControlText;
@@ -269,6 +301,8 @@ namespace WiseUI {
 				 this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &WiseGUI::WiseGUI_FormClosing);
 				 this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &WiseGUI::WiseGUI_KeyDown);
 				 this->contextMenuStrip->ResumeLayout(false);
+				 this->panel1->ResumeLayout(false);
+				 this->panel2->ResumeLayout(false);
 				 this->ResumeLayout(false);
 				 this->PerformLayout();
 
@@ -347,6 +381,9 @@ namespace WiseUI {
 							 dateBox->Text = gcnew String(date.c_str());
 							 string temp;
 							 bool successful = false;
+							 bool isOutdated = false;
+							 string outdated = MESSAGE_OUTDATED + logic->realTimeCheck(isOutdated);
+							 String^ outdatedDisplayed = gcnew String(outdated.c_str());
 							 if (cmd == "search") {
 								 temp = logic->handleInput("display search", edited, successful);
 							 }
@@ -366,7 +403,7 @@ namespace WiseUI {
 					 }
 				 }
 				 catch (bool e){
-					 MessageBox::Show("Wrong Input, re-enter:");
+					 MessageBox::Show("Wrong Input, re-enter");
 				 }
 				 return;
 	}
@@ -411,6 +448,16 @@ private: System::Void WiseGUI_FormClosing(System::Object^  sender, System::Windo
 			 bool edited = false;
 			 logic->handleInput("exit\r\n", edited, successful);
 			 this->Close();
+}
+private: System::Void displayBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void dateBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void panel1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
+}
+private: System::Void displayBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void richTextBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }
