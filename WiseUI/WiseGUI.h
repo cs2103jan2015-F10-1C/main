@@ -180,26 +180,26 @@ namespace WiseUI {
 						 this->hideWindowToolStripMenuItem, this->exitToolStripMenuItem
 				 });
 				 this->contextMenuStrip->Name = L"contextMenuStrip";
-				 this->contextMenuStrip->Size = System::Drawing::Size(151, 70);
+				 this->contextMenuStrip->Size = System::Drawing::Size(159, 70);
 				 // 
 				 // showWindowToolStripMenuItem
 				 // 
 				 this->showWindowToolStripMenuItem->Name = L"showWindowToolStripMenuItem";
-				 this->showWindowToolStripMenuItem->Size = System::Drawing::Size(150, 22);
+				 this->showWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
 				 this->showWindowToolStripMenuItem->Text = L"Show Window";
 				 this->showWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::showWindowToolStripMenuItem_Click);
 				 // 
 				 // hideWindowToolStripMenuItem
 				 // 
 				 this->hideWindowToolStripMenuItem->Name = L"hideWindowToolStripMenuItem";
-				 this->hideWindowToolStripMenuItem->Size = System::Drawing::Size(150, 22);
+				 this->hideWindowToolStripMenuItem->Size = System::Drawing::Size(158, 22);
 				 this->hideWindowToolStripMenuItem->Text = L"Hide Window";
 				 this->hideWindowToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::hideWindowToolStripMenuItem_Click);
 				 // 
 				 // exitToolStripMenuItem
 				 // 
 				 this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-				 this->exitToolStripMenuItem->Size = System::Drawing::Size(150, 22);
+				 this->exitToolStripMenuItem->Size = System::Drawing::Size(158, 22);
 				 this->exitToolStripMenuItem->Text = L"Exit";
 				 this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &WiseGUI::exitToolStripMenuItem_Click);
 				 // 

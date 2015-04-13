@@ -353,14 +353,6 @@ void Date::setTaskTime(int& sh, int& eh, int& sm, int& em, string time, string c
 		return;
 	}
 
-	try{
-		if (category == ""){
-			throw false;
-		}
-	}
-	catch (bool e){
-		return;
-	}
 
 	int posCol, posCol2; 
 	int posDas;
