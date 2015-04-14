@@ -35,7 +35,7 @@ string Logic::handleInput(string userInput, bool& edited, bool& successful) {
 				executor = _inputHistory.top();
 				_inputHistory.pop();
 				string conduct = executor->undo();
-				task = _parser->parse(conduct);
+				task = _parser->parse(conduct); // execute undo actions
 				executor = dispatch(task);
 				result = executor->execute(_storage, _extdb, _allItems, successful);
 				_extdb.autoSave(_storage);
